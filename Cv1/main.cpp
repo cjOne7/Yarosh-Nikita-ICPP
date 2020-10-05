@@ -71,12 +71,12 @@ void tasks() {
 
 		if (lzeSestrojit(triangles[i])) {
 			cout << "Perimeter of triangle number " << i + 1 << " is "
-				 << triangles[i].a + triangles[i].b + triangles[i].c;
+				 << triangles[i].a + triangles[i].b + triangles[i].c << endl;
 		} else {
-			cout << "Triangle can't be created with sides: "
-				 << triangles[i].a << " "
-				 << triangles[i].b << " "
-				 << triangles[i].c << endl;
+			cout << "Triangle number " << i + 1 << " can't be created with sides: "
+				 << "a: " << triangles[i].a << " "
+				 << "b: " << triangles[i].b << " "
+				 << "c: " << triangles[i].c << endl;
 		}
 	}
 
@@ -86,6 +86,6 @@ void tasks() {
 
 
 int main() {
-	std::cout << "Hello, World!" << std::endl;
+	tasks();
 	return 0;
 }
