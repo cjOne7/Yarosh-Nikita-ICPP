@@ -32,3 +32,9 @@
 *.app
 Cv1 Ut 18-20/cmake-build-debug/*
 Cv1 Ut 18-20/.idea/*
+Cv1 Ut 18-20/.idea/workspace.xml
+
+Cv2 Ut 18-20/cmake-build-debug/*
+Cv2 Ut 18-20/.idea/*
+Cv2 Ut 18-20/.idea/workspace.xml
+Cv2 Ut 18-20/CMakeLists.txt
