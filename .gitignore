@@ -30,18 +30,5 @@
 *.exe
 *.out
 *.app
-
-Cv1/cmake-build-debug/cmake_install.cmake
-*.cmake
-Cv1/cmake-build-debug/CMakeFiles/*
-Cv1/cmake-build-debug/Makefile
-Cv1/cmake-build-debug/Cv1.cbp
-Cv1/cmake-build-debug/CMakeCache.txt
-Cv1/CMakeLists.txt
-Cv1/.idea/.name
-Cv1/cmake-build-debug/FirstCLionProject.cbp
-Cv1/.idea/Cv1.iml
-Cv1/.idea/misc.xml
-Cv1/.idea/modules.xml
-Cv1/.idea/vcs.xml
-Cv1/.idea/workspace.xml
+Cv1 Ut 18-20/cmake-build-debug/*
+Cv1 Ut 18-20/.idea/*
