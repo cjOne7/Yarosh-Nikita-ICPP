@@ -34,7 +34,6 @@ public:
 	Receipt *getReceipts() const;
 
 private:
-	static int idCounter;
 	int maxNumberOfGivenReceipts = INIT_DEFAULT_MAX_SIZE_OF_RECEIPTS;
 	int curNumberOfGivenReceipts = 0;
 	Receipt *receipts;
