@@ -1,22 +1,29 @@
 #pragma once
 #ifndef CV2_UT_18_20_CHECKOUT_H
 #define CV2_UT_18_20_CHECKOUT_H
+#define INIT_DEFAULT_MAX_SIZE_OF_RECEIPTS 10
 
 #include "../receipt/Receipt.h"
+#include<vector>
+
+using namespace std;
 
 class Checkout {
 public:
-	static int idCounter;
+
+	Checkout();
 
 	Checkout(int maxNumberOfGivenReceipts);
 
-	Receipt &createReceipt(double cost, double id);
+	virtual ~Checkout();
+
+	Receipt &createReceipt(double cost, double dph);
 
 	Receipt &getReceipt(int receiptId);
 
-	double getAmount() const;
+	double getAmountsSum() const;
 
-	double getAmountWithDph() const;
+	double getAmountsSumWithDph() const;
 
 	int getMaxNumberOfGivenReceipts() const;
 
@@ -24,11 +31,15 @@ public:
 
 	int getCurNumberOfGivenReceipts() const;
 
-	void setCurNumberOfGivenReceipts(int curNumberOfGivenReceipts);
+	Receipt *getReceipts() const;
 
 private:
-	int maxNumberOfGivenReceipts;
-	int curNumberOfGivenReceipts;
+	static int idCounter;
+	int maxNumberOfGivenReceipts = INIT_DEFAULT_MAX_SIZE_OF_RECEIPTS;
+	int curNumberOfGivenReceipts = 0;
+	Receipt *receipts;
+	vector<Receipt> vectorReceipts;
+
 };
 
 #endif //CV2_UT_18_20_CHECKOUT_H
