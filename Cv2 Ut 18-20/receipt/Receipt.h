@@ -6,6 +6,8 @@
 
 class Receipt {
 public:
+	Receipt();
+
 	Receipt(int numberOfReceipt, double amount, double dph);
 
 	double getAmount() const;
@@ -13,8 +15,6 @@ public:
 	double getDph() const;
 
 	friend std::ostream &operator<<(std::ostream &os, const Receipt &receipt);
-
-	virtual ~Receipt();
 
 private:
 	int numberOfReceipt = 0;

@@ -3,12 +3,10 @@
 
 using namespace std;
 
-Receipt::Receipt(int numberOfReceipt, double amount, double dph) : numberOfReceipt(numberOfReceipt), amount(amount), dph(dph) {
-	cout << "Receipt(int numberOfReceipt, double amount, double dph)" << endl;
-}
+Receipt::Receipt() {}
 
-Receipt::~Receipt() {
-	cout << "~Receipt()" << endl;
+Receipt::Receipt(int numberOfReceipt, double amount, double dph)
+		: numberOfReceipt(numberOfReceipt), amount(amount), dph(dph) {
 }
 
 double Receipt::getAmount() const {
@@ -23,3 +21,5 @@ ostream &operator<<(ostream &os, const Receipt &receipt) {
 	os << "numberOfReceipt: " << receipt.numberOfReceipt << " amount: " << receipt.amount << " dph: " << receipt.dph;
 	return os;
 }
+
+

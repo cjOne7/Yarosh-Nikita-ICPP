@@ -2,13 +2,12 @@
 #include <iostream>
 #include <string>
 #include <sstream>
-#include <exception>
 
 using namespace std;
 
 Checkout::Checkout() {
 	cout << "Checkout()" << endl;
-	this->receipts = (Receipt *) malloc(sizeof(Receipt) * this->maxNumberOfGivenReceipts);
+	this->receipts = new Receipt[10];
 }
 
 Checkout::Checkout(int maxNumberOfGivenReceipts) : maxNumberOfGivenReceipts(maxNumberOfGivenReceipts) {
@@ -18,7 +17,7 @@ Checkout::Checkout(int maxNumberOfGivenReceipts) : maxNumberOfGivenReceipts(maxN
 
 Checkout::~Checkout() {
 	cout << "~Checkout()" << endl;
-	free(receipts);
+	delete[] receipts;
 }
 
 Receipt &Checkout::createReceipt(double cost, double dph) {
