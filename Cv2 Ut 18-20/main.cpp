@@ -1,11 +1,10 @@
 #include <iostream>
 #include "checkout/Checkout.h"
-#include "receipt/Receipt.h"
 
 using namespace std;
 
 int main() {
-	Checkout checkout{};
+	Checkout checkout{2};
 	try {
 		checkout.createReceipt(10, .10);
 		checkout.createReceipt(20, .10);

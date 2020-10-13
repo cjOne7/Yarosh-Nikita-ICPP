@@ -13,7 +13,7 @@ public:
 
 	Checkout();
 
-	Checkout(int maxNumberOfGivenReceipts);
+	explicit Checkout(int maxNumberOfGivenReceipts);
 
 	virtual ~Checkout();
 
@@ -25,20 +25,11 @@ public:
 
 	double getAmountsSumWithDph() const;
 
-	int getMaxNumberOfGivenReceipts() const;
-
-	void setMaxNumberOfGivenReceipts(int maxNumberOfGivenReceipts);
-
-	int getCurNumberOfGivenReceipts() const;
-
-	Receipt *getReceipts() const;
 
 private:
 	int maxNumberOfGivenReceipts = INIT_DEFAULT_MAX_SIZE_OF_RECEIPTS;
 	int curNumberOfGivenReceipts = 0;
 	Receipt *receipts;
-	vector<Receipt> vectorReceipts;
-
 };
 
 #endif //CV2_UT_18_20_CHECKOUT_H

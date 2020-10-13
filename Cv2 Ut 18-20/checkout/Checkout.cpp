@@ -22,10 +22,6 @@ Checkout::~Checkout() {
 }
 
 Receipt &Checkout::createReceipt(double cost, double dph) {
-//	Receipt receipt{this->curNumberOfGivenReceipts, cost, dph};
-//	this->vectorReceipts.push_back(receipt);
-//	this->curNumberOfGivenReceipts++;
-//
 	if (curNumberOfGivenReceipts == maxNumberOfGivenReceipts) {
 		ostringstream stringStream;
 		stringStream << "You can't add any more receipts to cash register."
@@ -45,7 +41,6 @@ Receipt &Checkout::getReceipt(int receiptId) {
 		throw out_of_range("Nonexistent element with index: " + to_string(receiptId));
 	}
 	return this->receipts[receiptId];
-//	return this->vectorReceipts.at(receiptId);
 }
 
 double Checkout::getAmountsSum() const {
@@ -53,9 +48,6 @@ double Checkout::getAmountsSum() const {
 	for (int i = 0; i < this->curNumberOfGivenReceipts; ++i) {
 		sum += this->receipts[i].getAmount();
 	}
-//	for (int i = 0; i < vectorReceipts.size(); ++i) {
-//		sum += vectorReceipts.at(i).getAmount();
-//	}
 	return sum;
 }
 
@@ -64,24 +56,5 @@ double Checkout::getAmountsSumWithDph() const {
 	for (int i = 0; i < this->curNumberOfGivenReceipts; ++i) {
 		sum += this->receipts[i].getAmount() * (1 + this->receipts[i].getDph());
 	}
-//	for (int i = 0; i < vectorReceipts.size(); ++i) {
-//		sum += vectorReceipts.at(i).getAmount() * (1 + vectorReceipts.at(i).getDph());
-//	}
 	return sum;
-}
-
-int Checkout::getMaxNumberOfGivenReceipts() const {
-	return maxNumberOfGivenReceipts;
-}
-
-void Checkout::setMaxNumberOfGivenReceipts(int maxNumberOfGivenReceipts) {
-	Checkout::maxNumberOfGivenReceipts = maxNumberOfGivenReceipts;
-}
-
-int Checkout::getCurNumberOfGivenReceipts() const {
-	return curNumberOfGivenReceipts;
-}
-
-Receipt *Checkout::getReceipts() const {
-	return receipts;
 }

@@ -8,17 +8,9 @@ class Receipt {
 public:
 	Receipt(int numberOfReceipt, double amount, double dph);
 
-	int getNumberOfReceipt() const;
-
-	void setNumberOfReceipt(int numberOfReceipt);
-
 	double getAmount() const;
 
-	void setAmount(double amount);
-
 	double getDph() const;
-
-	void setDph(double dph);
 
 	friend std::ostream &operator<<(std::ostream &os, const Receipt &receipt);
 
