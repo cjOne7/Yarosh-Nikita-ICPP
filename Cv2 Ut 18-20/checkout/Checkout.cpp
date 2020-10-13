@@ -6,17 +6,14 @@
 using namespace std;
 
 Checkout::Checkout() {
-	cout << "Checkout()" << endl;
 	this->receipts = new Receipt[10];
 }
 
 Checkout::Checkout(int maxNumberOfGivenReceipts) : maxNumberOfGivenReceipts(maxNumberOfGivenReceipts) {
-	cout << "Checkout(int maxNumberOfGivenReceipts)" << endl;
 	this->receipts = (Receipt *) malloc(sizeof(Receipt) * maxNumberOfGivenReceipts);
 }
 
 Checkout::~Checkout() {
-	cout << "~Checkout()" << endl;
 	delete[] receipts;
 }
 
