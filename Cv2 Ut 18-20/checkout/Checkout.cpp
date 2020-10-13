@@ -18,7 +18,7 @@ Checkout::Checkout(int maxNumberOfGivenReceipts) : maxNumberOfGivenReceipts(maxN
 
 Checkout::~Checkout() {
 	cout << "~Checkout()" << endl;
-	delete[] receipts;
+	free(receipts);
 }
 
 Receipt &Checkout::createReceipt(double cost, double dph) {
