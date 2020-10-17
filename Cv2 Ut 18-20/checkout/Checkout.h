@@ -4,7 +4,6 @@
 #define INIT_DEFAULT_MAX_SIZE_OF_RECEIPTS 10
 
 #include "../receipt/Receipt.h"
-#include<vector>
 
 using namespace std;
 

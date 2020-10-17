@@ -1,5 +1,4 @@
 #include "Checkout.h"
-#include <iostream>
 #include <string>
 #include <sstream>
 

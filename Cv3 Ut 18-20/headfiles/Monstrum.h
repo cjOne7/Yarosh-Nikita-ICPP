@@ -4,7 +4,7 @@
 
 #include "PohyblivyObjekt.h"
 
-class Monstrum : PohyblivyObjekt {
+class Monstrum : public PohyblivyObjekt {
 private:
 	int hp, maxHp;
 public:

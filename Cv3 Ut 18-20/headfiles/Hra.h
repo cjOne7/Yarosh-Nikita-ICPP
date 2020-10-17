@@ -7,8 +7,14 @@
 
 class Hra {
 private:
+	int index = 0;
+	int size = DEF_VALUE;
 	Objekt **objekty = new Objekt *[DEF_VALUE];
 public:
+	Hra(int size);
+
+	virtual ~Hra();
+
 	void vlozObjekt(Objekt *o);
 
 	int *najdiIdStatickychObjektu(double xmin, double xmax, double ymin, double ymax);

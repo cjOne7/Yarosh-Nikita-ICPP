@@ -7,7 +7,7 @@ enum TypPrekazky {
 	Skala, MalaRostlina, VelkaRostlina
 };
 
-class StatickyObjekt : Objekt {
+class StatickyObjekt : public Objekt {
 private:
 	TypPrekazky typPrekazky;
 

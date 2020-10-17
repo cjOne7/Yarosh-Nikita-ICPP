@@ -3,7 +3,7 @@
 
 #include "Objekt.h"
 
-class PohyblivyObjekt : Objekt {
+class PohyblivyObjekt : public Objekt {
 private:
 	double uhelNatoceni;
 
