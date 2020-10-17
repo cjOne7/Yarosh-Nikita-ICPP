@@ -15,7 +15,6 @@ public:
 	StaticObject(int id, TypeOfObstacle typeOfObstacle);
 
 	TypeOfObstacle getTypeOfObstacle() const;
-
 };
 
 #endif //CV3_UT_18_20_STATICOBJECT_H

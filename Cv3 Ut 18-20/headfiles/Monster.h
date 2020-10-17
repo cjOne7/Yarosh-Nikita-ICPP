@@ -2,9 +2,9 @@
 #define CV3_UT_18_20_MONSTER_H
 
 
-#include "PohyblivyObjekt.h"
+#include "MoveableObject.h"
 
-class Monster : public PohyblivyObjekt {
+class Monster : public MoveableObject {
 private:
 	int hp, maxHp;
 public:

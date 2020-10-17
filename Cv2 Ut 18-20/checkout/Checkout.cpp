@@ -9,7 +9,7 @@ Checkout::Checkout() {
 }
 
 Checkout::Checkout(int maxNumberOfGivenReceipts) : maxNumberOfGivenReceipts(maxNumberOfGivenReceipts) {
-	this->receipts = (Receipt *) malloc(sizeof(Receipt) * maxNumberOfGivenReceipts);
+	this->receipts = new Receipt[maxNumberOfGivenReceipts];
 }
 
 Checkout::~Checkout() {
