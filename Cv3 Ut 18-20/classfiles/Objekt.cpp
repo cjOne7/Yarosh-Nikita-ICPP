@@ -1,8 +1,9 @@
-//
-// Created by nikya on 17.10.2020.
-//
+#include "../headfiles/Objekt.h"
 
-#include "Objekt.h"
+Objekt::Objekt(int id) : id(id) {
+	this->x = 0;
+	this->y = 0;
+}
 
 Objekt::~Objekt() {
 }
@@ -26,5 +27,3 @@ void Objekt::setY(double y) {
 int Objekt::getId() const {
 	return id;
 }
-
-Objekt::Objekt(int id) : id(id){}

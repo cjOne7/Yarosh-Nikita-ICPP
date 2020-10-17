@@ -8,9 +8,10 @@ enum TypPrekazky {
 };
 
 class StatickyObjekt : Objekt {
-public:
+private:
 	TypPrekazky typPrekazky;
 
+public:
 	StatickyObjekt(int id, TypPrekazky typPrekazky);
 
 	TypPrekazky getTypPrekazky() const;

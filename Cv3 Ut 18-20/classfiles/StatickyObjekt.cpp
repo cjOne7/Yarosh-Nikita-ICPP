@@ -1,4 +1,4 @@
-#include "StatickyObjekt.h"
+#include "../headfiles/StatickyObjekt.h"
 
 StatickyObjekt::StatickyObjekt(int id, TypPrekazky typPrekazky) : Objekt(id), typPrekazky(typPrekazky) {}
 

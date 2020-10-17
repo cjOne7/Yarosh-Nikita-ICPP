@@ -1,8 +1,6 @@
-//
-// Created by nikya on 17.10.2020.
-//
+#include "../headfiles/PohyblivyObjekt.h"
 
-#include "PohyblivyObjekt.h"
+PohyblivyObjekt::PohyblivyObjekt(int id) : Objekt(id) {}
 
 double PohyblivyObjekt::getUhelNatoceni() const {
 	return uhelNatoceni;
