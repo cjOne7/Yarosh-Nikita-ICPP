@@ -17,6 +17,8 @@ public:
 
 	virtual ~Game();
 
+	int getCurIndex() const;
+
 	void addObject(Object *o);
 
 	int *findNumberOfStaticObjectIds(double xMin, double xMax, double yMin, double yMax);

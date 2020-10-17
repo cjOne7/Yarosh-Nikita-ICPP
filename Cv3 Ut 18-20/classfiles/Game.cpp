@@ -2,6 +2,7 @@
 #include "../headfiles/Game.h"
 #include "../headfiles/StaticObject.h"
 #include <cmath>
+#include <vector>
 
 using namespace std;
 
@@ -31,20 +32,24 @@ int *Game::findNumberOfStaticObjectIds(double xMin, double xMax, double yMin, do
 	if (curIndex == 0) {
 		return nullptr;
 	}
-	int *ids = new int[curIndex];
+	vector<int> vIds;
 	int counterSO = 0;
 	for (int i = 0; i < curIndex; ++i) {
 		auto *so = dynamic_cast<StaticObject *>(objects[i]);
 		if (so != nullptr) {
 			if (so->getX() >= xMin && so->getX() <= xMax && so->getY() >= yMin && so->getY() <= yMax) {
-				ids[i] = so->getId();
+				vIds.push_back(so->getId());
 				counterSO++;
 			}
 		}
 	}
 	if (counterSO == 0) {
-		delete[] ids;
+		return new int[0];
 	} else {
+		int *ids = new int[counterSO];
+		for (int i = 0; i < vIds.size(); ++i) {
+			ids[i] = vIds.at(i);
+		}
 		return ids;
 	}
 }
@@ -53,7 +58,6 @@ MoveableObject **Game::findMoveableObjects(double x, double y, double r) {
 	if (curIndex == 0) {
 		return nullptr;
 	}
-
 	auto **ptrHra = new MoveableObject *[curIndex];
 	int counterSO = 0;
 	for (int i = 0; i < curIndex; ++i) {
@@ -74,4 +78,8 @@ MoveableObject **Game::findMoveableObjects(double x, double y, double r) {
 
 MoveableObject **Game::findMoveableObjectsInSpecialArea(double x, double y, double r, double umin, double umax) {
 	return nullptr;
+}
+
+int Game::getCurIndex() const {
+	return curIndex;
 }

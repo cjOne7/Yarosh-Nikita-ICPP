@@ -10,6 +10,8 @@ private:
 public:
 	MoveableObject(int id);
 
+	MoveableObject(int id, double x, double y, double rotationAngle);
+
 	double getRotationAngle() const;
 
 	void setRotationAngle(double rotationAngle);

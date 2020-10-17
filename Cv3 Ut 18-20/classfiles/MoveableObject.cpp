@@ -10,3 +10,6 @@ void MoveableObject::setRotationAngle(double rotationAngle) {
 	MoveableObject::rotationAngle = rotationAngle;
 }
 
+MoveableObject::MoveableObject(int id, double x, double y, double rotationAngle)
+		: Object(id, x, y), rotationAngle(rotationAngle) {}
+

@@ -14,6 +14,8 @@ private:
 public:
 	StaticObject(int id, TypeOfObstacle typeOfObstacle);
 
+	StaticObject(int id, double x, double y, TypeOfObstacle typeOfObstacle);
+
 	TypeOfObstacle getTypeOfObstacle() const;
 };
 

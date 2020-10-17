@@ -5,3 +5,6 @@ StaticObject::StaticObject(int id, TypeOfObstacle typeOfObstacle) : Object(id), 
 TypeOfObstacle StaticObject::getTypeOfObstacle() const {
 	return typeOfObstacle;
 }
+
+StaticObject::StaticObject(int id, double x, double y, TypeOfObstacle typeOfObstacle)
+		: Object(id, x, y), typeOfObstacle(typeOfObstacle) {}
