@@ -14,7 +14,6 @@ Game::Game(int size) {
 }
 
 Game::~Game() {
-	cout << "Game()" << endl;
 	delete[] objects;
 }
 
