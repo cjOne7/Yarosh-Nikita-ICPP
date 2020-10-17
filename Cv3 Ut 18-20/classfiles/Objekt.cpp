@@ -1,9 +1,8 @@
 #include "../headfiles/Objekt.h"
 
-Objekt::Objekt(int id) : id(id) {
-	this->x = 0;
-	this->y = 0;
-}
+Objekt::Objekt(int id) : id(id), x(0), y(0) {}
+
+Objekt::Objekt(int id, double x, double y) : id(id), x(x), y(y) {}
 
 Objekt::~Objekt() {
 }

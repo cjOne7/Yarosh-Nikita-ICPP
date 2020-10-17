@@ -11,6 +11,8 @@ private:
 	int size = DEF_VALUE;
 	Objekt **objekty = new Objekt *[DEF_VALUE];
 public:
+	Hra();
+
 	Hra(int size);
 
 	virtual ~Hra();

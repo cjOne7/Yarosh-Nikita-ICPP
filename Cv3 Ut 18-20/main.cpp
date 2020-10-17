@@ -7,7 +7,7 @@ using namespace std;
 
 int main() {
 	Hra hra{};
-	StatickyObjekt statickyObjekt{1, TypPrekazky::Skala};
-
+	Objekt* objekt = new StatickyObjekt{1, TypPrekazky::MalaRostlina};
+	hra.vlozObjekt(objekt);
 	return 0;
 }

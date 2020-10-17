@@ -10,6 +10,8 @@ private:
 public:
 	Objekt(int id);
 
+	Objekt(int id, double x, double y);
+
 	virtual ~Objekt();
 
 	double getX() const;

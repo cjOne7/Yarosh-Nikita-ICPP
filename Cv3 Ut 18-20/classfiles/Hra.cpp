@@ -1,7 +1,10 @@
 #include <iostream>
 #include "../headfiles/Hra.h"
+#include "../headfiles/StatickyObjekt.h"
 
 using namespace std;
+
+Hra::Hra() = default;
 
 Hra::Hra(int size) {
 	this->size = size;
@@ -25,7 +28,18 @@ void Hra::vlozObjekt(Objekt *o) {
 }
 
 int *Hra::najdiIdStatickychObjektu(double xmin, double xmax, double ymin, double ymax) {
-	return nullptr;
+	int counter = 0;
+	for (int i = 0; i < index; ++i) {
+		auto *so = dynamic_cast<StatickyObjekt *>(objekty[i]);
+		if (so == nullptr) {
+			cout << "Object doesn't belong to StaticObject" << endl;
+		} else {
+			if (so->getX() >= xmin && so->getX() <= xmax && so->getY() >= ymin && so->getY() <= ymax) {
+				counter++;
+			}
+		}
+	}
+	return &counter;
 }
 
 PohyblivyObjekt **Hra::najdiPohybliveObjektyVOblasti(double x, double y, double r) {
