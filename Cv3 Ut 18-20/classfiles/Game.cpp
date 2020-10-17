@@ -58,26 +58,47 @@ MoveableObject **Game::findMoveableObjects(double x, double y, double r) {
 	if (curIndex == 0) {
 		return nullptr;
 	}
-	auto **ptrHra = new MoveableObject *[curIndex];
-	int counterSO = 0;
+	auto **ptrMoveableObjects = new MoveableObject *[curIndex];
 	for (int i = 0; i < curIndex; ++i) {
-		auto *po = dynamic_cast<MoveableObject *>(objects[i]);
-		if (po != nullptr) {
-			if (pow((po->getX() - x), 2) + pow((po->getY() - y), 2) <= pow(r, 2)) {
-				ptrHra[i] = po;
-				counterSO++;
+		ptrMoveableObjects[i] = nullptr;
+	}
+	int counterMO = 0;
+	for (int i = 0; i < curIndex; ++i) {
+		auto *mo = dynamic_cast<MoveableObject *>(objects[i]);
+		if (mo != nullptr) {
+			if (pow((mo->getX() - x), 2) + pow((mo->getY() - y), 2) <= pow(r, 2)) {
+				ptrMoveableObjects[counterMO++] = mo;
 			}
 		}
 	}
-	if (counterSO == 0) {
-		delete[] ptrHra;
+	if (counterMO == 0) {
+		return new MoveableObject *[0];
 	} else {
-		return ptrHra;
+		return ptrMoveableObjects;
 	}
 }
 
 MoveableObject **Game::findMoveableObjectsInSpecialArea(double x, double y, double r, double umin, double umax) {
-	return nullptr;
+	if (curIndex == 0) {
+		return nullptr;
+	}
+	auto **ptrMoveableObjects = new MoveableObject *[curIndex];
+	int counterMO = 0;
+	for (int i = 0; i < sizeof(objects); i++) {
+		auto *mo = dynamic_cast<MoveableObject *>(objects[i]);
+		if (mo != nullptr) {
+			double distanceToPoint = sqrt((pow(x - objects[i]->getX(), 2)) + pow(y - objects[i]->getY(), 2));
+			if (distanceToPoint <= r && mo->getRotationAngle() >= umin && mo->getRotationAngle() <= umax) {
+				ptrMoveableObjects[counterMO++] = mo;
+			}
+		}
+	}
+
+	if (counterMO == 0) {
+		return new MoveableObject *[0];
+	} else {
+		return ptrMoveableObjects;
+	}
 }
 
 int Game::getCurIndex() const {
