@@ -2,14 +2,14 @@
 #define CV3_UT_18_20_HRA_H
 #define DEF_VALUE 10
 
-#include "Objekt.h"
+#include "Object.h"
 #include "PohyblivyObjekt.h"
 
 class Hra {
 private:
-	int index = 0;
+	int curIndex = 0;
 	int size = DEF_VALUE;
-	Objekt **objekty = new Objekt *[DEF_VALUE];
+	Object **objekty = new Object *[DEF_VALUE];
 public:
 	Hra();
 
@@ -17,7 +17,7 @@ public:
 
 	virtual ~Hra();
 
-	void vlozObjekt(Objekt *o);
+	void vlozObjekt(Object *o);
 
 	int *najdiIdStatickychObjektu(double xmin, double xmax, double ymin, double ymax);
 

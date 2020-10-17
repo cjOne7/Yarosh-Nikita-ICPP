@@ -1,6 +1,6 @@
 #include "../headfiles/PohyblivyObjekt.h"
 
-PohyblivyObjekt::PohyblivyObjekt(int id) : Objekt(id) {}
+PohyblivyObjekt::PohyblivyObjekt(int id) : Object(id) {}
 
 double PohyblivyObjekt::getUhelNatoceni() const {
 	return uhelNatoceni;

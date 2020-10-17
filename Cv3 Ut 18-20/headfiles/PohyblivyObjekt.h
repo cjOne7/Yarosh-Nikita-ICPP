@@ -1,9 +1,9 @@
 #ifndef CV3_UT_18_20_POHYBLIVYOBJEKT_H
 #define CV3_UT_18_20_POHYBLIVYOBJEKT_H
 
-#include "Objekt.h"
+#include "Object.h"
 
-class PohyblivyObjekt : public Objekt {
+class PohyblivyObjekt : public Object {
 private:
 	double uhelNatoceni;
 

@@ -1,10 +1,10 @@
-#ifndef CV3_UT_18_20_MONSTRUM_H
-#define CV3_UT_18_20_MONSTRUM_H
+#ifndef CV3_UT_18_20_MONSTER_H
+#define CV3_UT_18_20_MONSTER_H
 
 
 #include "PohyblivyObjekt.h"
 
-class Monstrum : public PohyblivyObjekt {
+class Monster : public PohyblivyObjekt {
 private:
 	int hp, maxHp;
 public:
@@ -18,4 +18,4 @@ public:
 };
 
 
-#endif //CV3_UT_18_20_MONSTRUM_H
+#endif //CV3_UT_18_20_MONSTER_H
