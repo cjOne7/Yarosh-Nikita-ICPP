@@ -43,7 +43,7 @@ int *Game::findNumberOfStaticObjectIds(double xMin, double xMax, double yMin, do
 		}
 	}
 	if (counterSO == 0) {
-		return new int[0];
+		return nullptr;
 	} else {
 		int *ids = new int[counterSO];
 		for (int i = 0; i < vIds.size(); ++i) {
