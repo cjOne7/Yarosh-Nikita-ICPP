@@ -70,11 +70,7 @@ MoveableObject **Game::findMoveableObjects(double x, double y, double r) {
 			}
 		}
 	}
-	if (counterMO == 0) {
-		return nullptr;
-	} else {
-		return ptrMoveableObjects;
-	}
+	return counterMO == 0 ? nullptr : ptrMoveableObjects;
 }
 
 MoveableObject **Game::findMoveableObjectsInSpecialArea(double x, double y, double r, double umin, double umax) {
@@ -93,11 +89,7 @@ MoveableObject **Game::findMoveableObjectsInSpecialArea(double x, double y, doub
 		}
 	}
 
-	if (counterMO == 0) {
-		return nullptr;
-	} else {
-		return ptrMoveableObjects;
-	}
+	return counterMO == 0 ? nullptr : ptrMoveableObjects;
 }
 
 int Game::getCurIndex() const {
