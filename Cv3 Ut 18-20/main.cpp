@@ -38,5 +38,11 @@ int main() {
 	}
 
 	delete[] pMoveableObject;
+	delete object;
+	delete object1;
+	delete object2;
+	delete object3;
+	delete object4;
+	delete object5;
 	return 0;
 }

@@ -94,7 +94,7 @@ MoveableObject **Game::findMoveableObjectsInSpecialArea(double x, double y, doub
 	}
 
 	if (counterMO == 0) {
-		return new MoveableObject *[0];
+		return nullptr;
 	} else {
 		return ptrMoveableObjects;
 	}
