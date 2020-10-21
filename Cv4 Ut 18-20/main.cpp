@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <sstream>
 #include "IComparable.h"
 
 using namespace std;
