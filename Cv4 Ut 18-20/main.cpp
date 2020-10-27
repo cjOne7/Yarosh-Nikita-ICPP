@@ -35,7 +35,7 @@ int Time::compareTo(IComparable *obj) const {
 	if (obj == nullptr) {
 		throw invalid_argument("NullPointerException");
 	}
-	Time *timeObj = dynamic_cast<Time *>(obj);
+	auto timeObj = dynamic_cast<Time *>(obj);
 	int timeLeft = this->hours * 3600 + this->minutes * 60 + this->seconds;
 	int timeRight = timeObj->hours * 3600 + timeObj->minutes * 60 + timeObj->seconds;
 	return timeLeft == timeRight ? 0 : timeLeft > timeRight ? 1 : -1;
@@ -54,7 +54,7 @@ vector<IComparable *> sort(vector<IComparable *> vector) {
 	for (int i = 0; i < vector.size() - 1; ++i) {
 		for (int j = 0; j < vector.size() - i - 1; ++j) {
 			if (vector.at(j)->compareTo(vector.at(j + 1)) == 1) {
-				IComparable *iComparable = vector.at(j);
+				auto iComparable = vector.at(j);
 				vector.at(j) = vector.at(j + 1);
 				vector.at(j + 1) = iComparable;
 			}
