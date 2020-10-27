@@ -1,9 +1,7 @@
 #ifndef CV4_UT_18_20_TIME_H
 #define CV4_UT_18_20_TIME_H
 
-#include <vector>
 #include <sstream>
-#include <ctime>
 #include "IComparable.h"
 
 class Time : public IComparable {
