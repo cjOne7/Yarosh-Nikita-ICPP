@@ -1,7 +1,6 @@
 #ifndef CV4_UT_18_20_IOBJECT_H
 #define CV4_UT_18_20_IOBJECT_H
 #include <string>
-#include <ostream>
 
 using namespace std;
 
