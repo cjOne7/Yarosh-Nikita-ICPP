@@ -66,7 +66,7 @@ vector<IComparable *> sort(vector<IComparable *> vector) {
 int main() {
 	vector<IComparable *> timeVector;
 	cout << "Unsorted list:" << endl;
-	for (int i = 0; i < 0; ++i) {
+	for (int i = 0; i < 10; ++i) {
 		IComparable *iComparable = new Time(rand() % 24, rand() % 60, rand() % 60);
 		cout << iComparable->toString() << endl;
 		timeVector.push_back(iComparable);
