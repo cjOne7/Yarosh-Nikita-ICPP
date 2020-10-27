@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <time.h>
 #include "IComparable.h"
 
 using namespace std;
@@ -64,6 +65,7 @@ vector<IComparable *> sort(vector<IComparable *> vector) {
 }
 
 int main() {
+	srand(time(nullptr));
 	vector<IComparable *> timeVector;
 	cout << "Unsorted list:" << endl;
 	for (int i = 0; i < 10; ++i) {
