@@ -7,6 +7,8 @@ using namespace std;
 
 struct Time : public IComparable {
 public:
+	~Time() override;
+
 	Time(int hours, int minutes, int seconds);
 
 	int compareTo(IComparable *obj) const override;
@@ -17,6 +19,7 @@ private:
 	int hours, minutes, seconds;
 };
 
+Time::~Time() = default;
 
 Time::Time(int hours, int minutes, int seconds) {
 	if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59 || seconds < 0 || seconds > 59) {
@@ -48,9 +51,6 @@ string Time::toString() const {
 }
 
 vector<IComparable *> sort(vector<IComparable *> vector) {
-	if (vector.empty()) {
-		return vector;
-	}
 	for (int i = 0; i < vector.size() - 1; ++i) {
 		for (int j = 0; j < vector.size() - i - 1; ++j) {
 			if (vector.at(j)->compareTo(vector.at(j + 1)) == 1) {
@@ -66,7 +66,7 @@ vector<IComparable *> sort(vector<IComparable *> vector) {
 int main() {
 	vector<IComparable *> timeVector;
 	cout << "Unsorted list:" << endl;
-	for (int i = 0; i < 10; ++i) {
+	for (int i = 0; i < 0; ++i) {
 		IComparable *iComparable = new Time(rand() % 24, rand() % 60, rand() % 60);
 		cout << iComparable->toString() << endl;
 		timeVector.push_back(iComparable);

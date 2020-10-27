@@ -7,6 +7,8 @@ using namespace std;
 
 class IObject {
 public:
+	virtual ~IObject() = default;
+
 	virtual string toString() const = 0;
 };
 
