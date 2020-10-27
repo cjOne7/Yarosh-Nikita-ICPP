@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
-#include <time.h>
+#include <ctime>
 #include "IComparable.h"
 
 using namespace std;
