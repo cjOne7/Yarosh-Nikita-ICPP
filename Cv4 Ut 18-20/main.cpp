@@ -37,5 +37,6 @@ int main() {
 	for (auto &item : timeVector) {
 		cout << item->toString() << endl;
 	}
+	timeVector.clear();
 	return 0;
 }
