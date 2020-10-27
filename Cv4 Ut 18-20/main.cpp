@@ -23,7 +23,7 @@ Time::~Time() = default;
 
 Time::Time(int hours, int minutes, int seconds) {
 	if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59 || seconds < 0 || seconds > 59) {
-		throw range_error("Wrong time parameters");
+		throw out_of_range("Wrong time parameters");
 	}
 
 	this->hours = hours;
@@ -67,12 +67,18 @@ int main() {
 	vector<IComparable *> timeVector;
 	cout << "Unsorted list:" << endl;
 	for (int i = 0; i < 10; ++i) {
-		IComparable *iComparable = new Time(rand() % 24, rand() % 60, rand() % 60);
-		cout << iComparable->toString() << endl;
-		timeVector.push_back(iComparable);
+		try {
+			IComparable *iComparable = new Time(24, rand() % 60, rand() % 60);
+			cout << iComparable->toString() << endl;
+			timeVector.push_back(iComparable);
+		}
+		catch (out_of_range &ex) {
+			cout << ex.what() << endl;
+			return 3;
+		}
 	}
 	timeVector = sort(timeVector);
-	cout << "Sorted list:" << endl;
+	cout << "\nSorted list:" << endl;
 	for (auto &item : timeVector) {
 		cout << item->toString() << endl;
 	}
