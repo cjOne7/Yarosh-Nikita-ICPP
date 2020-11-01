@@ -17,12 +17,10 @@ class MyLinkedList {
 		Node<E> *prev = nullptr;
 		Node<E> *next = nullptr;
 
-		Node(E &data, Node *n = nullptr, Node *p = nullptr) : data(data), next(n), prev(p) {}
+		explicit Node(E &data, Node *n = nullptr, Node *p = nullptr) : data(data), next(n), prev(p) {}
 	};
 
 public:
-	bool isEmpty() const;
-
 	void addAsLast(T &data);
 
 	T get(int index) const;
@@ -48,13 +46,7 @@ MyLinkedList<T>::~MyLinkedList<T>() {
 }
 
 template<typename T>
-bool MyLinkedList<T>::isEmpty() const { return size == 0; }
-
-template<typename T>
 void MyLinkedList<T>::addAsLast(T &data) {
-//	if (data == nullptr) {
-//		throw invalid_argument("Data is null!");
-//	}
 	auto *newNode = new Node<T>(data, nullptr, tail);
 	if (tail == nullptr) {
 		tail = newNode;

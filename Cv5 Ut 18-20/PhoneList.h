@@ -13,7 +13,7 @@ namespace Model {
 	public:
 		void addPerson(Person person);
 
-		string findPhoneNumber(string name) const;
+		string findPhoneNumber(const string& name) const;
 
 		string findPhoneNumber(int id) const;
 	};

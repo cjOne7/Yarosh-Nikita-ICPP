@@ -16,6 +16,7 @@ int main() {
 	phoneList->addPerson(person3);
 
 	cout << phoneList->findPhoneNumber(3) << endl;
+	cout << phoneList->findPhoneNumber("Nikita") << endl;
 
 	delete phoneList;
 	return 0;
