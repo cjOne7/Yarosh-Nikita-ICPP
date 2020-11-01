@@ -15,7 +15,7 @@ namespace Entity {
 
 		friend ostream &operator<<(ostream &os, const Person &person);
 
-		Person(int id, const string &name, const string &telephone);
+		Person(int id, string name, string telephone);
 	};
 }
 

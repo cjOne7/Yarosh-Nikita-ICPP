@@ -10,10 +10,9 @@ int main() {
 	Person person2{2, "Aaron", "+420773089030"};
 	Person person3{3, "Ark", "+420773089030"};
 	auto *list = new MyLinkedList<Person>();
-	list->push_back(person1);
-	list->push_back(person2);
-	list->push_back(person3);
-	list->push_front(person3);
+	list->addAsLast(person1);
+	list->addAsLast(person2);
+	list->addAsLast(person3);
 	cout << list->getFirst().name << endl;
 	delete list;
 	return 0;

@@ -33,19 +33,15 @@ class MyLinkedList {
 public:
 	bool isEmpty() const;
 
-	void push_back(T &data);
-
-	void push_front(T &data);
-
-	T pop_back();
-
-	T pop_front();
+	void addAsLast(T &data);
 
 	T getFirst();
 
 	T getLast();
 
 	T get(int id);
+
+	int getSize() const;
 
 	virtual ~MyLinkedList();
 
@@ -69,10 +65,10 @@ template<typename T>
 bool MyLinkedList<T>::isEmpty() const { return size == 0; }
 
 template<typename T>
-void MyLinkedList<T>::push_back(T &data) {
-	if (data == nullptr) {
-		cout << "he" << endl;
-	}
+void MyLinkedList<T>::addAsLast(T &data) {
+//	if (data == nullptr) {
+//		throw invalid_argument("Data is null!");
+//	}
 	auto *newNode = new Node<T>(data, nullptr, tail);
 	if (tail == nullptr) {
 		tail = newNode;
@@ -80,19 +76,6 @@ void MyLinkedList<T>::push_back(T &data) {
 	} else {
 		tail->next = newNode;
 		tail = newNode;
-	}
-	size++;
-}
-
-template<typename T>
-void MyLinkedList<T>::push_front(T &data) {
-	auto *newNode = new Node<T>(data, head, nullptr);
-	if (head == nullptr) {
-		head = newNode;
-		tail = head;
-	} else {
-		head->prev = newNode;
-		head = newNode;
 	}
 	size++;
 }
@@ -109,7 +92,15 @@ T MyLinkedList<T>::getLast() {
 
 template<typename T>
 T MyLinkedList<T>::get(int id) {
+	if (id >= 0 && id < size) {
 
+	}
+
+}
+
+template<typename T>
+int MyLinkedList<T>::getSize() const {
+	return size;
 }
 
 

@@ -1,9 +1,12 @@
 #include "Person.h"
 
-Entity::Person::Person(int id, const string &name, const string &telephone) : id(id), name(name),
-																			  telephone(telephone) {}
+using namespace std;
+using namespace Entity;
 
-ostream &Entity::operator<<(ostream &os, const Entity::Person &person) {
+Person::Person(int id, string name, string telephone)
+		: id(id), name(move(name)), telephone(move(telephone)) {}
+
+ostream &operator<<(ostream &os, const Person &person) {
 	os << "id: " << person.id << " name: " << person.name << " telephone: " << person.telephone;
 	return os;
 }
