@@ -13,6 +13,7 @@ int main() {
 	list->push_back(person1);
 	list->push_back(person2);
 	list->push_back(person3);
+	list->push_front(person3);
 	cout << list->getFirst().name << endl;
 	delete list;
 	return 0;

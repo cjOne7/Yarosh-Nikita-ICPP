@@ -16,7 +16,7 @@ class MyLinkedList {
 		Node<E> *prev = nullptr;
 		Node<E> *next = nullptr;
 
-		Node(E &data, Node *p = nullptr, Node *n = nullptr) : data(data), prev(p), next(n) {}
+		Node(E &data, Node *n = nullptr, Node *p = nullptr) : data(data), next(n), prev(p) {}
 	};
 
 	struct Iterator {
@@ -66,10 +66,13 @@ MyLinkedList<T>::~MyLinkedList<T>() {
 }
 
 template<typename T>
-bool MyLinkedList<T>::isEmpty() const { return (!head || !tail); }
+bool MyLinkedList<T>::isEmpty() const { return size == 0; }
 
 template<typename T>
 void MyLinkedList<T>::push_back(T &data) {
+	if (data == nullptr) {
+		cout << "he" << endl;
+	}
 	auto *newNode = new Node<T>(data, nullptr, tail);
 	if (tail == nullptr) {
 		tail = newNode;
@@ -78,17 +81,6 @@ void MyLinkedList<T>::push_back(T &data) {
 		tail->next = newNode;
 		tail = newNode;
 	}
-	size++;
-//	if (head == nullptr) {
-//		head = new Node<T>(data);
-//	} else {
-//		Node<T> *temp = head;
-//		while (temp->next != nullptr) {
-//			temp = temp->next;
-//		}
-//		temp->next = new Node<T>(data);
-//		temp->next->prev = temp;
-//	}
 	size++;
 }
 
