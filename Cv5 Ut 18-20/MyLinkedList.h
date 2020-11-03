@@ -47,7 +47,7 @@ MyLinkedList<T>::~MyLinkedList<T>() {
 
 template<typename T>
 void MyLinkedList<T>::addAsLast(T &data) {
-	auto *newNode = new Node<T>(data, nullptr, tail);
+	auto newNode = new Node<T>(data, nullptr, tail);
 	if (tail == nullptr) {
 		tail = newNode;
 		head = tail;
