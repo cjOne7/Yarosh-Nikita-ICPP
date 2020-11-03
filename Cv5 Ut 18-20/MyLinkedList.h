@@ -11,11 +11,11 @@ template<typename T>
 class MyLinkedList {
 
 public:
-	void addAsLast(T &data);
-
 	T get(int index) const;
 
 	int getSize() const;
+
+	void addAsLast(T data);
 
 	virtual ~MyLinkedList();
 
@@ -35,7 +35,6 @@ private:
 	Node<T> *tail = nullptr;
 };
 
-
 template<typename T>
 MyLinkedList<T>::~MyLinkedList<T>() {
 	while (head != nullptr) {
@@ -46,7 +45,7 @@ MyLinkedList<T>::~MyLinkedList<T>() {
 }
 
 template<typename T>
-void MyLinkedList<T>::addAsLast(T &data) {
+void MyLinkedList<T>::addAsLast(T data) {
 	auto newNode = new Node<T>(data, nullptr, tail);
 	if (tail == nullptr) {
 		tail = newNode;

@@ -4,11 +4,12 @@ using namespace std;
 using namespace Entity;
 
 Person::Person(int id, const string &name, const string &telephone) {
-	if (id >= 0 && !name.empty() && !telephone.empty()) {
-		this->id = id;
-		this->name = name;
-		this->telephone = telephone;
+	if (id < 0 || name.empty() || telephone.empty()) {
+		throw invalid_argument("Wrong constructor params.");
 	}
+	this->id = id;
+	this->name = name;
+	this->telephone = telephone;
 }
 
 ostream &operator<<(ostream &os, const Person &person) {
@@ -20,10 +21,10 @@ int Person::getId() const {
 	return id;
 }
 
-const string &Person::getName() const {
+string Person::getName() const {
 	return name;
 }
 
-const string &Person::getTelephone() const {
+string Person::getTelephone() const {
 	return telephone;
 }

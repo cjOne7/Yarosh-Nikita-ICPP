@@ -9,20 +9,20 @@ using namespace std;
 namespace Entity {
 	class Person {
 	private:
-		int id = -1;
+		int id;
 		string name;
 		string telephone;
 	public:
 
-		friend ostream &operator<<(ostream &os, const Person &person);
-
 		int getId() const;
 
-		const string &getName() const;
+		string getName() const;
 
-		const string &getTelephone() const;
+		string getTelephone() const;
 
 		Person(int id, const string &name, const string &telephone);
+
+		friend ostream &operator<<(ostream &os, const Person &person);
 	};
 }
 
