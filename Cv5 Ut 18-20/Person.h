@@ -9,7 +9,7 @@ using namespace std;
 namespace Entity {
 	class Person {
 	private:
-		int id;
+		int id = 0;
 		string name;
 		string telephone;
 	public:
@@ -22,7 +22,7 @@ namespace Entity {
 
 		const string &getTelephone() const;
 
-		Person(int id, string name, string telephone);
+		Person(int id, const string &name, const string &telephone);
 	};
 }
 

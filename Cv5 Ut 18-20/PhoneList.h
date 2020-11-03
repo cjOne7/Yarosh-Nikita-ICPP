@@ -37,6 +37,9 @@ namespace Model {
 	template<typename T>
 	string PhoneList<T>::findPhoneNumber(int id) const {
 		try {
+			if (id < 0) {
+				throw invalid_argument("Negative id");
+			}
 			for (int i = 0; i < linkedList->getSize(); ++i) {
 				if (linkedList->get(i).getId() == id) {
 					return linkedList->get(i).getTelephone();
@@ -44,6 +47,9 @@ namespace Model {
 			}
 		}
 		catch (out_of_range &ex) {
+			cerr << ex.what() << endl;
+		}
+		catch (invalid_argument &ex) {
 			cerr << ex.what() << endl;
 		}
 		return "";

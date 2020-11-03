@@ -3,8 +3,13 @@
 using namespace std;
 using namespace Entity;
 
-Person::Person(int id, string name, string telephone)
-		: id(id), name(move(name)), telephone(move(telephone)) {}
+Person::Person(int id, const string &name, const string &telephone) {
+	if (id >= 0 && !name.empty() && !telephone.empty()) {
+		this->id = id;
+		this->name = name;
+		this->telephone = telephone;
+	}
+}
 
 ostream &operator<<(ostream &os, const Person &person) {
 	os << "id: " << person.getId() << " name: " << person.getName() << " telephone: " << person.getTelephone();
