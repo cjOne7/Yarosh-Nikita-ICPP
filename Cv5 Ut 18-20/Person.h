@@ -8,11 +8,11 @@ using namespace std;
 
 namespace Entity {
 	class Person {
-	public:
+	private:
 		int id;
 		string name;
 		string telephone;
-
+	public:
 		friend ostream &operator<<(ostream &os, const Person &person);
 
 		Person(int id, string name, string telephone);
