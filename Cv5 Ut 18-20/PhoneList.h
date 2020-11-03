@@ -7,16 +7,52 @@
 using namespace Entity;
 
 namespace Model {
+	template<typename T>
 	class PhoneList {
 	private:
-		MyLinkedList<Person> *linkedList = new MyLinkedList<Person>();
+		MyLinkedList<T> *linkedList = new MyLinkedList<T>();
 	public:
-		void addPerson(Person person);
+		void addPerson(T person);
 
-		string findPhoneNumber(const string& name) const;
+		string findPhoneNumber(const string &name) const;
 
 		string findPhoneNumber(int id) const;
 	};
+
+	template<typename T>
+	string PhoneList<T>::findPhoneNumber(const string &name) const {
+		try {
+			for (int i = 0; i < linkedList->getSize(); ++i) {
+				if (linkedList->get(i).name == name) {
+					return linkedList->get(i).telephone;
+				}
+			}
+		}
+		catch (out_of_range &ex) {
+			cerr << ex.what() << endl;
+		}
+		return "";
+	}
+
+	template<typename T>
+	string PhoneList<T>::findPhoneNumber(int id) const {
+		try {
+			for (int i = 0; i < linkedList->getSize(); ++i) {
+				if (linkedList->get(i).id == id) {
+					return linkedList->get(i).telephone;
+				}
+			}
+		}
+		catch (out_of_range &ex) {
+			cerr << ex.what() << endl;
+		}
+		return "";
+	}
+
+	template<typename T>
+	void PhoneList<T>::addPerson(T person) {
+		linkedList->addAsLast(person);
+	}
 }
 
 

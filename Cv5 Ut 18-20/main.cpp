@@ -10,7 +10,7 @@ int main() {
 	Person person2{2, "Aaron", "+380931232323"};
 	Person person3{3, "Ark", "+123456789123"};
 
-	auto *phoneList = new PhoneList();
+	auto *phoneList = new PhoneList<Person>();
 	phoneList->addPerson(person1);
 	phoneList->addPerson(person2);
 	phoneList->addPerson(person3);
