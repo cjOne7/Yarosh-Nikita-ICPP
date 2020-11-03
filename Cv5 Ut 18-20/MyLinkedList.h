@@ -38,9 +38,9 @@ private:
 
 template<typename T>
 MyLinkedList<T>::~MyLinkedList<T>() {
-	Node<T> *temp = head;
-	while (temp != nullptr) {
-		temp = temp->next;
+	while (head != nullptr) {
+		Node<T> *temp = head;
+		head = head->next;
 		delete temp;
 	}
 }
