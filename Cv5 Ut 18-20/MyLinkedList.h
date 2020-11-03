@@ -10,16 +10,6 @@ using namespace std;
 template<typename T>
 class MyLinkedList {
 
-	template<typename E>
-	struct Node {
-	public:
-		E data = nullptr;
-		Node<E> *prev = nullptr;
-		Node<E> *next = nullptr;
-
-		explicit Node(E &data, Node *n = nullptr, Node *p = nullptr) : data(data), next(n), prev(p) {}
-	};
-
 public:
 	void addAsLast(T &data);
 
@@ -30,6 +20,16 @@ public:
 	virtual ~MyLinkedList();
 
 private:
+	template<typename E>
+	struct Node {
+	public:
+		E data = nullptr;
+		Node<E> *prev = nullptr;
+		Node<E> *next = nullptr;
+
+		explicit Node(E &data, Node *n = nullptr, Node *p = nullptr) : data(data), next(n), prev(p) {}
+	};
+
 	int size = 0;
 	Node<T> *head = nullptr;
 	Node<T> *tail = nullptr;
