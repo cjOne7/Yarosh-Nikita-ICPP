@@ -8,12 +8,19 @@ using namespace std;
 
 namespace Entity {
 	class Person {
-	public:
+	private:
 		int id;
 		string name;
 		string telephone;
+	public:
 
 		friend ostream &operator<<(ostream &os, const Person &person);
+
+		int getId() const;
+
+		const string &getName() const;
+
+		const string &getTelephone() const;
 
 		Person(int id, string name, string telephone);
 	};

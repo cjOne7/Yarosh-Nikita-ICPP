@@ -23,8 +23,8 @@ namespace Model {
 	string PhoneList<T>::findPhoneNumber(const string &name) const {
 		try {
 			for (int i = 0; i < linkedList->getSize(); ++i) {
-				if (linkedList->get(i).name == name) {
-					return linkedList->get(i).telephone;
+				if (linkedList->get(i).getName() == name) {
+					return linkedList->get(i).getTelephone();
 				}
 			}
 		}
@@ -38,8 +38,8 @@ namespace Model {
 	string PhoneList<T>::findPhoneNumber(int id) const {
 		try {
 			for (int i = 0; i < linkedList->getSize(); ++i) {
-				if (linkedList->get(i).id == id) {
-					return linkedList->get(i).telephone;
+				if (linkedList->get(i).getId() == id) {
+					return linkedList->get(i).getTelephone();
 				}
 			}
 		}
