@@ -9,7 +9,7 @@ using namespace std;
 namespace Entity {
 	class Person {
 	private:
-		int id = 0;
+		int id = -1;
 		string name;
 		string telephone;
 	public:

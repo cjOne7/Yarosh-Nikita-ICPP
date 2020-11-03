@@ -22,6 +22,9 @@ namespace Model {
 	template<typename T>
 	string PhoneList<T>::findPhoneNumber(const string &name) const {
 		try {
+			if (name.empty()) {
+				throw invalid_argument("Empty name");
+			}
 			for (int i = 0; i < linkedList->getSize(); ++i) {
 				if (linkedList->get(i).getName() == name) {
 					return linkedList->get(i).getTelephone();
@@ -29,6 +32,9 @@ namespace Model {
 			}
 		}
 		catch (out_of_range &ex) {
+			cerr << ex.what() << endl;
+		}
+		catch (invalid_argument &ex) {
 			cerr << ex.what() << endl;
 		}
 		return "";
