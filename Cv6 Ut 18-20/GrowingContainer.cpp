@@ -31,9 +31,7 @@ void GrowingContainer<T>::boostArray() {
 
 template<typename T>
 void GrowingContainer<T>::remove(int index) {
-	if (index < 0 || index >= size) {
-		throw out_of_range("ArrayIndexOutOfBoundsException");
-	}
+	checkSize(index);
 	int i = 0;
 	while (i != size - index - 1) {
 		array[index + i] = array[index + i + 1];
@@ -69,7 +67,7 @@ GrowingContainer<T>::~GrowingContainer<T>() {
 }
 
 template<typename T>
-void GrowingContainer<T>::dump() const {
+void GrowingContainer<T>::dumpData() const {
 	for (int i = 0; i < size; ++i) {
 		cout << array[i] << endl;
 	}

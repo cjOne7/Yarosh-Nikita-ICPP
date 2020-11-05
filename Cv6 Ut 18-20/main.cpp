@@ -12,7 +12,7 @@ int main() {
 	growingContainer.add(3, 500);
 
 	growingContainer.remove(3);
-	growingContainer.dump();
+	growingContainer.dumpData();
 
 	cout << growingContainer[2] << endl;
 	return 0;

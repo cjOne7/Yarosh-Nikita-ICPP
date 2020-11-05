@@ -36,7 +36,7 @@ public:
 
 	void remove(int index);
 
-	void dump() const;
+	void dumpData() const;
 
 };
 
