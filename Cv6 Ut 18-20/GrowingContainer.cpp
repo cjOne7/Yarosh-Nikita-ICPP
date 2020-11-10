@@ -9,11 +9,6 @@ GrowingContainer<T>::GrowingContainer() {
 }
 
 template<typename T>
-bool GrowingContainer<T>::isEmpty() const {
-	return size == 0;
-}
-
-template<typename T>
 bool GrowingContainer<T>::isFull() const {
 	return size == capacity;
 }

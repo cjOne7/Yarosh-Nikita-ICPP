@@ -22,8 +22,6 @@ public:
 
 	virtual ~GrowingContainer();
 
-	bool isEmpty() const;
-
 	bool isFull() const;
 
 	void add(const T &object);
