@@ -5,10 +5,10 @@ Person::Person(Address residence, const Date &dateOfBirth, string name, string s
 		  surname(std::move(surname)) {}
 
 ostream &operator<<(ostream &os, const Person &person) {
-	os << person.residence
-	   << " " << person.dateOfBirth
-	   << " " << person.name
-	   << " " << person.surname;
+	os << person.name << " "
+	   << person.surname << " "
+	   << person.residence << " "
+	   << person.dateOfBirth;
 	return os;
 }
 
