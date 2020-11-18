@@ -12,13 +12,9 @@ private:
 	string city;
 	int postCode;
 public:
-	Address(string street, string city, int postCode);
+	Address() = default;
 
-	const string &getStreet() const;
-
-	const string &getCity() const;
-
-	int getPostCode() const;
+	Address(const string &street, const string &city, int postCode);
 
 	friend ostream &operator<<(ostream &os, const Address &address);
 

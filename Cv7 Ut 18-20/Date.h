@@ -10,13 +10,9 @@ private:
 	int month;
 	int year;
 public:
+	Date() = default;
+
 	Date(int day, int month, int year);
-
-	int getDay() const;
-
-	int getMonth() const;
-
-	int getYear() const;
 
 	friend std::ostream &operator<<(std::ostream &os, const Date &date);
 
