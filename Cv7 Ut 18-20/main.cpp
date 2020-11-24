@@ -6,11 +6,11 @@
 
 using namespace std;
 
-vector<Person> loadBinary(const string &fileName) {
+vector<Person> read(const string &fileName, ios_base::openmode mode = ios_base::in) {
 	if (fileName.empty() || fileName.find(".") == string::npos) {
 		throw invalid_argument("Filename is empty!");
 	}
-	ifstream in(fileName, ios_base::binary);
+	ifstream in(fileName, mode);
 	vector<Person> persons{};
 	Person person;
 	if (in.is_open()) {
@@ -25,11 +25,11 @@ vector<Person> loadBinary(const string &fileName) {
 	return persons;
 }
 
-void writeBinary(const vector<Person> &persons, const string &filename) {
+void write(const vector<Person> &persons, const string &filename, ios_base::openmode mode = ios_base::out) {
 	if (persons.empty() || filename.empty() || filename.find(".") == string::npos) {
 		return;
 	}
-	ofstream out(filename, ios_base::binary);
+	ofstream out(filename, mode);
 	if (out.is_open()) {
 		for (auto &person : persons) {
 			out << person << "\n";
@@ -68,9 +68,9 @@ int main() {
 			Person person{address, date, "Nikita", "Yarosh"};
 			persons.push_back(person);
 		}
-		writeBinary(persons, filename);
+		write(persons, filename, ios_base::binary);
 		persons.clear();
-		persons = loadBinary(filename);
+		persons = read(filename, ios_base::binary);
 		for (int i = 0; i < 10; ++i) {
 			cout << persons.at(i) << endl;
 		}
