@@ -3,6 +3,7 @@
 
 
 #include <iostream>
+using namespace std;
 
 class Date {
 private:
@@ -14,9 +15,9 @@ public:
 
 	Date(int day, int month, int year);
 
-	friend std::ostream &operator<<(std::ostream &os, const Date &date);
+	friend ostream &operator<<(ostream &os, const Date &date);
 
-	friend std::istream &operator>>(std::istream &is, Date &date);
+	friend istream &operator>>(istream &is, Date &date);
 
 };
 
