@@ -18,7 +18,7 @@ private:
 public:
 	Person() = default;
 
-	Person(Address residence, const Date &dateOfBirth, string name, string surname);
+	Person(Address residence, Date dateOfBirth, string name, string surname);
 
 	friend ostream &operator<<(ostream &os, const Person &person);
 
