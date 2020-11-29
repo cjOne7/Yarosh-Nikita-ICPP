@@ -4,8 +4,7 @@ Object::Object(int id) : id(id), x(0), y(0) {}
 
 Object::Object(int id, double x, double y) : id(id), x(x), y(y) {}
 
-Object::~Object() {
-}
+Object::~Object() = default;
 
 double Object::getX() const {
 	return x;
