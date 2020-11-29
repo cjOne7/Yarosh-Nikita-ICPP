@@ -40,10 +40,18 @@ public:
 	bool isMatch(const Matrix<T> &m) const;
 
 	Matrix<T> multiplication(const Matrix<T> &m) const;
+
 	Matrix<T> multiplication(T scalar) const;
 
 	Matrix<T> sum(const Matrix<T> &m) const;
+
 	Matrix<T> sum(T scalar) const;
+
+	Matrix<T> matrixTransposition() const;
+
+	template<typename R>
+	Matrix<R> changeType() const;
+
 
 };
 
@@ -129,24 +137,127 @@ void Matrix<T>::printMatrix() {
 		}
 		cout << endl;
 	}
+	cout << endl;
 }
 
 template<typename T>
 T &Matrix<T>::getValue(int row, int column) {
 	if (row < 0 || column < 0 || row >= rows || column >= columns) {
-		throw invalid_argument("Invalid arguments for setting.");
+		throw out_of_range("Parameters out of array range!");
 	}
 	return matrix[row][column];
 }
 
 template<typename T>
 const T &Matrix<T>::getValue(int row, int column) const {
-	return getValue(row, column);
+	if (row < 0 || column < 0 || row >= rows || column >= columns) {
+		throw out_of_range("Parameters out of array range!");
+	}
+	return matrix[row][column];
+}
+
+template<typename T>
+template<typename R>
+Matrix<R> Matrix<T>::changeType() const {
+	Matrix<R> newMatrix{rows, columns};
+
+	for (int i = 0; i < rows; i++) {
+		for (int j = 0; j < columns; j++) {
+			newMatrix.setMatrixValue(i, j, static_cast<R>(getValue(i, j)));
+		}
+	}
+	return newMatrix;
 }
 
 template<typename T>
 bool Matrix<T>::isMatch(const Matrix<T> &m) const {
-	return false;
+	if (rows != m.rows || columns != m.columns) {
+		return false;
+	}
+	for (int i = 0; i < rows; ++i) {
+		for (int j = 0; j < columns; ++j) {
+			if (matrix[i][j] != m.matrix[i][j]) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+template<typename T>
+Matrix<T> Matrix<T>::multiplication(const Matrix<T> &m) const {
+	if (columns != m.rows) {
+		throw invalid_argument("Invalid matrix for multiplication");
+	}
+	Matrix<T> result{rows, m.columns};
+	for (int i = 0; i < rows; ++i) {
+		for (int j = 0; j < m.columns; ++j) {
+			for (int k = 0; k < m.rows; ++k) {
+				result.matrix[i][j] += matrix[i][k] * m.matrix[k][j];
+			}
+		}
+	}
+	return result;
+}
+
+template<typename T>
+Matrix<T> Matrix<T>::multiplication(T scalar) const {
+	Matrix<T> result{rows, columns};
+	for (int i = 0; i < rows; ++i) {
+		for (int j = 0; j < columns; ++j) {
+			result.matrix[i][j] = matrix[i][j] * scalar;
+		}
+	}
+	return result;
+}
+
+template<typename T>
+Matrix<T> Matrix<T>::sum(const Matrix<T> &m) const {
+	if (rows != m.rows || columns != m.columns) {
+		throw invalid_argument("Rows and columns must be equals!");
+	}
+	Matrix<T> result{rows, columns};
+	for (int i = 0; i < rows; ++i) {
+		for (int j = 0; j < columns; ++j) {
+			result.matrix[i][j] = matrix[i][j] + m.getMatrix()[i][j];
+		}
+	}
+	return result;
+}
+
+template<typename T>
+Matrix<T> Matrix<T>::sum(T scalar) const {
+	Matrix<T> result{rows, columns};
+	for (int i = 0; i < rows; ++i) {
+		for (int j = 0; j < columns; ++j) {
+			result.matrix[i][j] = matrix[i][j] + scalar;
+		}
+	}
+	return result;
+}
+
+template<typename T>
+Matrix<T> Matrix<T>::matrixTransposition() const {
+	if (rows == columns) {
+		T temp;
+		Matrix<T> transposedMatrix{rows, columns};
+		for (int i = 0; i < rows; ++i) {
+			for (int j = 0; j < columns; ++j) {
+				temp = matrix[i][j];
+				transposedMatrix.setMatrixValue(i, j, matrix[i][j]);
+				transposedMatrix.setMatrixValue(j, i, temp);
+			}
+		}
+		return transposedMatrix;
+	} else {
+		Matrix<T> transposedMatrix{columns, rows};
+		for (int i = 0; i < rows; ++i) {
+			for (int j = 0; j < columns; ++j) {
+				transposedMatrix.setMatrixValue(j, i, matrix[i][j]);
+			}
+		}
+		return transposedMatrix;
+	}
 }
 
 
