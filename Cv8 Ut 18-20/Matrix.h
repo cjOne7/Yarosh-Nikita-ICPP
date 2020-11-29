@@ -14,8 +14,6 @@ private:
 
 	T **createMatrix(int rows, int columns);
 
-	void deleteMatrix(T **matrix, int rows);
-
 public:
 	Matrix(int rows, int columns);
 
@@ -23,9 +21,9 @@ public:
 
 	virtual ~Matrix();
 
-	void setMatrix(int row, int column, T value);
+	void setMatrixValue(int row, int column, T value);
 
-	void setMatrixFromArray(T *array);
+	void createMatrixFromArray(T *array);
 
 	T **getMatrix() const;
 
@@ -34,6 +32,18 @@ public:
 	int getColumns();
 
 	void printMatrix();
+
+	T &getValue(int row, int column);
+
+	const T &getValue(int row, int column) const;
+
+	bool isMatch(const Matrix<T> &m) const;
+
+	Matrix<T> multiplication(const Matrix<T> &m) const;
+	Matrix<T> multiplication(T scalar) const;
+
+	Matrix<T> sum(const Matrix<T> &m) const;
+	Matrix<T> sum(T scalar) const;
 
 };
 
@@ -64,15 +74,15 @@ Matrix<T>::Matrix(const Matrix<T> &m) {
 }
 
 template<typename T>
-void Matrix<T>::setMatrix(int row, int column, T value) {
-	if (rows < 0 || columns < 0) {
-		throw invalid_argument("Row or column can't be < 0");
+void Matrix<T>::setMatrixValue(int row, int column, T value) {
+	if (row < 0 || column < 0 || row >= rows || column >= columns) {
+		throw invalid_argument("Invalid arguments for setting.");
 	}
 	matrix[row][column] = value;
 }
 
 template<typename T>
-void Matrix<T>::setMatrixFromArray(T *array) {
+void Matrix<T>::createMatrixFromArray(T *array) {
 	if (array == nullptr) {
 		throw invalid_argument("Array is nullptr.");
 	}
@@ -83,7 +93,6 @@ void Matrix<T>::setMatrixFromArray(T *array) {
 		}
 	}
 	matrix = newMatrix;
-//	deleteMatrix(newMatrix, rows);
 }
 
 template<typename T>
@@ -105,10 +114,7 @@ template<typename T>
 int Matrix<T>::getColumns() { return columns; }
 
 template<typename T>
-Matrix<T>::~Matrix() { deleteMatrix(matrix, rows); }
-
-template<typename T>
-void Matrix<T>::deleteMatrix(T **matrix, int rows) {
+Matrix<T>::~Matrix() {
 	for (int i = 0; i < rows; i++) {
 		delete matrix[i];
 	}
@@ -123,6 +129,24 @@ void Matrix<T>::printMatrix() {
 		}
 		cout << endl;
 	}
+}
+
+template<typename T>
+T &Matrix<T>::getValue(int row, int column) {
+	if (row < 0 || column < 0 || row >= rows || column >= columns) {
+		throw invalid_argument("Invalid arguments for setting.");
+	}
+	return matrix[row][column];
+}
+
+template<typename T>
+const T &Matrix<T>::getValue(int row, int column) const {
+	return getValue(row, column);
+}
+
+template<typename T>
+bool Matrix<T>::isMatch(const Matrix<T> &m) const {
+	return false;
 }
 
 
