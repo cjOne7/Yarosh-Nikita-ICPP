@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include <iostream>
 #include <sstream>
+#include <utility>
+#include "ElementNotFoundException.h"
 
 using namespace std;
 
@@ -13,28 +15,29 @@ class LinkedList {
 public:
 	bool isEmpty() const;
 
-	T get(int index) const;
+	T get(const string &key) const;
 
 	int getSize() const;
 
-	void addAsLast(T data);
+	void addAsLast(const string &key, T data);
 
-	void addAsFirst(T data);
+	void addAsFirst(const string &key, T data);
 
 	void type() const;
 
 	virtual ~LinkedList();
 
 private:
-	template<typename E>
+	template<typename V>
 	struct Node {
 	public:
+		string key;
+		V data = nullptr;
+		Node<V> *prev = nullptr;
+		Node<V> *next = nullptr;
 
-		E data = nullptr;
-		Node<E> *prev = nullptr;
-		Node<E> *next = nullptr;
-
-		explicit Node(E &data, Node *n = nullptr, Node *p = nullptr) : data(data), next(n), prev(p) {}
+		explicit Node(string key, V &data, Node *n = nullptr, Node *p = nullptr)
+				: key(move(key)), data(data), next(n), prev(p) {}
 	};
 
 	int size = 0;
@@ -52,8 +55,8 @@ LinkedList<T>::~LinkedList<T>() {
 }
 
 template<typename T>
-void LinkedList<T>::addAsLast(T data) {
-	auto newNode = new Node<T>(data, nullptr, tail);
+void LinkedList<T>::addAsLast(const string &key, T data) {
+	auto newNode = new Node<T>(key, data, nullptr, tail);
 	if (tail == nullptr) {
 		tail = newNode;
 		head = tail;
@@ -65,8 +68,8 @@ void LinkedList<T>::addAsLast(T data) {
 }
 
 template<typename T>
-void LinkedList<T>::addAsFirst(T data) {
-	auto newNode = new Node<T>(data, head, nullptr);
+void LinkedList<T>::addAsFirst(const string &key, T data) {
+	auto newNode = new Node<T>(key, data, head, nullptr);
 	if (head == nullptr) {
 		head = newNode;
 		tail = head;
@@ -78,17 +81,19 @@ void LinkedList<T>::addAsFirst(T data) {
 }
 
 template<typename T>
-T LinkedList<T>::get(int index) const {
-	if (index >= 0 && index < size) {
+T LinkedList<T>::get(const string &key) const {
+	if (key.empty()) {
+		throw out_of_range("Key is empty.");
+	} else {
 		Node<T> *node = head;
-		for (int i = 0; i < index; ++i) {
+		while (node != nullptr) {
+			if (node->key == key) {
+				return node->data;
+			}
 			node = node->next;
 		}
-		return node->data;
-	} else {
-		ostringstream os;
-		os << "Record in list with index " << index << " doesn't exist." << endl;
-		throw out_of_range(os.str());
+//		throw logic_error("Element not found");
+		throw ElementNotFoundException("Element not found");
 	}
 }
 
