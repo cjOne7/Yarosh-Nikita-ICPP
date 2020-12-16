@@ -7,7 +7,7 @@
 using namespace std;
 
 vector<Person> read(const string &fileName, ios_base::openmode mode = ios_base::in) {
-	if (fileName.empty() || fileName.find(".") == string::npos) {
+	if (fileName.empty()) {
 		throw invalid_argument("Filename is empty!");
 	}
 	ifstream in(fileName, mode);
@@ -26,7 +26,7 @@ vector<Person> read(const string &fileName, ios_base::openmode mode = ios_base::
 }
 
 void write(const vector<Person> &persons, const string &filename, ios_base::openmode mode = ios_base::out) {
-	if (persons.empty() || filename.empty() || filename.find(".") == string::npos) {
+	if (filename.empty()) {
 		return;
 	}
 	ofstream out(filename, mode);
