@@ -1,0 +1,14 @@
+#ifndef SEM_JSONLIBRARY_BRACKETSENUM_H
+#define SEM_JSONLIBRARY_BRACKETSENUM_H
+
+
+enum BracketsEnum {
+	BEGIN_ARRAY = '[',
+	END_ARRAY = ']',
+	BEGIN_OBJECT = '{',
+	END_OBJECT = '}',
+
+};
+
+
+#endif //SEM_JSONLIBRARY_BRACKETSENUM_H

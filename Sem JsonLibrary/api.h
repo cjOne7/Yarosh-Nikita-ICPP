@@ -1,3 +1,4 @@
+#pragma once
 #include <string>
 
 // - �ablona s parametrem datov�ho typu ulo�en�ch hodnot
@@ -56,6 +57,8 @@ public:
 
 // - reprezentuje hodnotu typu JSON bool
 class BoolValue : public Value {
+private:
+	bool boolValue;
 public:
 	BoolValue(bool value);
 
