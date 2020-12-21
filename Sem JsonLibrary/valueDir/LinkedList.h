@@ -1,11 +1,11 @@
-#ifndef CV5_UT_18_20_LINKEDLIST_H
-#define CV5_UT_18_20_LINKEDLIST_H
+#ifndef SEM_JSONLIBRARY_BRACKETSENUM_H
+#define SEM_JSONLIBRARY_BRACKETSENUM_H
 
 #include <stdexcept>
 #include <iostream>
 #include <sstream>
-#include "../valueDir/api.h"
 #include "ElementNotFoundException.h"
+#include "api.h"
 
 using namespace std;
 
@@ -15,13 +15,13 @@ class LinkedList {
 public:
 	bool isEmpty() const;
 
-	T get(const string &key) const;
+	Value *get(const string &key) const;
 
 	int getSize() const;
 
-	void addAsLast(const string &key, T data);
+	void addAsLast(const string &key, Value *data);
 
-	void addAsFirst(const string &key, T data);
+	void addAsFirst(const string &key, Value *data);
 
 	void type() const;
 
@@ -32,11 +32,11 @@ private:
 	struct Node {
 	public:
 		string key;
-		V data = nullptr;
-		Node<V> *prev = nullptr;
-		Node<V> *next = nullptr;
+		Value *data = nullptr;
+		Node<Value *> *prev = nullptr;
+		Node<Value *> *next = nullptr;
 
-		explicit Node(string key, V &data, Node *n = nullptr, Node *p = nullptr)
+		explicit Node(string key, Value *&data, Node *n = nullptr, Node *p = nullptr)
 				: key(move(key)), data(data), next(n), prev(p) {}
 	};
 
@@ -55,7 +55,7 @@ LinkedList<T>::~LinkedList<T>() {
 }
 
 template<typename T>
-void LinkedList<T>::addAsLast(const string &key, T data) {
+void LinkedList<T>::addAsLast(const string &key, Value *data) {
 	auto newNode = new Node<T>(key, data, nullptr, tail);
 	if (tail == nullptr) {
 		tail = newNode;
@@ -68,7 +68,7 @@ void LinkedList<T>::addAsLast(const string &key, T data) {
 }
 
 template<typename T>
-void LinkedList<T>::addAsFirst(const string &key, T data) {
+void LinkedList<T>::addAsFirst(const string &key, Value *data) {
 	auto newNode = new Node<T>(key, data, head, nullptr);
 	if (head == nullptr) {
 		head = newNode;
@@ -81,7 +81,7 @@ void LinkedList<T>::addAsFirst(const string &key, T data) {
 }
 
 template<typename T>
-T LinkedList<T>::get(const string &key) const {
+Value *LinkedList<T>::get(const string &key) const {
 	if (key.empty()) {
 		throw out_of_range("Key is empty.");
 	} else {
@@ -92,7 +92,6 @@ T LinkedList<T>::get(const string &key) const {
 			}
 			node = node->next;
 		}
-//		throw logic_error("Element not found");
 		throw ElementNotFoundException("Element not found");
 	}
 }
@@ -104,9 +103,21 @@ int LinkedList<T>::getSize() const {
 
 template<typename T>
 void LinkedList<T>::type() const {
-	Node<T> *curNode = head;
+	Node<Value *> *curNode = head;
 	while (curNode != nullptr) {
-		cout << curNode->data << endl;
+		cout << "Key: " << curNode->key << endl;
+
+		if (NullValue *nullValue = dynamic_cast<NullValue *>(curNode->data)) {
+			cout << "Data: null" << endl << endl;
+		} else if (BoolValue *boolValue = dynamic_cast<BoolValue *>(curNode->data)) {
+			cout << "Data: " << (boolValue->get() == 0 ? "false" : "true") << endl << endl;
+		} else if (NumberValue *numberValue = dynamic_cast<NumberValue *>(curNode->data)) {
+			cout << "Data: " << numberValue->get() << endl << endl;
+		} else if (StringValue *stringValue = dynamic_cast<StringValue *>(curNode->data)) {
+			cout << "Data: " << stringValue->get() << endl << endl;
+		} else {
+			cout << "What a fuck is this?!" << endl;
+		}
 		curNode = curNode->next;
 	}
 	delete curNode;
@@ -118,4 +129,4 @@ bool LinkedList<T>::isEmpty() const {
 }
 
 
-#endif //CV5_UT_18_20_LINKEDLIST_H
+#endif //SEM_JSONLIBRARY_BRACKETSENUM_H

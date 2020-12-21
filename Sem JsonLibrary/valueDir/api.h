@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
-#include "../collection/LinkedList.h"
 
+using namespace std;
 // - �ablona s parametrem datov�ho typu ulo�en�ch hodnot
 // - nen� povoleno u�it� STL kontejner� ani jin�ch knihoven pro ukl�d�n� dat
 // - realizace mus� vyu��vat dynamicky alokovan� pole, spojov� seznam nebo jinou vhodnou V�mi implementovanou ADS 
@@ -23,21 +23,6 @@ public:
 	int getSize() const;
 };
 
-///////////////////////////////////////////////////////////////////////////////
-
-class Value;
-
-// - definuje p�r kl�� (�et�zec) a hodnota (JSON hodnota) pro reprezentaci hodnot JSON objektu
-class KeyValuePair {
-public:
-	KeyValuePair(std::string key, Value *value);
-
-	// - vr�t� kl��
-	std::string getKey() const;
-
-	// - vr�t� hodnotu
-	Value *getValue() const;
-};
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -45,7 +30,22 @@ public:
 class Value {
 public:
 	// serializuje hodnotu do podoby JSON reprezentace
-	virtual std::string serialize() const = 0;
+	virtual string serialize() const = 0;
+};
+
+///////////////////////////////////////////////////////////////////////////////
+
+
+// - definuje p�r kl�� (�et�zec) a hodnota (JSON hodnota) pro reprezentaci hodnot JSON objektu
+class KeyValuePair {
+public:
+	KeyValuePair(string key, Value *value);
+
+	// - vr�t� kl��
+	std::string getKey() const;
+
+	// - vr�t� hodnotu
+	Value *getValue() const;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -123,6 +123,8 @@ private:
 
 // - reprezentuje hodnotu typu JSON objekt
 class ObjectValue : public Value {
+private:
+
 public:
 
 	ObjectValue();
@@ -157,10 +159,10 @@ public:
 	// -- cokoliv jin�ho - vyvol�v�m v�jimku
 	// - nen� p��pustn� vracet nullptr
 	// - deserializace mus� b�t rozumn� implementov�na - nen� p��pustn� zde napsat jednu extr�mn� dlouhou metodu
-	static Value *deserialize(const std::string &string);
+	static Value *deserialize(const string &string);
 
 	// - provede serializaci do JSON �et�zce
-	static std::string serialize(const Value *value);
+	static string serialize(const Value *value);
 };
 
 ///////////////////////////////////////////////////////////////////////////////
