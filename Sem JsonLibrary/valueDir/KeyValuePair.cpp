@@ -1,4 +1,4 @@
-#include "./valueDir/api.h"
+#include "api.h"
 
 KeyValuePair::KeyValuePair(string key, Value *value) {
 	this->key = key;

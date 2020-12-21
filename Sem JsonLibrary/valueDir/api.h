@@ -1,6 +1,9 @@
 #pragma once
 
 #include <string>
+#include <iostream>
+#include "ElementNotFoundException.h"
+
 
 using namespace std;
 
@@ -23,7 +26,48 @@ public:
 
 	// - vrac� velikost (po�et prvk�) v poli
 	int getSize() const;
+
+private:
+private:
+	template<typename>
+	struct Node {
+	public:
+		T *data = nullptr;
+		Node<T> *prev = nullptr;
+		Node<T> *next = nullptr;
+
+		explicit Node(T *data, Node *n = nullptr, Node *p = nullptr)
+				: data(data), next(n), prev(p) {}
+	};
+
+	int size = 0;
+	Node<T> *head = nullptr;
+	Node<T> *tail = nullptr;
 };
+
+template<typename T>
+DynamicArray<T>::DynamicArray() {}
+
+template<typename T>
+int DynamicArray<T>::getSize() const {
+	return size;
+}
+
+template<typename T>
+DynamicArray<T>::~DynamicArray() {
+	while (head != nullptr) {
+		Node<T> *temp = head;
+		head = head->next;
+		delete temp;
+	}
+}
+
+template<typename T>
+void DynamicArray<T>::append(const T &element) {
+
+}
+
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -140,8 +184,8 @@ public:
 	string serialize() const override;
 
 private:
-	DynamicArray<KeyValuePair> dynamicArray;
 	// - atribut DynamicArray<KeyValuePair> pro uchov�n� jednotliv�ch hodnot a kl��� v objektu
+	DynamicArray<KeyValuePair> dynamicArray;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
