@@ -21,17 +21,15 @@ public:
 	// - p�id� element na konec pole
 	void append(const T &element);
 
-	void appendViaNormalMethod(const T *element);
-
 	// - v�jimky p�i neplatn�m nebo nekorektn�m indexu
 	const T &getElementAt(int index) const;
-
-	const T *getElementAtViaNormalMethod(int index) const;
 
 	// - vrac� velikost (po�et prvk�) v poli
 	int getSize() const;
 
 private:
+	void appendViaNormalMethod(const T *element);
+
 	template<typename V>
 	struct Node {
 	public:
@@ -181,9 +179,13 @@ public:
 // - reprezentuje hodnotu typu JSON pole
 class ArrayValue : public Value {
 public:
-	ArrayValue();
+	ArrayValue() {
+		dynamicArray = new DynamicArray<Value *>();
+	}
 
-	~ArrayValue();
+	~ArrayValue() {
+		delete dynamicArray;
+	}
 
 	// - p�id� element na konec pole
 	void append(Value *element);
@@ -191,7 +193,7 @@ public:
 	string serialize() const override;
 
 private:
-	DynamicArray<Value *> dynamicArray;
+	DynamicArray<Value *> *dynamicArray;
 	// - atribut DynamicArray<Value*> pro uchov�n� jednotliv�ch element� v poli
 };
 
@@ -201,9 +203,13 @@ private:
 class ObjectValue : public Value {
 public:
 
-	ObjectValue();
+	ObjectValue() {
+		dynamicArray = new DynamicArray<KeyValuePair>;
+	}
 
-	~ObjectValue();
+	~ObjectValue() {
+		delete dynamicArray;
+	}
 
 	// - p�id� kl��-element do objektu
 	void append(const KeyValuePair &pair);
@@ -212,7 +218,7 @@ public:
 
 private:
 	// - atribut DynamicArray<KeyValuePair> pro uchov�n� jednotliv�ch hodnot a kl��� v objektu
-	DynamicArray<KeyValuePair> dynamicArray;
+	DynamicArray<KeyValuePair> *dynamicArray;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
