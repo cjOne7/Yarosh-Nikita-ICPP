@@ -42,24 +42,23 @@ void addValueToList(LinkedList<Value *> *list, string strValue, string key) {
 	}
 }
 
+int foo1() {
+	int a = 5;
+	return a;
+}
+
+const int *foo2(int *a) {
+//	int *a = new int(5);
+	return a;
+}
+
+const int &foo3() {
+	int *a = new int(5);
+	return *foo2(a);
+}
+
+
 int main() {
-//	LinkedList<int> linkedList{};
-//	linkedList.addAsLast("10", 10);
-//	linkedList.addAsLast("20", 20);
-//	linkedList.addAsLast("30", 30);
-//	linkedList.addAsLast("40", 40);
-//	linkedList.type();
-//	try {
-//		cout << linkedList.get("101") << endl;
-//	} catch (const ElementNotFoundException &ex) {
-//		cerr << ex.what() << endl;
-//	}
-//
-//	string jsonString = "{\"boolean\":true,\"boolean1\":false}";
-//
-//	cout << jsonString.find("\"", 35) << endl;
-//
-//
 //	int counter = -1;
 //	string keyContainer = "";
 //	int startIndex, endIndex, quotesCounter = 0;
@@ -90,35 +89,37 @@ int main() {
 //	regex strRegExp("\"(\\s*)?[\\w ]*(\\s*)?\"");
 
 
-	string jsonString = "{\"boolean\"  :  true,\"boolean1\" : false, \"num dsa_ds\"   :  123, \"null_value\" : null, \"str\" : \" some  string\"}";
-	LinkedList<Value *> *list = new LinkedList<Value *>;
-	regex keyRegExp("\"[\\w ]+\"(\\s*)?:(\\s*)?");
+//	string jsonString = "{\"boolean\"  :  true,\"boolean1\" : false, \"num dsa_ds\"   :  123, \"null_value\" : null, \"str\" : \" some  string\"}";
+//	LinkedList<Value *> *list = new LinkedList<Value *>;
+//	regex keyRegExp("\"[\\w ]+\"(\\s*)?:(\\s*)?");
+//
+//	smatch m;
+//
+//
+//	while (regex_search(jsonString, m, keyRegExp)) {
+//		string foundStr = m.str();
+//		//cut key
+//		jsonString = jsonString.substr(jsonString.find(foundStr) + foundStr.size());
+//		//and then find value
+//		int pos = jsonString.find(",");
+//		string strValue;
+//		//clear key from '"' and ':'
+//		foundStr = clearKey(foundStr);
+//		if (pos == string::npos) {
+//			strValue = jsonString.substr(0, jsonString.size() - 1);
+//			addValueToList(list, strValue, foundStr);
+////			cout << "Value: " << strValue << endl << endl;
+//		} else {
+//			strValue = jsonString.substr(0, pos);
+//			addValueToList(list, strValue, foundStr);
+////			cout << "Value: " << strValue << endl << endl;
+//		}
+//	}
+//	list->type();
+//	delete list;
 
-	smatch m;
-
-
-	while (regex_search(jsonString, m, keyRegExp)) {
-		string foundStr = m.str();
-		//cut key
-		jsonString = jsonString.substr(jsonString.find(foundStr) + foundStr.size());
-		//and then find value
-		int pos = jsonString.find(",");
-		string strValue;
-		//clear key from '"' and ':'
-		foundStr = clearKey(foundStr);
-		if (pos == string::npos) {
-			strValue = jsonString.substr(0, jsonString.size() - 1);
-			addValueToList(list, strValue, foundStr);
-//			cout << "Value: " << strValue << endl << endl;
-		} else {
-			strValue = jsonString.substr(0, pos);
-			addValueToList(list, strValue, foundStr);
-//			cout << "Value: " << strValue << endl << endl;
-		}
-	}
-	list->type();
-	delete list;
-
-
+	cout << foo1() << endl;
+//	cout << *foo2() << endl;
+	cout << foo3() << endl;
 	return 0;
 }

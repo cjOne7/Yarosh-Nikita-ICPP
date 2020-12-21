@@ -21,23 +21,27 @@ public:
 	// - p�id� element na konec pole
 	void append(const T &element);
 
+	void appendViaNormalMethod(const T *element);
+
 	// - v�jimky p�i neplatn�m nebo nekorektn�m indexu
 	const T &getElementAt(int index) const;
+
+	const T *getElementAtViaNormalMethod(int index) const;
 
 	// - vrac� velikost (po�et prvk�) v poli
 	int getSize() const;
 
 private:
-private:
-	template<typename>
+	template<typename V>
 	struct Node {
 	public:
-		T *data = nullptr;
-		Node<T> *prev = nullptr;
-		Node<T> *next = nullptr;
+		const V *data;
+		Node<V> *prev = nullptr;
+		Node<V> *next = nullptr;
 
-		explicit Node(T *data, Node *n = nullptr, Node *p = nullptr)
-				: data(data), next(n), prev(p) {}
+		Node(const V *data, Node *n, Node *p) : data(data), next(n), prev(p) {}
+
+		Node() {}
 	};
 
 	int size = 0;
@@ -63,12 +67,34 @@ DynamicArray<T>::~DynamicArray() {
 }
 
 template<typename T>
-void DynamicArray<T>::append(const T &element) {
-
+void DynamicArray<T>::appendViaNormalMethod(const T *element) {
+	Node<T> *newNode = new Node<T>(element, nullptr, tail);
+	if (tail == nullptr) {
+		tail = newNode;
+		head = tail;
+	} else {
+		tail->next = newNode;
+		tail = newNode;
+	}
+	size++;
 }
 
+template<typename T>
+void DynamicArray<T>::append(const T &element) {
+	appendViaNormalMethod(&element);
+}
 
-
+template<typename T>
+const T &DynamicArray<T>::getElementAt(int index) const {
+	if (index < 0 || index >= size) {
+		throw invalid_argument("Index must be in available interval");
+	}
+	Node<T> *curNode = head;
+	for (int i = 0; i < index; ++i) {
+		curNode = curNode->next;
+	}
+	return *curNode->data;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -165,6 +191,7 @@ public:
 	string serialize() const override;
 
 private:
+	DynamicArray<Value *> dynamicArray;
 	// - atribut DynamicArray<Value*> pro uchov�n� jednotliv�ch element� v poli
 };
 

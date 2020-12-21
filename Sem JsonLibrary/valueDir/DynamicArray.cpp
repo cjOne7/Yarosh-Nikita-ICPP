@@ -15,7 +15,7 @@
 //
 //template<typename T>
 //void DynamicArray<T>::append(const T &element) {
-//	Node<T> newNode = new Node<T>(data, nullptr, tail);
+//	Node<T> newNode = new Node<T>(element, nullptr, tail);
 //	if (tail == nullptr) {
 //		tail = newNode;
 //		head = tail;
