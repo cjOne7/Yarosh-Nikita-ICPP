@@ -4,8 +4,8 @@
 #include <stdexcept>
 #include <iostream>
 #include <sstream>
-#include <utility>
 #include "ElementNotFoundException.h"
+#include "../valueDir/Value.h"
 
 using namespace std;
 
@@ -106,7 +106,7 @@ template<typename T>
 void LinkedList<T>::type() const {
 	Node<T> *curNode = head;
 	while (curNode != nullptr) {
-		cout << curNode->data << endl;
+		cout << "Key: " << curNode->key << "\nData: " << curNode->data << endl << endl;
 		curNode = curNode->next;
 	}
 	delete curNode;

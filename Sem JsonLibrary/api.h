@@ -1,5 +1,7 @@
 #pragma once
+
 #include <string>
+#include "collection/LinkedList.h"
 
 // - �ablona s parametrem datov�ho typu ulo�en�ch hodnot
 // - nen� povoleno u�it� STL kontejner� ani jin�ch knihoven pro ukl�d�n� dat
@@ -148,3 +150,7 @@ public:
 
 ///////////////////////////////////////////////////////////////////////////////
 
+class StateMachine {
+public:
+	LinkedList<Value *> list;
+};
