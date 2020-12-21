@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "collection/LinkedList.h"
+#include "../collection/LinkedList.h"
 
 // - �ablona s parametrem datov�ho typu ulo�en�ch hodnot
 // - nen� povoleno u�it� STL kontejner� ani jin�ch knihoven pro ukl�d�n� dat
@@ -53,6 +53,7 @@ public:
 // - reprezentuje hodnotu typu JSON null
 class NullValue : public Value {
 public:
+	string serialize() const override;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -66,28 +67,38 @@ public:
 
 	// - vrac� bool hodnotu
 	bool get() const;
+
+	string serialize() const override;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 
 // - reprezentuje hodnotu typu JSON ��slo
 class NumberValue : public Value {
+private:
+	double value;
 public:
 	NumberValue(double value);
 
 	// - vrac� ��selnou hodnotu 
 	double get() const;
+
+	string serialize() const override;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 
 // - reprezentuje hodnotu typu JSON �et�zec (string)
 class StringValue : public Value {
+private:
+	string value;
 public:
-	StringValue(std::string value);
+	StringValue(string value);
 
 	// - vrac� �et�zcovou hodnotu
-	std::string get() const;
+	string get() const;
+
+	string serialize() const override;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -101,6 +112,8 @@ public:
 
 	// - p�id� element na konec pole
 	void append(Value *element);
+
+	string serialize() const override;
 
 private:
 	// - atribut DynamicArray<Value*> pro uchov�n� jednotliv�ch element� v poli
@@ -118,6 +131,8 @@ public:
 
 	// - p�id� kl��-element do objektu
 	void append(const KeyValuePair &pair);
+
+	string serialize() const override;
 
 private:
 	// - atribut DynamicArray<KeyValuePair> pro uchov�n� jednotliv�ch hodnot a kl��� v objektu
@@ -149,8 +164,3 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-
-class StateMachine {
-public:
-	LinkedList<Value *> list;
-};

@@ -17,13 +17,12 @@ string clearKey(const string &str) {
 }
 
 void addValueToList(LinkedList<Value *> *list, string strValue, string key) {
-	regex trueRegExp("true");
-	regex falseRegExp("false");
+	regex boolRegExp("true|false");
 	regex nullRegExp("null");
 	regex numberRegExp("-?[\\d]+\\.?([\\d]+)?");
 	regex strRegExp("\"(\\s*)?[\\w ]*(\\s*)?\"");
 
-	if (regex_match(strValue, trueRegExp) || regex_match(strValue, falseRegExp)) {
+	if (regex_match(strValue, boolRegExp)) {
 		bool boolValue;
 		istringstream(strValue) >> std::boolalpha >> boolValue;
 		Value *value = new BoolValue(boolValue);
@@ -85,8 +84,7 @@ int main() {
 //		}
 //	}
 
-//	regex trueRegExp("true");
-//	regex falseRegExp("false");
+//	regex boolRegExp("true|false");
 //	regex nullRegExp("null");
 //	regex numberRegExp("-?[\\d]+\\.?([\\d]+)?");
 //	regex strRegExp("\"(\\s*)?[\\w ]*(\\s*)?\"");
