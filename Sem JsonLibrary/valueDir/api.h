@@ -3,9 +3,11 @@
 #include <string>
 
 using namespace std;
+
 // - �ablona s parametrem datov�ho typu ulo�en�ch hodnot
 // - nen� povoleno u�it� STL kontejner� ani jin�ch knihoven pro ukl�d�n� dat
-// - realizace mus� vyu��vat dynamicky alokovan� pole, spojov� seznam nebo jinou vhodnou V�mi implementovanou ADS 
+// - realizace mus� vyu��vat dynamicky alokovan� pole, spojov� seznam nebo jinou vhodnou V�mi implementovanou ADS
+
 template<typename T>
 class DynamicArray {
 public:
@@ -38,11 +40,14 @@ public:
 
 // - definuje p�r kl�� (�et�zec) a hodnota (JSON hodnota) pro reprezentaci hodnot JSON objektu
 class KeyValuePair {
+private:
+	string key;
+	Value *value;
 public:
 	KeyValuePair(string key, Value *value);
 
 	// - vr�t� kl��
-	std::string getKey() const;
+	string getKey() const;
 
 	// - vr�t� hodnotu
 	Value *getValue() const;
@@ -123,8 +128,6 @@ private:
 
 // - reprezentuje hodnotu typu JSON objekt
 class ObjectValue : public Value {
-private:
-
 public:
 
 	ObjectValue();
@@ -137,6 +140,7 @@ public:
 	string serialize() const override;
 
 private:
+	DynamicArray<KeyValuePair> dynamicArray;
 	// - atribut DynamicArray<KeyValuePair> pro uchov�n� jednotliv�ch hodnot a kl��� v objektu
 };
 

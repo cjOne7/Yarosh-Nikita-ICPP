@@ -19,9 +19,9 @@ public:
 
 	int getSize() const;
 
-	void addAsLast(const string &key, Value *data);
+	void addAsLast(KeyValuePair *data);
 
-	void addAsFirst(const string &key, Value *data);
+	void addAsFirst(KeyValuePair *data);
 
 	void type() const;
 
@@ -31,32 +31,31 @@ private:
 	template<typename V>
 	struct Node {
 	public:
-		string key;
-		Value *data = nullptr;
-		Node<Value *> *prev = nullptr;
-		Node<Value *> *next = nullptr;
+		KeyValuePair *pair = nullptr;
+		Node<KeyValuePair *> *prev = nullptr;
+		Node<KeyValuePair *> *next = nullptr;
 
-		explicit Node(string key, Value *&data, Node *n = nullptr, Node *p = nullptr)
-				: key(move(key)), data(data), next(n), prev(p) {}
+		explicit Node(KeyValuePair *pair, Node *n = nullptr, Node *p = nullptr)
+				: pair(pair), next(n), prev(p) {}
 	};
 
 	int size = 0;
-	Node<T> *head = nullptr;
-	Node<T> *tail = nullptr;
+	Node<KeyValuePair *> *head = nullptr;
+	Node<KeyValuePair *> *tail = nullptr;
 };
 
 template<typename T>
 LinkedList<T>::~LinkedList<T>() {
 	while (head != nullptr) {
-		Node<T> *temp = head;
+		Node<KeyValuePair *> *temp = head;
 		head = head->next;
 		delete temp;
 	}
 }
 
 template<typename T>
-void LinkedList<T>::addAsLast(const string &key, Value *data) {
-	auto newNode = new Node<T>(key, data, nullptr, tail);
+void LinkedList<T>::addAsLast(KeyValuePair *data) {
+	auto newNode = new Node<KeyValuePair *>(data, nullptr, tail);
 	if (tail == nullptr) {
 		tail = newNode;
 		head = tail;
@@ -68,8 +67,8 @@ void LinkedList<T>::addAsLast(const string &key, Value *data) {
 }
 
 template<typename T>
-void LinkedList<T>::addAsFirst(const string &key, Value *data) {
-	auto newNode = new Node<T>(key, data, head, nullptr);
+void LinkedList<T>::addAsFirst(KeyValuePair *data) {
+	auto newNode = new Node<KeyValuePair *>(data, head, nullptr);
 	if (head == nullptr) {
 		head = newNode;
 		tail = head;
@@ -83,12 +82,12 @@ void LinkedList<T>::addAsFirst(const string &key, Value *data) {
 template<typename T>
 Value *LinkedList<T>::get(const string &key) const {
 	if (key.empty()) {
-		throw out_of_range("Key is empty.");
+		throw invalid_argument("Key is empty.");
 	} else {
-		Node<T> *node = head;
+		Node<KeyValuePair *> *node = head;
 		while (node != nullptr) {
-			if (node->key == key) {
-				return node->data;
+			if (node->pair->getKey() == key) {
+				return node->pair->getValue();
 			}
 			node = node->next;
 		}
@@ -103,17 +102,17 @@ int LinkedList<T>::getSize() const {
 
 template<typename T>
 void LinkedList<T>::type() const {
-	Node<Value *> *curNode = head;
+	Node<KeyValuePair *> *curNode = head;
 	while (curNode != nullptr) {
-		cout << "Key: " << curNode->key << endl;
+		cout << "Key: " << curNode->pair->getKey() << endl;
 
-		if (NullValue *nullValue = dynamic_cast<NullValue *>(curNode->data)) {
+		if (NullValue *nullValue = dynamic_cast<NullValue *>(curNode->pair->getValue())) {
 			cout << "Data: null" << endl << endl;
-		} else if (BoolValue *boolValue = dynamic_cast<BoolValue *>(curNode->data)) {
+		} else if (BoolValue *boolValue = dynamic_cast<BoolValue *>(curNode->pair->getValue())) {
 			cout << "Data: " << (boolValue->get() == 0 ? "false" : "true") << endl << endl;
-		} else if (NumberValue *numberValue = dynamic_cast<NumberValue *>(curNode->data)) {
+		} else if (NumberValue *numberValue = dynamic_cast<NumberValue *>(curNode->pair->getValue())) {
 			cout << "Data: " << numberValue->get() << endl << endl;
-		} else if (StringValue *stringValue = dynamic_cast<StringValue *>(curNode->data)) {
+		} else if (StringValue *stringValue = dynamic_cast<StringValue *>(curNode->pair->getValue())) {
 			cout << "Data: " << stringValue->get() << endl << endl;
 		} else {
 			cout << "What a fuck is this?!" << endl;
