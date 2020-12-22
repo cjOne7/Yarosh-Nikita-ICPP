@@ -193,8 +193,8 @@ public:
 	string serialize() const override;
 
 private:
-	DynamicArray<Value *> *dynamicArray;
 	// - atribut DynamicArray<Value*> pro uchov�n� jednotliv�ch element� v poli
+	DynamicArray<Value *> *dynamicArray;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -204,11 +204,11 @@ class ObjectValue : public Value {
 public:
 
 	ObjectValue() {
-		dynamicArray = new DynamicArray<KeyValuePair>;
+		dynamicObjectArray = new DynamicArray<KeyValuePair>;
 	}
 
 	~ObjectValue() {
-		delete dynamicArray;
+		delete dynamicObjectArray;
 	}
 
 	// - p�id� kl��-element do objektu
@@ -218,7 +218,7 @@ public:
 
 private:
 	// - atribut DynamicArray<KeyValuePair> pro uchov�n� jednotliv�ch hodnot a kl��� v objektu
-	DynamicArray<KeyValuePair> *dynamicArray;
+	DynamicArray<KeyValuePair> *dynamicObjectArray;
 };
 
 ///////////////////////////////////////////////////////////////////////////////

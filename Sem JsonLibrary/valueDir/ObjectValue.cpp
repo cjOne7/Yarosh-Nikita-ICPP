@@ -1,16 +1,16 @@
 #include "api.h"
 
 void ObjectValue::append(const KeyValuePair &pair) {
-	dynamicArray->append(pair);
+	dynamicObjectArray->append(pair);
 }
 
 string ObjectValue::serialize() const {
 	stringstream ss;
 	ss << "{";
-	for (int i = 0; i < dynamicArray->getSize(); ++i) {
-		KeyValuePair keyValuePair = dynamicArray->getElementAt(i);
+	for (int i = 0; i < dynamicObjectArray->getSize(); ++i) {
+		KeyValuePair keyValuePair = dynamicObjectArray->getElementAt(i);
 		ss << '"' << keyValuePair.getKey() << "\":" << keyValuePair.getValue()->serialize();
-		if (i != dynamicArray->getSize() - 1) {
+		if (i != dynamicObjectArray->getSize() - 1) {
 			ss << ',';
 		}
 	}

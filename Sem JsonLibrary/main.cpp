@@ -16,7 +16,7 @@ int main() {
 	av->append(new NumberValue{1});
 	av->append(new StringValue{"two"});
 	av->append(new NumberValue{3});
-//	cout << av->serialize();
+//	cout << av->serialize() << endl;
 
 //	ObjectValue *four = new ObjectValue{};
 //	four->append(KeyValuePair{"four", new NumberValue{4}});

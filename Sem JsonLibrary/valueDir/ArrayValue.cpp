@@ -7,7 +7,8 @@ void ArrayValue::append(Value *element) {
 string ArrayValue::serialize() const {
 	stringstream ss;
 	for (int i = 0; i < dynamicArray->getSize(); ++i) {
-		ss << dynamicArray->getElementAt(i)->serialize();
+		Value *value = dynamicArray->getElementAt(i);
+		ss << value->serialize();
 	}
 	return ss.str();
 }
