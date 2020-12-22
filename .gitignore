@@ -69,11 +69,6 @@ Cv8 Ut 18-20/.idea/*
 Cv8 Ut 18-20/.idea/workspace.xml
 Cv8 Ut 18-20/CMakeLists.txt
 
-Sem JsonLibrary/cmake-build-debug/*
-Sem JsonLibrary/.idea/*
-Sem JsonLibrary/.idea/workspace.xml
-Sem JsonLibrary/CMakeLists.txt
-
 TestSemProject/cmake-build-debug/*
 TestSemProject/.idea/*
 TestSemProject/.idea/workspace.xml
