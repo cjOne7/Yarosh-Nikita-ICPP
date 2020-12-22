@@ -78,3 +78,8 @@ TestSemProject/cmake-build-debug/*
 TestSemProject/.idea/*
 TestSemProject/.idea/workspace.xml
 TestSemProject/CMakeLists.txt
+
+Sem JsonLibrary ArrayList/cmake-build-debug/*
+Sem JsonLibrary ArrayList/.idea/*
+Sem JsonLibrary ArrayList/.idea/workspace.xml
+Sem JsonLibrary ArrayList/CMakeLists.txt
