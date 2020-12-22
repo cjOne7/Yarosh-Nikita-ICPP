@@ -21,8 +21,11 @@ int main() {
 //
 //	delete ov;
 
-	Value *value = JSON::deserialize(
-			"{\"boolean\"  :  true,\"boolean1\" : false, \"num dsa_ds\"   :  123, \"null_value\" : null, \"str\" : \" some  string\"}");
+	Value *value = JSON::deserialize("{\"boolean\"  :  true,"
+									 "\"num dsa_ds\"   :  123,"
+									 " \"null_value\" : null, "
+									 "\"str\" : \" some  ,string\","
+									 "\"str_1\":\"some test string\"}");
 	cout << JSON::serialize(value);
 	delete value;
 

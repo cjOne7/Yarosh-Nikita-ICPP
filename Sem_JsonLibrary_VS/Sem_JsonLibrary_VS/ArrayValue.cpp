@@ -8,8 +8,7 @@ string ArrayValue::serialize() const {
 	stringstream ss;
 	ss << "[";
 	for (int i = 0; i < dynamicArray->getSize(); ++i) {
-		Value* value = dynamicArray->getElementAt(i);
-		ss << value->serialize();
+		ss << dynamicArray->getElementAt(i)->serialize();
 		if (i != dynamicArray->getSize() - 1) {
 			ss << ',';
 		}

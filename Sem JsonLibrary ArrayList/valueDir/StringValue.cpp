@@ -39,7 +39,8 @@ string replaceEscapeAndQuotes(const string &str) {
 
 string StringValue::serialize() const {
 	stringstream ss;
-	ss << '"' << replaceEscapeAndQuotes(value) << '"';
+//	ss << '"' << replaceEscapeAndQuotes(value) << '"';
+	ss << value;
 	return ss.str();
 }
 

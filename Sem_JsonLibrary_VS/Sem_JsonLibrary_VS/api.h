@@ -118,8 +118,6 @@ public:
 
 	KeyValuePair(string key, Value* value);
 
-	~KeyValuePair() {}
-
 	// - vr�t� kl��
 	string getKey() const;
 

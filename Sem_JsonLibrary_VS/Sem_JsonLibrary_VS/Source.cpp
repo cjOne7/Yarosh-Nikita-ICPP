@@ -27,13 +27,13 @@ int main() {
 
 	Value* value = JSON::deserialize(
 		"{\"boolean\"  :  true,\"boolean1\" : false, \"num dsa_ds\"   :  123, \"null_value\" : null, \"str\" : \" some  string\"}");
-	cout << JSON::serialize(value);
+	cout << JSON::serialize(value) << endl;
 	delete value;
 
-	if (_CrtDumpMemoryLeaks() != 0) {
-		printf("Memory leak is found.\n");
-	} else {
+	if (_CrtDumpMemoryLeaks() == 0) {
 		printf("Memory leak is not found.\n");
+	} else {
+		printf("Memory leak is found.\n");
 	}
 	return 0;
 }
