@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include <sstream>
+#include <regex>
 
 using namespace std;
 
@@ -242,10 +243,15 @@ public:
 	// -- cokoliv jin�ho - vyvol�v�m v�jimku
 	// - nen� p��pustn� vracet nullptr
 	// - deserializace mus� b�t rozumn� implementov�na - nen� p��pustn� zde napsat jednu extr�mn� dlouhou metodu
-	static Value *deserialize(const string &string);
+	static Value *deserialize(const string &str);
 
 	// - provede serializaci do JSON �et�zce
 	static string serialize(const Value *value);
+
+private:
+	static void addValueToObject(ObjectValue *objectValue, string strValue, string key);
+
+	static string clearKey(const string &str);
 };
 
 ///////////////////////////////////////////////////////////////////////////////
