@@ -8,9 +8,37 @@ string StringValue::get() const {
 	return value;
 }
 
+string replaceEscapeAndQuotes(const string &str) {
+	string newStr;
+	int counter = -1;
+	while (str[counter++] != '\0') {
+		switch (str[counter]) {
+			case '\b': newStr += "\\b";
+				break;
+			case '\f':newStr += "\\f";
+				break;
+			case '\n':newStr += "\\n";
+				break;
+			case '\r':newStr += "\\r";
+				break;
+			case '\t': newStr += "\\t";
+				break;
+			case '\"':newStr += "\\\"";
+				break;
+			case '\'':newStr += "\\\'";
+				break;
+			case '\\':newStr += "\\\\";
+				break;
+			default: newStr += str[counter];
+				break;
+		}
+	}
+	return newStr;
+}
+
 string StringValue::serialize() const {
 	stringstream ss;
-	ss << '"' << value << '"';
+	ss << '"' << replaceEscapeAndQuotes(value) << '"';
 	return ss.str();
 }
 

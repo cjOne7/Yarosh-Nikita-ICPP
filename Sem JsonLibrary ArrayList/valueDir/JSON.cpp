@@ -5,6 +5,8 @@ void JSON::addValueToObject(ObjectValue *objectValue, string strValue, string ke
 	regex nullRegExp{"null"};
 	regex numberRegExp{"-?[\\d]+\\.?([\\d]+)?"};
 	regex strRegExp{"\"(\\s*)?[\\w ]*(\\s*)?\""};
+	regex objectRegExp("{(\\s*)?[\\w\": ]*(\\s*)?}");
+	regex arrayRegExp("\\[[\\w,:{}\" ]*\\]");
 
 	if (regex_match(strValue, boolRegExp)) {
 		bool boolValue;
