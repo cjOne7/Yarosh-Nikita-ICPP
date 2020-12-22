@@ -3,7 +3,7 @@
 #include <string>
 #include <iostream>
 #include "ElementNotFoundException.h"
-
+#include <sstream>
 
 using namespace std;
 

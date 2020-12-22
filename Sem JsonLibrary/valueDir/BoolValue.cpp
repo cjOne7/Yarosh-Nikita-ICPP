@@ -9,5 +9,7 @@ bool BoolValue::get() const {
 }
 
 string BoolValue::serialize() const {
-	return "";
+	stringstream ss;
+	ss << (boolValue == 0 ? "false" : "true");
+	return ss.str();
 }

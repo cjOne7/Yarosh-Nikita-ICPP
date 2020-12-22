@@ -9,6 +9,8 @@ string StringValue::get() const {
 }
 
 string StringValue::serialize() const {
-	return "";
+	stringstream ss;
+	ss << '"' << value << '"';
+	return ss.str();
 }
 

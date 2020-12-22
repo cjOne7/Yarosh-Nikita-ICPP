@@ -1,5 +1,7 @@
 #include "api.h"
 
 string NullValue::serialize() const {
-	return "";
+	stringstream ss;
+	ss << "null";
+	return ss.str();
 }

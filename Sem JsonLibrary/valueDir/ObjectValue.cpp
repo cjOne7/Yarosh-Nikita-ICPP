@@ -5,5 +5,12 @@ void ObjectValue::append(const KeyValuePair &pair) {
 }
 
 string ObjectValue::serialize() const {
-	return "";
+	stringstream ss;
+	ss << "{";
+	for (int i = 0; i < dynamicArray->getSize(); ++i) {
+		KeyValuePair keyValuePair = dynamicArray->getElementAt(i);
+		ss << '"' << keyValuePair.getKey() << "\":" << keyValuePair.getValue()->serialize() << ',';
+	}
+	ss << "}";
+	return ss.str();
 }

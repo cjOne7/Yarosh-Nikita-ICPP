@@ -7,5 +7,5 @@ Value *JSON::deserialize(const string &string) {
 }
 
 string JSON::serialize(const Value *value) {
-	return "";
+	return value->serialize();
 }

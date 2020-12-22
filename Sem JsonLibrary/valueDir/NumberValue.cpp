@@ -9,5 +9,7 @@ double NumberValue::get() const {
 }
 
 string NumberValue::serialize() const {
-	return "";
+	stringstream ss;
+	ss << value;
+	return ss.str();
 }
