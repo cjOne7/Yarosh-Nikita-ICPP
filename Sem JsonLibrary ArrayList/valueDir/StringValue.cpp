@@ -10,8 +10,8 @@ string StringValue::get() const {
 
 string replaceEscapeAndQuotes(const string &str) {
 	string newStr;
-	int counter = -1;
-	while (str[counter++] != '\0') {
+	int counter = 0;
+	while (str[counter] != '\0') {
 		switch (str[counter]) {
 			case '\b': newStr += "\\b";
 				break;
@@ -32,6 +32,7 @@ string replaceEscapeAndQuotes(const string &str) {
 			default: newStr += str[counter];
 				break;
 		}
+		counter++;
 	}
 	return newStr;
 }

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <string>
 #include <iostream>
@@ -19,10 +19,10 @@ public:
 	~DynamicArray();
 
 	// - p�id� element na konec pole
-	void append(const T &element);
+	void append(const T& element);
 
 	// - v�jimky p�i neplatn�m nebo nekorektn�m indexu
-	const T &getElementAt(int index) const;
+	const T& getElementAt(int index) const;
 
 	// - vrac� velikost (po�et prvk�) v poli
 	int getSize() const;
@@ -34,7 +34,7 @@ private:
 	int growingCoefficient = 2;
 	int capacity = START_SIZE;
 	int size = 0;
-	T *array;
+	T* array;
 
 	void boostArray();
 
@@ -67,7 +67,7 @@ DynamicArray<T>::~DynamicArray() {
 template<typename T>
 void DynamicArray<T>::boostArray() {
 	capacity = growingCoefficient * capacity;
-	T *newArray = new T[capacity];
+	T* newArray = new T[capacity];
 	for (int i = 0; i < size; ++i) {
 		newArray[i] = array[i];
 	}
@@ -81,7 +81,7 @@ int DynamicArray<T>::getSize() const {
 }
 
 template<typename T>
-void DynamicArray<T>::append(const T &element) {
+void DynamicArray<T>::append(const T& element) {
 	if (isFull()) {
 		boostArray();
 	}
@@ -89,7 +89,7 @@ void DynamicArray<T>::append(const T &element) {
 }
 
 template<typename T>
-const T &DynamicArray<T>::getElementAt(int index) const {
+const T& DynamicArray<T>::getElementAt(int index) const {
 	checkSize(index);
 	return array[index];
 }
@@ -100,7 +100,6 @@ const T &DynamicArray<T>::getElementAt(int index) const {
 class Value {
 public:
 	virtual ~Value() = default;
-
 	// serializuje hodnotu do podoby JSON reprezentace
 	virtual string serialize() const = 0;
 };
@@ -112,18 +111,20 @@ public:
 class KeyValuePair {
 private:
 	string key;
-	Value *value;
+	Value* value;
 public:
 
 	KeyValuePair() = default;
 
-	KeyValuePair(string key, Value *value);
+	KeyValuePair(string key, Value* value);
+
+	~KeyValuePair() {}
 
 	// - vr�t� kl��
 	string getKey() const;
 
 	// - vr�t� hodnotu
-	Value *getValue() const;
+	Value* getValue() const;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -185,7 +186,7 @@ public:
 class ArrayValue : public Value {
 public:
 	ArrayValue() {
-		dynamicArray = new DynamicArray<Value *>();
+		dynamicArray = new DynamicArray<Value*>();
 	}
 
 	~ArrayValue() {
@@ -196,13 +197,13 @@ public:
 	}
 
 	// - p�id� element na konec pole
-	void append(Value *element);
+	void append(Value* element);
 
 	string serialize() const override;
 
 private:
 	// - atribut DynamicArray<Value*> pro uchov�n� jednotliv�ch element� v poli
-	DynamicArray<Value *> *dynamicArray;
+	DynamicArray<Value*>* dynamicArray;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -223,13 +224,13 @@ public:
 	}
 
 	// - p�id� kl��-element do objektu
-	void append(const KeyValuePair &pair);
+	void append(const KeyValuePair& pair);
 
 	string serialize() const override;
 
 private:
 	// - atribut DynamicArray<KeyValuePair> pro uchov�n� jednotliv�ch hodnot a kl��� v objektu
-	DynamicArray<KeyValuePair> *dynamicObjectArray;
+	DynamicArray<KeyValuePair>* dynamicObjectArray;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -251,15 +252,15 @@ public:
 	// -- cokoliv jin�ho - vyvol�v�m v�jimku
 	// - nen� p��pustn� vracet nullptr
 	// - deserializace mus� b�t rozumn� implementov�na - nen� p��pustn� zde napsat jednu extr�mn� dlouhou metodu
-	static Value *deserialize(const string &str);
+	static Value* deserialize(const string& str);
 
 	// - provede serializaci do JSON �et�zce
-	static string serialize(const Value *value);
+	static string serialize(const Value* value);
 
 private:
-	static void addValueToObject(ObjectValue *objectValue, string strValue, string key);
+	static void addValueToObject(ObjectValue* objectValue, string strValue, string key);
 
-	static string clearKey(const string &str);
+	static string clearKey(const string& str);
 };
 
 ///////////////////////////////////////////////////////////////////////////////

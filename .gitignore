@@ -78,3 +78,35 @@ Sem JsonLibrary ArrayList/cmake-build-debug/*
 Sem JsonLibrary ArrayList/.idea/*
 Sem JsonLibrary ArrayList/.idea/workspace.xml
 Sem JsonLibrary ArrayList/CMakeLists.txt
+
+# gitignore for C++
+# Compiled Object files
+*.slo
+*.lo
+*.o
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+
+# Visual Studio Files
+Debug
+Release
+*.suo
+*.csproj.user
+*.vbproj.user
+ipch
+*sdf
+*.db
+*.db-shm
+*.db-wal
+*.sln
+*.opendb
+*.vcxproj
+*.user
+*.filters

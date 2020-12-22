@@ -1,6 +1,5 @@
 #include <iostream>
 #include "collection/LinkedList.h"
-
 #include <regex>
 #include <string>
 
@@ -21,7 +20,7 @@ void addValueToList(LinkedList<Value *> *list, string strValue, string key) {
 	regex nullRegExp("null");
 	regex numberRegExp("-?[\\d]+\\.?([\\d]+)?");
 	regex strRegExp("\"(\\s*)?[\\w ]*(\\s*)?\"");
-	regex objectRegExp("{(\\s*)?[\\w\": ]*(\\s*)?}");
+//	regex objectRegExp("{(\\s*)?[\\w\": ]*(\\s*)?}");
 	regex arrayRegExp("\\[[\\w,:{}\" ]*\\]");
 
 
@@ -76,58 +75,33 @@ int main() {
 //	regex numberRegExp("-?[\\d]+\\.?([\\d]+)?");
 //	regex strRegExp("\"(\\s*)?[\\w ]*(\\s*)?\"");
 
-//	string jsonString = "{\"boolean\"  :  true,\"boolean1\" : false, \"num dsa_ds\"   :  123, \"null_value\" : null, \"str\" : \" some  string\"}";
-//	LinkedList<Value *> *list = new LinkedList<Value *>;
-//	regex keyRegExp("\"[\\w ]+\"(\\s*)?:(\\s*)?");
-//
-//	smatch m;
-//
-//	while (regex_search(jsonString, m, keyRegExp)) {
-//		string foundStr = m.str();
-//		//cut key
-//		jsonString = jsonString.substr(jsonString.find(foundStr) + foundStr.size());
-//		//and then find value
-//		int pos = jsonString.find(",");
-//		string strValue;
-//		//clear key from '"' and ':'
-//		foundStr = clearKey(foundStr);
-//		if (pos == string::npos) {
-//			strValue = jsonString.substr(0, jsonString.size() - 1);
-//			addValueToList(list, strValue, foundStr);
-////			cout << "Value: " << strValue << endl << endl;
-//		} else {
-//			strValue = jsonString.substr(0, pos);
-//			addValueToList(list, strValue, foundStr);
-////			cout << "Value: " << strValue << endl << endl;
-//		}
-//	}
-//	list->type();
-//	delete list;
+	string jsonString = "{\"boolean\"  :  true,\"boolean1\" : false, \"num dsa_ds\"   :  123, \"null_value\" : null, \"str\" : \" some  string\"}";
+	LinkedList<Value *> *list = new LinkedList<Value *>;
+	regex keyRegExp("\"[\\w ]+\"(\\s*)?:(\\s*)?");
 
-	string newStr, str = "Some\n fucking\\ \'\"string";
-	int counter = -1;
-	while (str[counter++] != '\0') {
-		switch (str[counter]) {
-			case '\b': newStr += "\\b";
-				break;
-			case '\f':newStr += "\\f";
-				break;
-			case '\n':newStr += "\\n";
-				break;
-			case '\r':newStr += "\\r";
-				break;
-			case '\t': newStr += "\\t";
-				break;
-			case '\"':newStr += "\\\"";
-				break;
-			case '\'':newStr += "\\\'";
-				break;
-			case '\\':newStr += "\\\\";
-				break;
-			default: newStr += str[counter];
-				break;
+	smatch m;
+
+	while (regex_search(jsonString, m, keyRegExp)) {
+		string foundStr = m.str();
+		//cut key
+		jsonString = jsonString.substr(jsonString.find(foundStr) + foundStr.size());
+		//and then find value
+		int pos = jsonString.find(",");
+		string strValue;
+		//clear key from '"' and ':'
+		foundStr = clearKey(foundStr);
+		if (pos == string::npos) {
+			strValue = jsonString.substr(0, jsonString.size() - 1);
+			addValueToList(list, strValue, foundStr);
+//			cout << "Value: " << strValue << endl << endl;
+		} else {
+			strValue = jsonString.substr(0, pos);
+			addValueToList(list, strValue, foundStr);
+//			cout << "Value: " << strValue << endl << endl;
 		}
 	}
-	cout << newStr << endl;
+	list->type();
+	delete list;
+
 	return 0;
 }
