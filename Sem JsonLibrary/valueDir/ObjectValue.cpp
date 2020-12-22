@@ -9,7 +9,10 @@ string ObjectValue::serialize() const {
 	ss << "{";
 	for (int i = 0; i < dynamicArray->getSize(); ++i) {
 		KeyValuePair keyValuePair = dynamicArray->getElementAt(i);
-		ss << '"' << keyValuePair.getKey() << "\":" << keyValuePair.getValue()->serialize() << ',';
+		ss << '"' << keyValuePair.getKey() << "\":" << keyValuePair.getValue()->serialize();
+		if (i != dynamicArray->getSize() - 1) {
+			ss << ',';
+		}
 	}
 	ss << "}";
 	return ss.str();
