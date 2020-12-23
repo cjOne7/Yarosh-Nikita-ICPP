@@ -1,5 +1,6 @@
 #include <iostream>
 #include "valueDir/api.h"
+#include "valueDir/JsonFormatException.h"
 
 int main() {
 //	ObjectValue *ov = new ObjectValue{};
@@ -21,13 +22,17 @@ int main() {
 //
 //	delete ov;
 
-	Value *value = JSON::deserialize("{\"boolean\"  :  true,"
-									 "\"num dsa_ds\"   :  123,"
-									 " \"null_value\" : null, "
-									 "\"str\" : \" some  ,string\","
-									 "\"str_1\":\"some test string\"}");
-	cout << JSON::serialize(value);
-	delete value;
+	try {
+		Value *value = JSON::deserialize("{ \"boolean\"  :  true,"
+										 "\"num dsa_ds\"   :  123,"
+										 " \"null_value\" : null, "
+										 "\"str\" : \" some  ,string \","
+										 "\"str_1\":\"some test string\"}");
+		cout << JSON::serialize(value);
+		delete value;
+	} catch (const JsonFormatException &ex) {
+		cerr << ex.what() << endl;
+	}
 
 	return 0;
 }

@@ -31,17 +31,25 @@ string JSON::clearKey(const string &str) {
 	return str.substr(pos1 + 1, pos2 - pos1 - 1);
 }
 
-Value *JSON::deserialize(const string &str) {
-	regex boolRegExp{"(?:true|false)(?:\\s*),"};
-	regex nullRegExp{"null(?:\\s*)?,"};
-	regex numberRegExp{"-?[\\d]+\\.?([\\d]+)?(\\s*),"};
-	regex strRegExp{"\"[\\w, ]*?\"(\\s*),"};
-	regex jsonDelimiter{"(?:l|e|\\d|\"|}|])(\\s*),(\\s*)(?:\")"};
+static void trimLeft(string &jsonString) {
+	regex whitespaceRegExp{"\\s*"};
+	smatch m{};
+	regex_search(jsonString, m, whitespaceRegExp);
+	jsonString = jsonString.substr(m.str().size());
+}
 
-	ObjectValue *objectValue = new ObjectValue();
+Value *JSON::deserialize(const string &str) {
 	string jsonString = str;
+
+	trimLeft(jsonString);
+	if (jsonString[0] != '{') {
+		throw JsonFormatException("Json object must start with '{'.");
+	}
+
+	regex jsonDelimiter{"(?:l|e|\\d|\"|}|])(\\s*),(\\s*)(?:\")"};
+	ObjectValue *objectValue = new ObjectValue();
 	regex keyRegExp{"\"[\\w ]+\"(\\s*)?:(\\s*)?"};
-	smatch m;
+	smatch m{};
 	while (regex_search(jsonString, m, keyRegExp)) {
 		string key = m.str();
 		//cut key
@@ -56,9 +64,8 @@ Value *JSON::deserialize(const string &str) {
 		key = clearKey(key);
 		if (commaPosition == 0) {
 			int endObjectBracketPos = jsonString.rfind("}");
-			cout << endObjectBracketPos << endl;
 			if (endObjectBracketPos == string::npos) {
-				throw JsonFormatException("exception");
+				throw JsonFormatException("Json object must end with '}'.");
 			}
 			int curJsonSize = jsonString.size();
 			strValue = jsonString.substr(0, curJsonSize - (curJsonSize - endObjectBracketPos));//remove last }
@@ -68,7 +75,6 @@ Value *JSON::deserialize(const string &str) {
 			addValueToObject(objectValue, strValue, key);
 		}
 	}
-
 	return objectValue;
 }
 
