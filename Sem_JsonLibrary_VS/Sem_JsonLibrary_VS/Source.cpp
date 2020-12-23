@@ -2,6 +2,7 @@
 #include <crtdbg.h>
 #define _CRTDBG_MAP_ALLOC
 #include "api.h"
+#include "JsonFormatException.h"
 
 int main() {
 	//ObjectValue* ov = new ObjectValue{};
@@ -25,15 +26,23 @@ int main() {
 	////delete four;
 	//delete ov;
 
-	Value* value = JSON::deserialize(
-		"{\"boolean\"  :  true,\"boolean1\" : false, \"num dsa_ds\"   :  123, \"null_value\" : null, \"str\" : \" some  string\"}");
-	cout << JSON::serialize(value) << endl;
-	delete value;
+	try {
+		Value* value = JSON::deserialize("{ \"boolean\"  :  true,"
+			"\"num dsa_ds\"   :  123,"
+			" \"null_value\" : null, "
+			"\"str\" : \" some  ,string \","
+			"\"str_1\":\"some test string\"}");
+		cout << JSON::serialize(value);
+		delete value;
+	}
+	catch (const JsonFormatException& ex) {
+		cerr << ex.what() << endl;
+	}
 
 	if (_CrtDumpMemoryLeaks() == 0) {
-		printf("Memory leak is not found.\n");
+		cout << "\nMemory leaks have not been found." << endl;
 	} else {
-		printf("Memory leak is found.\n");
+		cout << "\nMemory leaks have been found." << endl;
 	}
 	return 0;
 }

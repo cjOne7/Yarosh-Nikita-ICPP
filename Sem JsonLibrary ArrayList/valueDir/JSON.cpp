@@ -1,7 +1,7 @@
 #include "api.h"
 #include "JsonFormatException.h"
 
-void JSON::addValueToObject(ObjectValue *objectValue, string strValue, string key) {
+void addValueToObject(ObjectValue *objectValue, string strValue, string key) {
 	regex boolRegExp{"(true|false)"};
 	regex nullRegExp{"null"};
 	regex numberRegExp{"-?[\\d]+\\.?([\\d]+)?(\\s*)"};
@@ -25,13 +25,13 @@ void JSON::addValueToObject(ObjectValue *objectValue, string strValue, string ke
 	}
 }
 
-string JSON::clearKey(const string &str) {
+string clearKey(const string &str) {
 	int pos1 = str.find('"');
 	int pos2 = str.rfind('"');
 	return str.substr(pos1 + 1, pos2 - pos1 - 1);
 }
 
-static void trimLeft(string &jsonString) {
+void trimLeft(string &jsonString) {
 	regex whitespaceRegExp{"\\s*"};
 	smatch m{};
 	regex_search(jsonString, m, whitespaceRegExp);
@@ -46,9 +46,9 @@ Value *JSON::deserialize(const string &str) {
 		throw JsonFormatException("Json object must start with '{'.");
 	}
 
-	regex jsonDelimiter{"(?:l|e|\\d|\"|}|])(\\s*),(\\s*)(?:\")"};
+	regex jsonDelimiter{"(?:l|e|\\d|\"|}|])\\s*,\\s*\""};
 	ObjectValue *objectValue = new ObjectValue();
-	regex keyRegExp{"\"[\\w ]+\"(\\s*)?:(\\s*)?"};
+	regex keyRegExp{"\"[\\w ]+\"\\s*:\\s*"};
 	smatch m{};
 	while (regex_search(jsonString, m, keyRegExp)) {
 		string key = m.str();

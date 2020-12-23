@@ -255,11 +255,6 @@ public:
 
 	// - provede serializaci do JSON �et�zce
 	static string serialize(const Value *value);
-
-private:
-	static void addValueToObject(ObjectValue *objectValue, string strValue, string key);
-
-	static string clearKey(const string &str);
 };
 
 ///////////////////////////////////////////////////////////////////////////////
