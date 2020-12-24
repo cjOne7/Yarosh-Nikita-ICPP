@@ -23,11 +23,13 @@ int main() {
 //	delete ov;
 
 	try {
-		Value *value = JSON::deserialize("{ \"boolean\"  :  true,"
-										 "\"num dsa_ds\"   :  123,"
-										 " \"null_value\" : null, "
-										 "\"str\" : \" some  ,string \","
-										 "\"str_1\":\"some test string\"}");
+//		Value *value = JSON::deserialize(
+//				"{\"boolean\":true,\"obj\":{\"obj_num\":258, \"obj_bool\": false}}");
+		Value *value = JSON::deserialize(
+				"{\"boolean\":true,\"obj\":{\"obj_num\":258,\"new_inner_obj\":{\"str\":\" some string\"}},\"null_value\":null} ");
+//		Value *value = JSON::deserialize(
+//				"{\"boolean\":true,\"boolean1\":false,\"num asdd\":123,\"null_value\":null,\"str\":\" some, string\"}");
+
 		cout << JSON::serialize(value);
 		delete value;
 	} catch (const JsonFormatException &ex) {

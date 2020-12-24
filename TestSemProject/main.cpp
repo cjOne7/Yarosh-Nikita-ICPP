@@ -39,32 +39,36 @@ void addValueToList(LinkedList<Value *> *list, string strValue, string key) {
 	}
 }
 
+void trimLeft(string &jsonString) {
+	regex whitespaceRegExp{"\\s*"};
+	smatch m{};
+	regex_search(jsonString, m, whitespaceRegExp);
+	jsonString = jsonString.substr(m.str().size());
+}
+
+void trimRight(string &jsonString) {
+	regex whitespaceRegExp{"\\s+"};
+	smatch m{};
+	int strSize = jsonString.size();
+	int whiteSpacesCounter = 0;
+	for (int i = strSize - 1; i > 0; i--) {
+		string c;
+		c.push_back(jsonString[i]);
+		if (regex_search(c, m, whitespaceRegExp)) {
+			whiteSpacesCounter++;
+		} else {
+			break;
+		}
+	}
+	jsonString = jsonString.substr(0, strSize - whiteSpacesCounter + 1);
+}
+
+void trim(string &jsonString) {
+	trimLeft(jsonString);
+	trimRight(jsonString);
+}
 
 int main() {
-//	int counter = -1;
-//	string keyContainer = "";
-//	int startIndex, endIndex, quotesCounter = 0;
-//	while (jsonString[counter++] != '\0') {
-//		if (jsonString[counter] == '{') {
-////			cout << jsonString[counter] << endl;
-//		} else if (jsonString[counter] == ' ' || jsonString[counter] == '\n') {
-//			continue;
-//		} else if (jsonString[counter] == '"') {
-//			if (quotesCounter == 0) {
-//				startIndex = counter;
-//				quotesCounter++;
-//			} else if (quotesCounter == 1) {
-//				endIndex = counter;
-//				cout << jsonString.substr(startIndex + 1, endIndex - startIndex - 1) << endl;
-//				quotesCounter = 0;
-//			}
-//		} else if (jsonString[counter] == ':') {
-//
-//		} else if (isLetter(jsonString[counter])) {
-////			cout << jsonString[counter] << endl;
-//		}
-//	}
-
 //	regex boolRegExp("true|false");
 //	regex nullRegExp("null");
 //	regex numberRegExp("-?[\\d]+\\.?([\\d]+)?");
@@ -98,22 +102,9 @@ int main() {
 //	list->type();
 //	delete list;
 
-	regex boolRegExp{"(?:true|false)(?:\\s*)?,"};
-	regex nullRegExp{"null(?:\\s*)?,"};
-	regex numberRegExp{"-?[\\d]+\\.?([\\d]+)?(?:\\s*)?,"};
-	regex strRegExp{"\"[\\w ]*?\"(\\s*)?,"};
-	smatch m;
-	string jsonString = "true,\"boolean1\" : false, \"num dsa_ds\"   :  123, \"null_value\" : null, \"str\" : \" some  string\"}";
-	if (regex_search(jsonString, m, boolRegExp)) {
-		cout << m.str() << endl;
-	} else if (regex_search(jsonString, m, nullRegExp)) {
-		cout << m.str() << endl;
-	} else if (regex_search(jsonString, m, numberRegExp)) {
-		cout << m.str() << endl;
-	} else if (regex_search(jsonString, m, strRegExp)) {
-		cout << m.str() << endl;
-	} else {
-		cout << m.str() << endl;
-	}
+	string testStr = "das asd   ";
+	cout << testStr << endl;
+	trimRight(testStr);
+	cout << testStr << endl;
 	return 0;
 }
