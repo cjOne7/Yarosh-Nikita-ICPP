@@ -64,8 +64,7 @@ void trim(string &jsonString) {
 	trimRight(jsonString);
 }
 
-ObjectValue *readObject(string &jsonString) {
-	ObjectValue *objectValue = new ObjectValue();
+void checkObjectBrackets(string &jsonString) {
 	trim(jsonString);
 	if (jsonString[0] != '{') {
 		throw JsonFormatException("Json object must start with '{'.");
@@ -73,9 +72,18 @@ ObjectValue *readObject(string &jsonString) {
 	if (jsonString[jsonString.size() - 1] != '}') {
 		throw JsonFormatException("Json object must end with '}'.");
 	}
+}
+
+void eraseObjectBrackets(string &jsonString) {
 	jsonString = jsonString.substr(1);//cut '{'
 	jsonString = jsonString.substr(0, jsonString.size() - 1);//cut '}'
-	cout << jsonString << endl;
+}
+
+ObjectValue *readObject(string &jsonString) {
+	checkObjectBrackets(jsonString);
+	eraseObjectBrackets(jsonString);
+	ObjectValue *objectValue = new ObjectValue();
+
 	regex commaDelimiter{"(l|e|\\d|\"|}|])\\s*,\\s*(\"|\\{|\\[)"};
 	regex objectRegExp{"\\{[\\w:\\\"\\{},\\[ \\]]*\\}"};
 	regex arrayRegExp{"\\[[\\w,:{}\" ]*\\]"};
@@ -104,13 +112,6 @@ ObjectValue *readObject(string &jsonString) {
 			//clear key from '"' and ':'
 			key = clearKey(key);
 			if (position == 0) {//== 0 if not found
-//				int endObjectBracketPos = jsonString.rfind("}");
-//				if (endObjectBracketPos == string::npos) {
-//					throw JsonFormatException("Json object must end with '}'.");
-//				}
-//				int curJsonSize = jsonString.size();
-//				strValue = jsonString.substr(0, curJsonSize - (curJsonSize - endObjectBracketPos));//remove last }
-//				addValueToObject(objectValue, strValue, key);
 				strValue = jsonString.substr(0);//remove last }
 				addValueToObject(objectValue, strValue, key);
 			} else {
