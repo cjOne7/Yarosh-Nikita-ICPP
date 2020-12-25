@@ -23,10 +23,10 @@ int main() {
 //	delete ov;
 
 	try {
-//		Value *value = JSON::deserialize(
-//				"{\"boolean\":true,\"obj\":{\"obj_num\":258, \"obj_bool\": false}}");
 		Value *value = JSON::deserialize(
-				"{\"boolean\":true,\"obj\":{\"obj_num\":258,\"new_inner_obj\":{\"str\":\" some string\"}},\"null_value\":null} ");
+				"{\"boolean\":true,\"arr\":[12,3.14,\"str test\",null,true]}");
+//		Value *value = JSON::deserialize(
+//				"{\"boolean\":true,\"obj\": { \"obj_num\":258,\"new_inner_obj\":{\"str\":\" some string\"}},\"null_value\":null} ");
 //		Value *value = JSON::deserialize(
 //				"{\"boolean\":true,\"boolean1\":false,\"num asdd\":123,\"null_value\":null,\"str\":\" some, string\"}");
 
