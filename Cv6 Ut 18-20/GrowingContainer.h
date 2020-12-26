@@ -36,6 +36,8 @@ public:
 
 	void dumpData() const;
 
+	int getSize() const;
+
 };
 
 

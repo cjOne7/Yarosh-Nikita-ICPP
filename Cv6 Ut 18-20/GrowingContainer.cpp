@@ -87,6 +87,11 @@ void GrowingContainer<T>::checkSize(int index) const {
 	}
 }
 
+template<typename T>
+int GrowingContainer<T>::getSize() const {
+	return size;
+}
+
 template
 class GrowingContainer<int>;
 

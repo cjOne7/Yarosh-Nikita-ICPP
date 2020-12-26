@@ -29,6 +29,12 @@ public:
 
 	bool isFull() const;
 
+	bool isEmpty() const;
+
+	T remove(int index);
+
+	T removeLast();
+
 private:
 	const int START_SIZE = 5;
 	int growingCoefficient = 2;
@@ -45,6 +51,11 @@ private:
 template<typename T>
 bool DynamicArray<T>::isFull() const {
 	return size == capacity;
+}
+
+template<typename T>
+bool DynamicArray<T>::isEmpty() const {
+	return size == 0;
 }
 
 template<typename T>
@@ -92,6 +103,23 @@ template<typename T>
 const T &DynamicArray<T>::getElementAt(int index) const {
 	checkSize(index);
 	return array[index];
+}
+
+template<typename T>
+T DynamicArray<T>::remove(int index) {
+	T value = array[index];
+	int i = 0;
+	while (i != size - index - 1) {
+		array[index + i] = array[index + i + 1];
+		i++;
+	}
+	size--;
+	return value;
+}
+
+template<typename T>
+T DynamicArray<T>::removeLast() {
+	return remove(size - 1);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -259,3 +287,33 @@ public:
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+
+template<typename T>
+class SimpleStack {
+private:
+	DynamicArray<T> *stack;
+public:
+	SimpleStack() {
+		stack = new DynamicArray<T>;
+	}
+
+	virtual ~SimpleStack() {
+		delete stack;
+	}
+
+	bool isEmpty() {
+		return stack->isEmpty();
+	}
+
+	void push(const string &item) {
+		stack->append(item);
+	}
+
+	T pop() {
+		return stack->removeLast();
+	}
+
+	T peek() {
+		return stack->getElementAt(stack->getSize() - 1);
+	}
+};

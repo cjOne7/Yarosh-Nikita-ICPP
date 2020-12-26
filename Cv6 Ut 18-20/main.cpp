@@ -9,11 +9,9 @@ int main() {
 	growingContainer.add(2);
 	growingContainer.add(3);
 	growingContainer.add(4);
-	growingContainer.add(3, 500);
+//	growingContainer.add(3, 500);
 
-	growingContainer.remove(3);
+	growingContainer.remove(growingContainer.getSize() - 1);
 	growingContainer.dumpData();
-
-	cout << growingContainer[2] << endl;
 	return 0;
 }
