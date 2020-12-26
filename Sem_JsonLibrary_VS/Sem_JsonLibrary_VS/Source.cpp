@@ -22,17 +22,24 @@ int main() {
 	//ov->append(KeyValuePair{ "array", av });
 	//cout << JSON::serialize(ov) << endl;
 
-	////delete av;
-	////delete four;
 	//delete ov;
 
 	try {
+		//just test
 		Value* value = JSON::deserialize(
-			"{\"boolean\":true,\"obj\":{}}");
+			"{\"arr\": [12, [1, true], 7, {\"obj\" : { \"obj_value\" : 123 , \"inner_obj\":{\"inner_obj_value\":\"inner string\"}}}]}");
+		//test objects sequence
 		//		Value *value = JSON::deserialize(
-		//				"{\"boolean\":true,\"obj\":{\"obj_num\":258,\"new_inner_obj\":{\"str\":\" some string\"}},\"null_value\":null} ");
+		//				"{\"boolean\":true, \"obj1\":{\"obj_value1\":10} , \"obj2\":{\"obj_value2\":20}}");
+		//test arrays sequence
 		//		Value *value = JSON::deserialize(
-		//				"{\"boolean\":true,\"boolean1\":false,\"num asdd\":123,\"null_value\":null,\"str\":\" some, string\"}");
+		//				"{\"boolean\":true,\"arr1\":[1,true],\"arr2\":[2,false]}");
+		//test inner objects in objects and arrays in arrays
+		//		Value *value = JSON::deserialize(
+		//				"{\"boolean\":true,\"arr\":[1,true,[null, 1.2]],\"obj\":{\"obj_value\":123,\"inner_obj\":{\"inner_obj_value\":\"inner string\"}}}");
+		//test primitives
+		//		Value *value = JSON::deserialize(
+		//				"{\"boolean\":true, \"boolean1\":false, \"num asdd\":123.2,\"null_value\":null, \"str\":\" some, string\"}");
 
 		cout << JSON::serialize(value);
 		delete value;

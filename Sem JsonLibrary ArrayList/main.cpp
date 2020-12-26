@@ -25,10 +25,12 @@ int main() {
 	try {
 //just test
 //		Value *value = JSON::deserialize(
-//				"{\"arr\":[12,[1,true],7,{\"obj\":{\"obj_value\":123,\"inner_obj\":{\"inner_obj_value\":\"inner string\"}}}]}");
+//				"{\"arr\": [12, [1, true], 7, {\"obj\" : { \"obj_value\" : 123 , \"inner_obj\":{\"inner_obj_value\":\"inner string\"}}}]}");
 //test objects sequence
+//		Value *value = JSON::deserialize(
+//				"{\"boolean\":true, \"obj1\":{\"obj_value1\":10} , \"obj2\":{\"obj_value2\":20}}");
 		Value *value = JSON::deserialize(
-				"{\"boolean\":true,\"obj1\":{\"obj_value1\":1},\"obj2\":{\"obj_value1\":2}}");
+				"{\"users\":[{\"id\":1,\"name\":\"Nikita\"},{\"id\":2,\"name\":\"Aaron\"},{\"id\":3,\"name\":\"Miliella\"},{\"id\":4,\"name\":\"Doragon\"}]}");
 //test arrays sequence
 //		Value *value = JSON::deserialize(
 //				"{\"boolean\":true,\"arr1\":[1,true],\"arr2\":[2,false]}");

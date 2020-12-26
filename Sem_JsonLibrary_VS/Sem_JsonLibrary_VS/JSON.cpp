@@ -1,6 +1,10 @@
 #include "api.h"
 #include "JsonFormatException.h"
 
+ObjectValue* readObject(string& jsonString);
+
+ArrayValue* readArray(string& jsonString);
+
 void addValueToObject(ObjectValue* objectValue, string strValue, string key) {
 	regex boolRegExp{ "(true|false)" };
 	regex nullRegExp{ "null" };
@@ -9,15 +13,15 @@ void addValueToObject(ObjectValue* objectValue, string strValue, string key) {
 
 	if (regex_match(strValue, boolRegExp)) {
 		bool boolValue;
-		istringstream(strValue) >> std::boolalpha >> boolValue;
+		istringstream(strValue) >> boolalpha >> boolValue;
 		objectValue->append(KeyValuePair{ key, new BoolValue(boolValue) });
 	}
 	else if (regex_match(strValue, nullRegExp)) {
 		objectValue->append(KeyValuePair{ key, new NullValue() });
 	}
 	else if (regex_match(strValue, numberRegExp)) {
-		int intValue = stoi(strValue);
-		objectValue->append(KeyValuePair{ key, new NumberValue(intValue) });
+		double numberValue = stod(strValue);
+		objectValue->append(KeyValuePair{ key, new NumberValue(numberValue) });
 	}
 	else if (regex_match(strValue, strRegExp)) {
 		objectValue->append(KeyValuePair{ key, new StringValue(strValue) });
@@ -63,61 +67,156 @@ void trim(string& jsonString) {
 	trimRight(jsonString);
 }
 
-void checkObjectBrackets(string& jsonString) {
+void checkBracketsPosition(string& jsonString, const char leftBracket, const char rightBracket) {
 	trim(jsonString);
-	if (jsonString[0] != '{') {
-		throw JsonFormatException("Json object must start with '{'.");
+	if (jsonString[0] != leftBracket) {
+		throw JsonFormatException("Value must start with correct bracket.");
 	}
-	if (jsonString[jsonString.size() - 1] != '}') {
-		throw JsonFormatException("Json object must end with '}'.");
+	if (jsonString[jsonString.size() - 1] != rightBracket) {
+		throw JsonFormatException("Value must end with correct bracket.");
 	}
 }
 
-void eraseObjectBrackets(string& jsonString) {
+void cutBrackets(string& jsonString) {
 	jsonString = jsonString.substr(1);//cut '{'
 	jsonString = jsonString.substr(0, jsonString.size() - 1);//cut '}'
 }
 
-ObjectValue* readObject(string& jsonString) {
-	checkObjectBrackets(jsonString);
-	eraseObjectBrackets(jsonString);
-	auto objectValue = new ObjectValue();
+string cutValue(string& jsonString, const string& foundStr) {
+	int objectStartPosition = jsonString.find(foundStr);
+	string str = jsonString.substr(objectStartPosition, foundStr.size());
+	jsonString = jsonString.substr(objectStartPosition + foundStr.size());
+	return str;
+}
 
-	regex commaDelimiter{ "(l|e|\\d|\"|\\}|\\])\\s*,\\s*\"" };
-	regex objectRegExp{ "\\{[\\w:\\\"\\{},\\[ \\]]*\\}" };
-	regex arrayRegExp{ "\\[[\\w,:{}\" ]*\\]" };
+void addValueToArray(ArrayValue* arrayValue, string strValue) {
+	regex boolRegExp{ "(true|false)" };
+	regex nullRegExp{ "null" };
+	regex numberRegExp{ "-?[\\d]+\\.?([\\d]+)?(\\s*)" };
+	regex strRegExp{ "\"[\\w, ]*?\"(\\s*)" };
 
-	regex keyRegExp{ "\"[\\w ]+\"\\s*:\\s*" };
+	if (regex_match(strValue, boolRegExp)) {
+		bool boolValue;
+		istringstream(strValue) >> boolalpha >> boolValue;
+		arrayValue->append(new BoolValue(boolValue));
+	}
+	else if (regex_match(strValue, nullRegExp)) {
+		arrayValue->append(new NullValue());
+	}
+	else if (regex_match(strValue, numberRegExp)) {
+		double numberValue = stod(strValue);
+		arrayValue->append(new NumberValue(numberValue));
+	}
+	else if (regex_match(strValue, strRegExp)) {
+		arrayValue->append(new StringValue(strValue));
+	}
+	else {
+		cout << "Unknown Value: " << strValue << endl << endl;
+	}
+}
+
+bool isDigit(const char character) {
+	return character >= 48 && character <= 57;
+}
+
+void replaceComma(string& jsonString) {
+	if (jsonString[0] == ',') {
+		jsonString[0] = ' ';
+		trim(jsonString);
+	}
+}
+
+string readValueSequences(string& jsonString, const string& regexStr) {
 	smatch m{};
-	while (regex_search(jsonString, m, keyRegExp)) {
-		string key = m.str();
-		//cut key
-		jsonString = jsonString.substr(jsonString.find(key) + key.size());
-		//and then find value
+	regex_search(jsonString, m, regex{ regexStr });
+	int position = jsonString.find(m.str());
+	string value;
+	if (position == 0) {
+		value = jsonString.substr(0);
+		jsonString = "";
+	}
+	else {
+		value = jsonString.substr(0, jsonString.find(m.str()) + 1);
+		jsonString = jsonString.substr(jsonString.find(m.str()) + 2);
+	}
+	return value;
+}
+
+ArrayValue* readArray(string& jsonString) {
+	regex objectRegExp{ "\\{[\\w:\\\"\\{},\\[ \\]]*\\}" };
+	regex arrayRegExp{ "\\[[\\w,:{}\"\\.\\[ \\]]*\\]" };
+
+	auto arrayValue = new ArrayValue();
+	regex commaDelimiterInArray{ "(l|e|\\d|\"|\\}|\\])\\s*,\\s*(n|t|f|\\d|\"|\\{|\\[)" };
+	checkBracketsPosition(jsonString, '[', ']');
+	cutBrackets(jsonString);
+	smatch m{};
+	while (regex_search(jsonString, m, commaDelimiterInArray)) {
 		if (jsonString[0] == '{') {
 			regex_search(jsonString, m, objectRegExp);
-			int objectStartPosition = jsonString.find(m.str());
-			string str = jsonString.substr(objectStartPosition, m.str().size());
-			//			cout << str << endl;
-			key = clearKey(key);
-			jsonString = jsonString.substr(objectStartPosition + m.str().size());
-			objectValue->append(KeyValuePair{ key, readObject(str) });
+			string object = cutValue(jsonString, m.str());//return object
+			arrayValue->append(readObject(object));
 		}
 		else if (jsonString[0] == '[') {
 			regex_search(jsonString, m, arrayRegExp);
+			string array = cutValue(jsonString, m.str());//return array
+			replaceComma(jsonString);
+			arrayValue->append(readArray(array));
 		}
 		else {
-			regex_search(jsonString, m, commaDelimiter);
+			string strValue = jsonString.substr(0, jsonString.find(m.str()) + 1);
+			jsonString = jsonString.substr(jsonString.find(m.str()) + 2);
+			replaceComma(jsonString);
+			trim(jsonString);
+			trim(strValue);
+			addValueToArray(arrayValue, strValue);
+		}
+	}
+	if (!jsonString.empty()) {
+		trim(jsonString);
+		if (jsonString[0] == '{') {
+			arrayValue->append(readObject(jsonString));
+		}
+		else if (jsonString[0] == '[') {
+			arrayValue->append(readArray(jsonString));
+		}
+		else {
+			addValueToArray(arrayValue, jsonString);
+		}
+	}
+	return arrayValue;
+}
+
+ObjectValue* readObject(string& jsonString) {
+	checkBracketsPosition(jsonString, '{', '}');
+	cutBrackets(jsonString);
+	auto objectValue = new ObjectValue();
+
+	regex commaDelimiterInObject{ "(l|e|\\d|\"|\\}|\\])\\s*,\\s*\"" };
+
+	smatch m{};
+	while (regex_search(jsonString, m, regex{ "\"[\\w ]+\"\\s*:\\s*" })) {
+		string key = m.str();
+		jsonString = jsonString.substr(jsonString.find(key) + key.size());//cut key
+		key = clearKey(key);//clear key from '"' and ':'
+		if (jsonString[0] == '{') {
+			string object = readValueSequences(jsonString, "\\}\\s*,\\s*\"");
+			objectValue->append(KeyValuePair{ key, readObject(object) });
+		}
+		else if (jsonString[0] == '[') {
+			string array = readValueSequences(jsonString, "\\]\\s*,\\s*\"");
+			objectValue->append(KeyValuePair{ key, readArray(array) });
+		}
+		else {
+			regex_search(jsonString, m, commaDelimiterInObject);
 			int position = jsonString.find(m.str());
 			string strValue;
-			//clear key from '"' and ':'
-			key = clearKey(key);
-			if (position == 0) {//== 0 if not found
-				strValue = jsonString.substr(0);//remove last }
+			if (isDigit(jsonString[0]) || position != 0) {
+				strValue = jsonString.substr(0, position + 1);
 				addValueToObject(objectValue, strValue, key);
 			}
 			else {
-				strValue = jsonString.substr(0, position + 1);
+				strValue = jsonString.substr(0);
 				addValueToObject(objectValue, strValue, key);
 			}
 		}
