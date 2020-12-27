@@ -1,5 +1,5 @@
-#include "api.h"
-#include "JsonFormatException.h"
+#include "./api.h"
+#include "./JsonFormatException.h"
 
 enum JsonBrackets {
 	START_OBJECT = '{',
@@ -11,28 +11,6 @@ enum JsonBrackets {
 ObjectValue *readObject(string &jsonString);
 
 ArrayValue *readArray(string &jsonString);
-
-void addValueToObject(ObjectValue *objectValue, string strValue, string key) {
-	regex boolRegExp{"(true|false)"};
-	regex nullRegExp{"null"};
-	regex numberRegExp{"-?[\\d]+\\.?([\\d]+)?(\\s*)"};
-	regex strRegExp{"\"[\\w, ]*?\"(\\s*)"};
-
-	if (regex_match(strValue, boolRegExp)) {
-		bool boolValue;
-		istringstream(strValue) >> boolalpha >> boolValue;
-		objectValue->append(KeyValuePair{key, new BoolValue(boolValue)});
-	} else if (regex_match(strValue, nullRegExp)) {
-		objectValue->append(KeyValuePair{key, new NullValue()});
-	} else if (regex_match(strValue, numberRegExp)) {
-		double numberValue = stod(strValue);
-		objectValue->append(KeyValuePair{key, new NumberValue(numberValue)});
-	} else if (regex_match(strValue, strRegExp)) {
-		objectValue->append(KeyValuePair{key, new StringValue(strValue)});
-	} else {
-		cout << "Unknown Value: " << strValue << endl << endl;
-	}
-}
 
 string clearKey(const string &str) {
 	int pos1 = str.find('"');
@@ -84,25 +62,20 @@ void cutBrackets(string &jsonString) {
 	jsonString = jsonString.substr(0, jsonString.size() - 1);//cut '}'
 }
 
-void addValueToArray(ArrayValue *arrayValue, string strValue) {
-	regex boolRegExp{"(true|false)"};
-	regex nullRegExp{"null"};
-	regex numberRegExp{"-?[\\d]+\\.?([\\d]+)?(\\s*)"};
-	regex strRegExp{"\"[\\w, ]*?\"(\\s*)"};
-
-	if (regex_match(strValue, boolRegExp)) {
+Value *getValue(const string &strValue) {
+	if (regex_match(strValue, regex{"(true|false)"})) {
 		bool boolValue;
 		istringstream(strValue) >> boolalpha >> boolValue;
-		arrayValue->append(new BoolValue(boolValue));
-	} else if (regex_match(strValue, nullRegExp)) {
-		arrayValue->append(new NullValue());
-	} else if (regex_match(strValue, numberRegExp)) {
-		double numberValue = stod(strValue);
-		arrayValue->append(new NumberValue(numberValue));
-	} else if (regex_match(strValue, strRegExp)) {
-		arrayValue->append(new StringValue(strValue));
+		return new BoolValue(boolValue);
+	} else if (regex_match(strValue, regex{"null"})) {
+		return new NullValue();
+	} else if (regex_match(strValue, regex{"-?[\\d]+\\.?([\\d]+)?(\\s*)"})) {
+		return new NumberValue(stod(strValue));
+	} else if (regex_match(strValue, regex{"\"[\\w, ]*?\"(\\s*)"})) {
+		return new StringValue(strValue);
 	} else {
 		cout << "Unknown Value: " << strValue << endl << endl;
+		throw JsonFormatException("Unknown value");
 	}
 }
 
@@ -156,7 +129,7 @@ ArrayValue *readArray(string &jsonString) {
 			replaceComma(jsonString);
 			trim(jsonString);
 			trim(strValue);
-			addValueToArray(arrayValue, strValue);
+			arrayValue->append(getValue(strValue));
 		}
 	}
 	if (!jsonString.empty()) {
@@ -166,7 +139,7 @@ ArrayValue *readArray(string &jsonString) {
 		} else if (jsonString[0] == JsonBrackets::START_ARRAY) {
 			arrayValue->append(readArray(jsonString));
 		} else {
-			addValueToArray(arrayValue, jsonString);
+			arrayValue->append(getValue(jsonString));
 		}
 	}
 	return arrayValue;
@@ -178,7 +151,7 @@ ObjectValue *readObject(string &jsonString) {
 	auto objectValue = new ObjectValue();
 
 	smatch m{};
-	while (regex_search(jsonString, m, regex{"\"[\\w ]+\"\\s*:\\s*"})) {
+	while (regex_search(jsonString, m, regex{"\"[\\w ]*\"\\s*:\\s*"})) {
 		string key = m.str();
 		jsonString = jsonString.substr(jsonString.find(key) + key.size());//cut key
 		key = clearKey(key);//clear key from '"' and ':'
@@ -192,14 +165,13 @@ ObjectValue *readObject(string &jsonString) {
 			regex_search(jsonString, m, regex{"(l|e|\\d|\"|\\}|\\])\\s*,\\s*\""});
 			int position = jsonString.find(m.str());
 			string strValue;
-			if ((isDigit(jsonString[0]) &&
-				 (regex_match(string{jsonString[1]}, regex{"[\\s]"}) || jsonString[1] == ',' || jsonString[1] == '\0'))
-				|| position != 0) {
+			if ((isDigit(jsonString[0]) && (regex_match(string{jsonString[1]}, regex{"[\\s]"})
+											|| jsonString[1] == ',' || jsonString[1] == '\0')) || position != 0) {
 				strValue = jsonString.substr(0, position + 1);
 			} else {
 				strValue = jsonString.substr(0);
 			}
-			addValueToObject(objectValue, strValue, key);
+			objectValue->append(KeyValuePair{key, getValue(strValue)});
 		}
 	}
 	return objectValue;

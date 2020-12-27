@@ -6,7 +6,7 @@ int main() {
 	try {
 //just test
 //		Value *value = JSON::deserialize("{\"arr\": [12, [1, true], [21],7]}");
-		Value *value = JSON::deserialize("{\"alpha\":{\"beta\":100,\"gamma\":200},\"delta\":[0,1,2,3,4,null,{\"a\":\"b\",\"c\":{},\"d\":[],\"e\":true,\"f\":false,\"g\":[{},{},{},[],[]]}]}");
+		Value *value = JSON::deserialize("{\"alpha\":{\"beta\":-100,\"gamma\":200},\"delta\":[0,1,2,3,4,null,{\"a\":\"b\",\"c\":{},\"d\":[],\"e\":true,\"f\":false,\"g\":[{},{},{},[],[]]}]}");
 //test objects sequence
 //		Value *value = JSON::deserialize(
 //				"{\"boolean\":true,\"obj1\":{\"obj_value1\":10,\"inner_obj1\":{},\"arr\":[1]}}");
