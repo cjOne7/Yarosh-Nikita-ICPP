@@ -71,7 +71,7 @@ Value *getValue(const string &strValue) {
 		return new NullValue();
 	} else if (regex_match(strValue, regex{"-?[\\d]+\\.?([\\d]+)?(\\s*)"})) {
 		return new NumberValue(stod(strValue));
-	} else if (regex_match(strValue, regex{"\"[\\w, ]*?\"(\\s*)"})) {
+	} else if (regex_match(strValue, regex{"\"[\\w\\W]*?\"(\\s*)"})) {
 		return new StringValue(strValue);
 	} else {
 		cout << "Unknown Value: " << strValue << endl << endl;
@@ -101,8 +101,11 @@ string cutValue(string &jsonString, const char leftBracket, const char rightBrac
 			rightBracketsIndexes.append(i);
 		}
 		i++;
-		if (leftBracketsIndexes.getSize() == rightBracketsIndexes.getSize() || i >= jsonString.size()) {
+		if (leftBracketsIndexes.getSize() == rightBracketsIndexes.getSize()) {
 			break;
+		}
+		if (i >= jsonString.size()) {
+			throw JsonFormatException("");
 		}
 	}
 	string value = jsonString.substr(0, i);
@@ -115,6 +118,7 @@ ArrayValue *readArray(string &jsonString) {
 	auto arrayValue = new ArrayValue();
 	checkBracketsPosition(jsonString, JsonBrackets::START_ARRAY, JsonBrackets::END_ARRAY);
 	cutBrackets(jsonString);
+	trim(jsonString);
 	smatch m{};
 	while (regex_search(jsonString, m, regex{"(l|e|\\d|\"|\\}|\\])\\s*,\\s*(n|t|f|\\d|\"|\\{|\\[)"})) {
 		if (jsonString[0] == JsonBrackets::START_OBJECT) {
@@ -126,9 +130,9 @@ ArrayValue *readArray(string &jsonString) {
 		} else {
 			string strValue = jsonString.substr(0, jsonString.find(m.str()) + 1);
 			jsonString = jsonString.substr(jsonString.find(m.str()) + 2);
+			trim(jsonString);
 			replaceComma(jsonString);
 			trim(jsonString);
-			trim(strValue);
 			arrayValue->append(getValue(strValue));
 		}
 	}

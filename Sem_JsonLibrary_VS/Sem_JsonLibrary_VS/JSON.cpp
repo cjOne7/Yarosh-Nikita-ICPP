@@ -75,7 +75,7 @@ Value* getValue(const string& strValue) {
 	else if (regex_match(strValue, regex{ "-?[\\d]+\\.?([\\d]+)?(\\s*)" })) {
 		return new NumberValue(stod(strValue));
 	}
-	else if (regex_match(strValue, regex{ "\"[\\w, ]*?\"(\\s*)" })) {
+	else if (regex_match(strValue, regex{ "\"[\\w\\W]*?\"(\\s*)" })) {
 		return new StringValue(strValue);
 	}
 	else {

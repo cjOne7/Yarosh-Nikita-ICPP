@@ -8,7 +8,7 @@ string StringValue::get() const {
 	return value;
 }
 
-string replaceEscapeAndQuotes(const string &str) {
+string replaceEscapesAndQuotes(const string &str) {
 	string newStr;
 	int counter = 0;
 	while (str[counter] != '\0') {
@@ -39,8 +39,8 @@ string replaceEscapeAndQuotes(const string &str) {
 
 string StringValue::serialize() const {
 	stringstream ss;
-//	ss << '"' << replaceEscapeAndQuotes(value) << '"';
-	ss << value;
+	ss << replaceEscapesAndQuotes(value);
+//	ss << value;
 	return ss.str();
 }
 
