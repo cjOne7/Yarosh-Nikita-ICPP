@@ -4,10 +4,9 @@
 
 int main() {
 	try {
-		//todo test objects in array and vice versa
 //just test
 //		Value *value = JSON::deserialize("{\"arr\": [12, [1, true], [21],7]}");
-//		Value *value = JSON::deserialize("{\"boolean\":true,\"obj1\":{\"obj_value1\":10,\"inner_obj1\":{},\"arr\":[1]}}");
+		Value *value = JSON::deserialize("{\"alpha\":{\"beta\":100,\"gamma\":200},\"delta\":[0,1,2,3,4,null,{\"a\":\"b\",\"c\":{},\"d\":[],\"e\":true,\"f\":false,\"g\":[{},{},{},[],[]]}]}");
 //test objects sequence
 //		Value *value = JSON::deserialize(
 //				"{\"boolean\":true,\"obj1\":{\"obj_value1\":10,\"inner_obj1\":{},\"arr\":[1]}}");
@@ -18,8 +17,8 @@ int main() {
 //		Value *value = JSON::deserialize(
 //				"{\"boolean\":true,\"arr1\":[1,true],\"arr2\":[2,false]}");
 //test inner objects in objects and arrays in arrays
-		Value *value = JSON::deserialize(
-				"{\"boolean\":true,\"arr\":[1,true,[null, 1.2],[]],\"obj\":{\"obj_value\":123,\"inner_obj\":{\"inner_obj_value\":\"inner string\"}}}");
+//		Value *value = JSON::deserialize(
+//				"{\"boolean\":true,\"arr\":[1,true,[null, 1.2],[]],\"obj\":{\"obj_value\":123,\"inner_obj\":{\"inner_obj_value\":\"inner string\"}}}");
 //test primitives
 //		Value *value = JSON::deserialize(
 //				"{\"boolean\":true, \"boolean1\":false, \"num asdd\":123.2,\"null_value\":null, \"str\":\" some, string\"}");

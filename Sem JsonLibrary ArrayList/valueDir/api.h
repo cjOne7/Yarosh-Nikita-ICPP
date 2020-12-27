@@ -279,7 +279,7 @@ public:
 	// -- cokoliv jin�ho - vyvol�v�m v�jimku
 	// - nen� p��pustn� vracet nullptr
 	// - deserializace mus� b�t rozumn� implementov�na - nen� p��pustn� zde napsat jednu extr�mn� dlouhou metodu
-	static Value *deserialize(const std::string &str);
+	static Value *deserialize(const std::string &string);
 
 	// - provede serializaci do JSON �et�zce
 	static std::string serialize(const Value *value);
@@ -288,32 +288,3 @@ public:
 
 ///////////////////////////////////////////////////////////////////////////////
 
-template<typename T>
-class SimpleStack {
-private:
-	DynamicArray<T> *stack;
-public:
-	SimpleStack() {
-		stack = new DynamicArray<T>;
-	}
-
-	virtual ~SimpleStack() {
-		delete stack;
-	}
-
-	bool isEmpty() {
-		return stack->isEmpty();
-	}
-
-	void push(const string &item) {
-		stack->append(item);
-	}
-
-	T pop() {
-		return stack->removeLast();
-	}
-
-	T peek() {
-		return stack->getElementAt(stack->getSize() - 1);
-	}
-};

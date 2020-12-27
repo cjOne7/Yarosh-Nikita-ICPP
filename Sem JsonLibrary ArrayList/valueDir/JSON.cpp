@@ -1,14 +1,11 @@
 #include "api.h"
 #include "JsonFormatException.h"
 
-enum OpeningsChars {
+enum JsonBrackets {
 	START_OBJECT = '{',
 	END_OBJECT = '}',
 	START_ARRAY = '[',
-	END_ARRAY = ']',
-	START_END_KEY = '"',
-	NAME_SEPARATOR = ':',
-	VALUE_SEPARATOR = ','
+	END_ARRAY = ']'
 };
 
 ObjectValue *readObject(string &jsonString);
@@ -142,20 +139,16 @@ string cutValue(string &jsonString, const char leftBracket, const char rightBrac
 }
 
 ArrayValue *readArray(string &jsonString) {
-	regex objectRegExp{"\\{[\\w:\\\"\\{},\\[ \\]]*\\}"};
-	regex arrayRegExp{"\\[[\\w,:{}\"\\.\\[ \\]]*\\]"};
-
 	auto arrayValue = new ArrayValue();
-	regex commaDelimiterInArray{"(l|e|\\d|\"|\\}|\\])\\s*,\\s*(n|t|f|\\d|\"|\\{|\\[)"};
-	checkBracketsPosition(jsonString, '[', ']');
+	checkBracketsPosition(jsonString, JsonBrackets::START_ARRAY, JsonBrackets::END_ARRAY);
 	cutBrackets(jsonString);
 	smatch m{};
-	while (regex_search(jsonString, m, commaDelimiterInArray)) {
-		if (jsonString[0] == '{') {
-			string object = cutValue(jsonString, '{', '}');
+	while (regex_search(jsonString, m, regex{"(l|e|\\d|\"|\\}|\\])\\s*,\\s*(n|t|f|\\d|\"|\\{|\\[)"})) {
+		if (jsonString[0] == JsonBrackets::START_OBJECT) {
+			string object = cutValue(jsonString, JsonBrackets::START_OBJECT, JsonBrackets::END_OBJECT);
 			arrayValue->append(readObject(object));
-		} else if (jsonString[0] == '[') {
-			string array = cutValue(jsonString, '[', ']');
+		} else if (jsonString[0] == JsonBrackets::START_ARRAY) {
+			string array = cutValue(jsonString, JsonBrackets::START_ARRAY, JsonBrackets::END_ARRAY);
 			arrayValue->append(readArray(array));
 		} else {
 			string strValue = jsonString.substr(0, jsonString.find(m.str()) + 1);
@@ -168,9 +161,9 @@ ArrayValue *readArray(string &jsonString) {
 	}
 	if (!jsonString.empty()) {
 		trim(jsonString);
-		if (jsonString[0] == '{') {
+		if (jsonString[0] == JsonBrackets::START_OBJECT) {
 			arrayValue->append(readObject(jsonString));
-		} else if (jsonString[0] == '[') {
+		} else if (jsonString[0] == JsonBrackets::START_ARRAY) {
 			arrayValue->append(readArray(jsonString));
 		} else {
 			addValueToArray(arrayValue, jsonString);
@@ -180,77 +173,40 @@ ArrayValue *readArray(string &jsonString) {
 }
 
 ObjectValue *readObject(string &jsonString) {
-	checkBracketsPosition(jsonString, '{', '}');
+	checkBracketsPosition(jsonString, JsonBrackets::START_OBJECT, JsonBrackets::END_OBJECT);
 	cutBrackets(jsonString);
 	auto objectValue = new ObjectValue();
-
-	regex commaDelimiterInObject{"(l|e|\\d|\"|\\}|\\])\\s*,\\s*\""};
 
 	smatch m{};
 	while (regex_search(jsonString, m, regex{"\"[\\w ]+\"\\s*:\\s*"})) {
 		string key = m.str();
 		jsonString = jsonString.substr(jsonString.find(key) + key.size());//cut key
 		key = clearKey(key);//clear key from '"' and ':'
-		if (jsonString[0] == '{') {
-			DynamicArray<int> leftBracketsIndexes{};
-			DynamicArray<int> rightBracketsIndexes{};
-			int i = 0;
-			while (true) {
-				if (jsonString[i] == '{') {
-					leftBracketsIndexes.append(i);
-				} else if (jsonString[i] == '}') {
-					rightBracketsIndexes.append(i);
-				}
-				i++;
-				if (leftBracketsIndexes.getSize() == rightBracketsIndexes.getSize() || i >= jsonString.size()) {
-					break;
-				}
-			}
-			string object = jsonString.substr(0, i);
-//			cout << object << endl;
-			jsonString = jsonString.substr(i);
-			replaceComma(jsonString);
+		if (jsonString[0] == JsonBrackets::START_OBJECT) {//if object was found
+			string object = cutValue(jsonString, JsonBrackets::START_OBJECT, JsonBrackets::END_OBJECT);
 			objectValue->append(KeyValuePair{key, readObject(object)});
-		} else if (jsonString[0] == '[') {
-			DynamicArray<int> leftBracketsIndexes{};
-			DynamicArray<int> rightBracketsIndexes{};
-			int i = 0;
-			while (true) {
-				if (jsonString[i] == '[') {
-					leftBracketsIndexes.append(i);
-				} else if (jsonString[i] == ']') {
-					rightBracketsIndexes.append(i);
-				}
-				i++;
-				if (leftBracketsIndexes.getSize() == rightBracketsIndexes.getSize() || i >= jsonString.size()) {
-					break;
-				}
-			}
-			string array = jsonString.substr(0, i);
-//			cout << array << endl;
-			jsonString = jsonString.substr(i);
-			replaceComma(jsonString);
+		} else if (jsonString[0] == JsonBrackets::START_ARRAY) {//if array was found
+			string array = cutValue(jsonString, JsonBrackets::START_ARRAY, JsonBrackets::END_ARRAY);
 			objectValue->append(KeyValuePair{key, readArray(array)});
-		} else {
-			regex_search(jsonString, m, commaDelimiterInObject);
+		} else {//if primitives were found
+			regex_search(jsonString, m, regex{"(l|e|\\d|\"|\\}|\\])\\s*,\\s*\""});
 			int position = jsonString.find(m.str());
 			string strValue;
 			if ((isDigit(jsonString[0]) &&
 				 (regex_match(string{jsonString[1]}, regex{"[\\s]"}) || jsonString[1] == ',' || jsonString[1] == '\0'))
 				|| position != 0) {
 				strValue = jsonString.substr(0, position + 1);
-				addValueToObject(objectValue, strValue, key);
 			} else {
 				strValue = jsonString.substr(0);
-				addValueToObject(objectValue, strValue, key);
 			}
+			addValueToObject(objectValue, strValue, key);
 		}
 	}
 	return objectValue;
 }
 
-Value *JSON::deserialize(const string &str) {
-	string jsonString = str;
+Value *JSON::deserialize(const string &string) {
+	std::string jsonString = string;
 	return readObject(jsonString);
 }
 
