@@ -105,7 +105,7 @@ string cutValue(string &jsonString, const char leftBracket, const char rightBrac
 			break;
 		}
 		if (i >= jsonString.size()) {
-			throw JsonFormatException("");
+			throw JsonFormatException("Number of left brackets don't match with number of right brackets");
 		}
 	}
 	string value = jsonString.substr(0, i);
@@ -155,7 +155,7 @@ ObjectValue *readObject(string &jsonString) {
 	auto objectValue = new ObjectValue();
 
 	smatch m{};
-	while (regex_search(jsonString, m, regex{"\"[\\w ]*\"\\s*:\\s*"})) {
+	while (regex_search(jsonString, m, regex{"\"[\\w' ]*\"\\s*:\\s*"})) {
 		string key = m.str();
 		jsonString = jsonString.substr(jsonString.find(key) + key.size());//cut key
 		key = clearKey(key);//clear key from '"' and ':'
