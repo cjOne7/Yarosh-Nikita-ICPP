@@ -5,9 +5,9 @@
 int main() {
 	try {
 //just test
-//		Value *value = JSON::deserialize("{\"str\": \"Hello, !@#$%^&*()_/*-+=1234567890:;|,.<> \' \\ \" World?!\", \"str\": \"Hello, \'\\\"World?!\"}");
-		Value *value = JSON::deserialize(
-				"{ \"alpha\":{      \"beta\" : 100 , \"gamma\":200},\"delta\" : [ 0 , 1 , 2 ,3      ,4  ,null      , { \"a\"          :\"b\",\"c\":    { }        ,\"d\": [  ] ,\"e\":true,\"f\":false,\"g\":[{ },{ }, {}, [],[ ]]  } ] }");
+		Value *value = JSON::deserialize("{\"str\": \"Hello, !@#$%^&*()_/*-+=1234567890:;|,.<> \' \\ \" World?!\", \"str\": \"Hello, \'\\\"World?!\"}");
+//		Value *value = JSON::deserialize(
+//				"{ \"alpha\":{      \"beta\" : 100 , \"gamma\":200},\"delta\" : [ 0 , 1 , 2 ,3      ,4  ,null      , { \"a\"          :\"b\",\"c\":    { }        ,\"d\": [  ] ,\"e\":true,\"f\":false,\"g\":[{ },{ }, {}, [],[ ]]  } ] }");
 //test objects sequence
 //		Value *value = JSON::deserialize(
 //				"{\"boolean\":true,\"obj1\":{\"obj_value1\":10,\"inner_obj1\":{},\"arr\":[1]}}");

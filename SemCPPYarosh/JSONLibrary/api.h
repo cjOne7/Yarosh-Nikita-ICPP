@@ -1,9 +1,11 @@
-#pragma once
+﻿#pragma once
 
 #include <string>
 #include <iostream>
 #include <sstream>
 #include <regex>
+#include "platform.h"
+
 
 using namespace std;
 
@@ -19,10 +21,10 @@ public:
 	~DynamicArray();
 
 	// - p�id� element na konec pole
-	void append(const T &element);
+	void append(const T& element);
 
 	// - v�jimky p�i neplatn�m nebo nekorektn�m indexu
-	const T &getElementAt(int index) const;
+	const T& getElementAt(int index) const;
 
 	// - vrac� velikost (po�et prvk�) v poli
 	int getSize() const;
@@ -36,7 +38,7 @@ private:
 	int growingCoefficient = 2;
 	int capacity = START_SIZE;
 	int size = 0;
-	T *array;
+	T* array;
 
 	void boostArray();
 
@@ -69,7 +71,7 @@ DynamicArray<T>::~DynamicArray() {
 template<typename T>
 void DynamicArray<T>::boostArray() {
 	capacity = growingCoefficient * capacity;
-	T *newArray = new T[capacity];
+	T* newArray = new T[capacity];
 	for (int i = 0; i < size; ++i) {
 		newArray[i] = array[i];
 	}
@@ -83,7 +85,7 @@ int DynamicArray<T>::getSize() const {
 }
 
 template<typename T>
-void DynamicArray<T>::append(const T &element) {
+void DynamicArray<T>::append(const T& element) {
 	if (isFull()) {
 		boostArray();
 	}
@@ -91,7 +93,7 @@ void DynamicArray<T>::append(const T &element) {
 }
 
 template<typename T>
-const T &DynamicArray<T>::getElementAt(int index) const {
+const T& DynamicArray<T>::getElementAt(int index) const {
 	checkSize(index);
 	return array[index];
 }
@@ -123,21 +125,21 @@ public:
 
 
 // - definuje p�r kl�� (�et�zec) a hodnota (JSON hodnota) pro reprezentaci hodnot JSON objektu
-class KeyValuePair {
+class KeyValuePair  {
 private:
 	std::string key;
-	Value *value;
+	Value* value;
 public:
 
 	KeyValuePair() = default;
 
-	KeyValuePair(std::string key, Value *value);
+	KeyValuePair(std::string key, Value* value);
 
 	// - vr�t� kl��
 	std::string getKey() const;
 
 	// - vr�t� hodnotu
-	Value *getValue() const;
+	Value* getValue() const;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -199,7 +201,7 @@ public:
 class ArrayValue : public Value {
 public:
 	ArrayValue() {
-		dynamicArray = new DynamicArray<Value *>();
+		dynamicArray = new DynamicArray<Value*>();
 	}
 
 	~ArrayValue() {
@@ -210,13 +212,13 @@ public:
 	}
 
 	// - p�id� element na konec pole
-	void append(Value *element);
+	void append(Value* element);
 
 	std::string serialize() const override;
 
 private:
 	// - atribut DynamicArray<Value*> pro uchov�n� jednotliv�ch element� v poli
-	DynamicArray<Value *> *dynamicArray;
+	DynamicArray<Value*>* dynamicArray;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -237,19 +239,19 @@ public:
 	}
 
 	// - p�id� kl��-element do objektu
-	void append(const KeyValuePair &pair);
+	void append(const KeyValuePair& pair);
 
 	std::string serialize() const override;
 
 private:
 	// - atribut DynamicArray<KeyValuePair> pro uchov�n� jednotliv�ch hodnot a kl��� v objektu
-	DynamicArray<KeyValuePair> *dynamicObjectArray;
+	DynamicArray<KeyValuePair>* dynamicObjectArray;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
 
 // - t��da pro pr�ci s JSON
-class JSON {
+class DLL_SPEC JSON {
 public:
 	// - provede deserializaci �et�zce na vytvo�en� objekty
 	// - p�e�tu znak a rozhodnu se
@@ -265,10 +267,10 @@ public:
 	// -- cokoliv jin�ho - vyvol�v�m v�jimku
 	// - nen� p��pustn� vracet nullptr
 	// - deserializace mus� b�t rozumn� implementov�na - nen� p��pustn� zde napsat jednu extr�mn� dlouhou metodu
-	static Value *deserialize(const std::string &string);
+	static Value* deserialize(const std::string& string);
 
 	// - provede serializaci do JSON �et�zce
-	static std::string serialize(const Value *value);
+	static std::string serialize(const Value* value);
 
 };
 

@@ -29,6 +29,8 @@ public:
 
 	bool isFull() const;
 
+	T remove(int index);
+
 private:
 	const int START_SIZE = 5;
 	int growingCoefficient = 2;
@@ -94,14 +96,27 @@ const T& DynamicArray<T>::getElementAt(int index) const {
 	return array[index];
 }
 
+template<typename T>
+T DynamicArray<T>::remove(int index) {
+	T value = array[index];
+	int i = 0;
+	while (i != size - index - 1) {
+		array[index + i] = array[index + i + 1];
+		i++;
+	}
+	size--;
+	return value;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 // JSON hodnota - reprezentuje abstraktn�ho p�edka pro z�kladn� datov� typy v JSON (string, number, object, array, bool, null)
 class Value {
 public:
 	virtual ~Value() = default;
+
 	// serializuje hodnotu do podoby JSON reprezentace
-	virtual string serialize() const = 0;
+	virtual std::string serialize() const = 0;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -110,16 +125,16 @@ public:
 // - definuje p�r kl�� (�et�zec) a hodnota (JSON hodnota) pro reprezentaci hodnot JSON objektu
 class KeyValuePair {
 private:
-	string key;
+	std::string key;
 	Value* value;
 public:
 
 	KeyValuePair() = default;
 
-	KeyValuePair(string key, Value* value);
+	KeyValuePair(std::string key, Value* value);
 
 	// - vr�t� kl��
-	string getKey() const;
+	std::string getKey() const;
 
 	// - vr�t� hodnotu
 	Value* getValue() const;
@@ -130,7 +145,7 @@ public:
 // - reprezentuje hodnotu typu JSON null
 class NullValue : public Value {
 public:
-	string serialize() const override;
+	std::string serialize() const override;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -145,7 +160,7 @@ public:
 	// - vrac� bool hodnotu
 	bool get() const;
 
-	string serialize() const override;
+	std::string serialize() const override;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -160,7 +175,7 @@ public:
 	// - vrac� ��selnou hodnotu 
 	double get() const;
 
-	string serialize() const override;
+	std::string serialize() const override;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -168,14 +183,14 @@ public:
 // - reprezentuje hodnotu typu JSON �et�zec (string)
 class StringValue : public Value {
 private:
-	string value;
+	std::string value;
 public:
-	StringValue(string value);
+	StringValue(std::string value);
 
 	// - vrac� �et�zcovou hodnotu
-	string get() const;
+	std::string get() const;
 
-	string serialize() const override;
+	std::string serialize() const override;
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -197,7 +212,7 @@ public:
 	// - p�id� element na konec pole
 	void append(Value* element);
 
-	string serialize() const override;
+	std::string serialize() const override;
 
 private:
 	// - atribut DynamicArray<Value*> pro uchov�n� jednotliv�ch element� v poli
@@ -224,7 +239,7 @@ public:
 	// - p�id� kl��-element do objektu
 	void append(const KeyValuePair& pair);
 
-	string serialize() const override;
+	std::string serialize() const override;
 
 private:
 	// - atribut DynamicArray<KeyValuePair> pro uchov�n� jednotliv�ch hodnot a kl��� v objektu
@@ -250,15 +265,12 @@ public:
 	// -- cokoliv jin�ho - vyvol�v�m v�jimku
 	// - nen� p��pustn� vracet nullptr
 	// - deserializace mus� b�t rozumn� implementov�na - nen� p��pustn� zde napsat jednu extr�mn� dlouhou metodu
-	static Value* deserialize(const string& str);
+	static Value* deserialize(const std::string& string);
 
 	// - provede serializaci do JSON �et�zce
-	static string serialize(const Value* value);
+	static std::string serialize(const Value* value);
 
-private:
-	static void addValueToObject(ObjectValue* objectValue, string strValue, string key);
-
-	static string clearKey(const string& str);
 };
 
 ///////////////////////////////////////////////////////////////////////////////
+
