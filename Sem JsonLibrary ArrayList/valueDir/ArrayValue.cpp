@@ -16,3 +16,7 @@ string ArrayValue::serialize() const {
 	ss << "]";
 	return ss.str();
 }
+
+DynamicArray<Value *> *ArrayValue::getDynamicArray() const {
+	return dynamicArray;
+}

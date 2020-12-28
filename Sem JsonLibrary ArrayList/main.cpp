@@ -1,6 +1,7 @@
 #include <iostream>
 #include "valueDir/api.h"
 #include "valueDir/JsonFormatException.h"
+#include "Student.h"
 #include <fstream>
 
 int main() {
@@ -28,61 +29,79 @@ int main() {
 //		Value *value = JSON::deserialize(
 //				"{\"boolean\":true, \"boolean1\":false, \"num asdd\":123.2,\"null_value\":null, \"str\":\" some, string\"}");
 //array of objects
-		Value *value = JSON::deserialize(
-				"{\"users\":[{\"id\":1,\"name\":\"Nikita\",\"surname\":\"Yarosh\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Pardubice\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]},{\"id\":2,\"name\":\"Vlad\",\"surname\":\"Ermolaev\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Kolin\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]},{\"id\":3,\"name\":\"Andrii\",\"surname\":\"Andrusenko\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Prelouc\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]},{\"id\":4,\"name\":\"Dmytro\",\"surname\":\"Hrychanok\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Pardubice\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]}]}");
+//		Value *value = JSON::deserialize(
+//				"{\"users\":[{\"id\":1,\"name\":\"Nikita\",\"surname\":\"Yarosh\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Pardubice\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]},{\"id\":2,\"name\":\"Vlad\",\"surname\":\"Ermolaev\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Kolin\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]},{\"id\":3,\"name\":\"Andrii\",\"surname\":\"Andrusenko\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Prelouc\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]},{\"id\":4,\"name\":\"Dmytro\",\"surname\":\"Hrychanok\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Pardubice\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]}]}");
 //test all
 //		Value *value = JSON::deserialize(
 //				"{\"v_true\":true,\"v_false\":false,\"v_null\":null,\"v_int\":123,\"v_double\":1.23,\"v_string\":\"Hello, World\",\"v_array\":[1,2.3,true,false,null,{},[]]}");
 //		cout << JSON::serialize(value);
-		ofstream fileWriter{};
-		fileWriter.open("students.json");
-		if (fileWriter.is_open()) {
-			fileWriter << JSON::serialize(value);
-			fileWriter.close();
-		}
+//		ofstream fileWriter{};
+//		fileWriter.open("students.json");
+//		if (fileWriter.is_open()) {
+//			fileWriter << JSON::serialize(value) << endl;
+//			fileWriter.close();
+//		}
 
 		ifstream fileReader{};
 		fileReader.open("students.json");
-		string strValue = "";
+		string *strValue = new string("");
 		if (fileReader.is_open()) {
-			while (getline(fileReader, strValue)) {
-				for (int i = 0; i < strValue.size(); ++i) {
-					if (strValue[i] == '\\' && strValue[i + 1] == '\"') {
-						strValue = strValue.replace(i, 2, "\"");
-					} else if (strValue[i] == '\\' && strValue[i + 1] == '\\') {
-						strValue = strValue.replace(i, 2, "\\");
+			getline(fileReader, *strValue);
+			for (int i = 0; i < (*strValue).size(); ++i) {
+				if ((*strValue)[i] == '\\' && (*strValue)[i + 1] == '\"') {
+					*strValue = (*strValue).replace(i, 2, "\"");
+				} else if ((*strValue)[i] == '\\' && (*strValue)[i + 1] == '\\') {
+					*strValue = (*strValue).replace(i, 2, "\\");
+				}
+			}
+			DynamicArray<Student> dynamicArray{};
+			fileReader.close();
+			Value *value = JSON::deserialize(*strValue);
+			if (ObjectValue *objectValue = dynamic_cast<ObjectValue *>(value)) {
+				if (ArrayValue *arrayValue = dynamic_cast<ArrayValue *>(objectValue->getDynamicObjectArray()->getElementAt(0).getValue())) {
+					for (int i = 0; i < arrayValue->getDynamicArray()->getSize(); i++) {
+						if (ObjectValue *objectArrayValue = dynamic_cast<ObjectValue *>(arrayValue->getDynamicArray()->getElementAt(i))) {
+//							cout << objectArrayValue->getDynamicObjectArray()->getSize() << endl;
+							DynamicArray<KeyValuePair> *students = objectArrayValue->getDynamicObjectArray();
+							for (int j = 0; j < students->getSize(); j++) {
+								cout << students->getElementAt(j).getKey() << ": ";
+								cout << students->getElementAt(j).getValue()->serialize() << endl;
+								Student student{};
+							}
+						}
 					}
 				}
-				value = JSON::deserialize(strValue);
 			}
-		}
-		fileReader.close();
-		cout << JSON::serialize(value) << endl;
-
-		fileWriter.open("students.json");
-		if (fileWriter.is_open()) {
-			fileWriter << JSON::serialize(value);
-			fileWriter.close();
+//			cout << JSON::serialize(value) << endl;
+			delete strValue;
+			delete value;
 		}
 
-		fileReader.open("students.json");
-		strValue = "";
-		if (fileReader.is_open()) {
-			while (getline(fileReader, strValue)) {
-				for (int i = 0; i < strValue.size(); ++i) {
-					if (strValue[i] == '\\' && strValue[i + 1] == '\"') {
-						strValue = strValue.replace(i, 2, "\"");
-					} else if (strValue[i] == '\\' && strValue[i + 1] == '\\') {
-						strValue = strValue.replace(i, 2, "\\");
-					}
-				}
-				value = JSON::deserialize(strValue);
-			}
-		}
-		fileReader.close();
-		cout << JSON::serialize(value) << endl;
 
-		delete value;
+//		fileWriter.open("students.json");
+//		if (fileWriter.is_open()) {
+//			fileWriter << JSON::serialize(value);
+//			fileWriter.close();
+//		}
+
+//		fileReader.open("students.json");
+//		strValue = "";
+//		if (fileReader.is_open()) {
+//			while (getline(fileReader, strValue)) {
+//				for (int i = 0; i < strValue.size(); ++i) {
+//					if (strValue[i] == '\\' && strValue[i + 1] == '\"') {
+//						strValue = strValue.replace(i, 2, "\"");
+//					} else if (strValue[i] == '\\' && strValue[i + 1] == '\\') {
+//						strValue = strValue.replace(i, 2, "\\");
+//					}
+//				}
+//				value = JSON::deserialize(strValue);
+//			}
+//		}
+//		fileReader.close();
+//		cout << JSON::serialize(value) << endl;
+
+//		delete value;
 	} catch (const JsonFormatException &ex) {
 		cerr << ex.what() << endl;
 	}

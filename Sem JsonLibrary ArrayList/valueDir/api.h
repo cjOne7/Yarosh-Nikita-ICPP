@@ -212,6 +212,8 @@ public:
 	// - p�id� element na konec pole
 	void append(Value *element);
 
+	DynamicArray<Value *> *getDynamicArray() const;
+
 	std::string serialize() const override;
 
 private:
@@ -238,6 +240,8 @@ public:
 
 	// - p�id� kl��-element do objektu
 	void append(const KeyValuePair &pair);
+
+	DynamicArray<KeyValuePair> *getDynamicObjectArray() const;
 
 	std::string serialize() const override;
 

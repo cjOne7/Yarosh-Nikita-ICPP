@@ -3,22 +3,30 @@
 
 #include <string>
 #include <stdexcept>
+#include <ostream>
+#include "./valueDir/api.h"
 
 using namespace std;
 
 class Address {
 private:
-	string city;
-	string street;
-	int postCode;
+	StringValue *city;
+	StringValue *street;
+	NumberValue *postCode;
 public:
-	Address(const string &street, const string &city, int postCode);
+	Address() = default;
 
-	const string &getStreet() const;
+	Address(ObjectValue* address);
 
-	const string &getCity() const;
+	virtual ~Address();
 
-	int getPostCode() const;
+	StringValue *getCity() const;
+
+	StringValue *getStreet() const;
+
+	NumberValue *getPostCode() const;
+
+	friend ostream &operator<<(ostream &os, const Address &address);
 };
 
 

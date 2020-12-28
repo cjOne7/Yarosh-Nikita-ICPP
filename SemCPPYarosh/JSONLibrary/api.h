@@ -14,7 +14,7 @@ using namespace std;
 // - realizace mus� vyu��vat dynamicky alokovan� pole, spojov� seznam nebo jinou vhodnou V�mi implementovanou ADS
 
 template<typename T>
-class DynamicArray {
+class DLL_SPEC DynamicArray {
 public:
 	DynamicArray();
 
@@ -113,7 +113,7 @@ T DynamicArray<T>::remove(int index) {
 ///////////////////////////////////////////////////////////////////////////////
 
 // JSON hodnota - reprezentuje abstraktn�ho p�edka pro z�kladn� datov� typy v JSON (string, number, object, array, bool, null)
-class Value {
+class DLL_SPEC Value {
 public:
 	virtual ~Value() = default;
 
@@ -125,7 +125,7 @@ public:
 
 
 // - definuje p�r kl�� (�et�zec) a hodnota (JSON hodnota) pro reprezentaci hodnot JSON objektu
-class KeyValuePair  {
+class DLL_SPEC KeyValuePair  {
 private:
 	std::string key;
 	Value* value;
@@ -145,7 +145,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 // - reprezentuje hodnotu typu JSON null
-class NullValue : public Value {
+class DLL_SPEC NullValue : public Value {
 public:
 	std::string serialize() const override;
 };
@@ -153,7 +153,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 // - reprezentuje hodnotu typu JSON bool
-class BoolValue : public Value {
+class DLL_SPEC BoolValue : public Value {
 private:
 	bool boolValue;
 public:
@@ -168,7 +168,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 // - reprezentuje hodnotu typu JSON ��slo
-class NumberValue : public Value {
+class DLL_SPEC NumberValue : public Value {
 private:
 	double value;
 public:
@@ -183,7 +183,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 // - reprezentuje hodnotu typu JSON �et�zec (string)
-class StringValue : public Value {
+class DLL_SPEC StringValue : public Value {
 private:
 	std::string value;
 public:
@@ -198,7 +198,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////
 
 // - reprezentuje hodnotu typu JSON pole
-class ArrayValue : public Value {
+class DLL_SPEC ArrayValue : public Value {
 public:
 	ArrayValue() {
 		dynamicArray = new DynamicArray<Value*>();
@@ -214,6 +214,8 @@ public:
 	// - p�id� element na konec pole
 	void append(Value* element);
 
+	DynamicArray<Value*>* getDynamicArray() const;
+
 	std::string serialize() const override;
 
 private:
@@ -224,7 +226,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////
 
 // - reprezentuje hodnotu typu JSON objekt
-class ObjectValue : public Value {
+class DLL_SPEC ObjectValue : public Value {
 public:
 
 	ObjectValue() {
@@ -240,6 +242,8 @@ public:
 
 	// - p�id� kl��-element do objektu
 	void append(const KeyValuePair& pair);
+
+	DynamicArray<KeyValuePair>* getDynamicObjectArray() const;
 
 	std::string serialize() const override;
 

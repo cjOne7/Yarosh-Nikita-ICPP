@@ -39,6 +39,11 @@ void ArrayValue::append(Value* element) {
 	dynamicArray->append(element);
 }
 
+DynamicArray<Value*>* ArrayValue::getDynamicArray() const
+{
+	return dynamicArray;
+}
+
 string ArrayValue::serialize() const {
 	stringstream ss;
 	ss << "[";
@@ -54,6 +59,11 @@ string ArrayValue::serialize() const {
 
 void ObjectValue::append(const KeyValuePair& pair) {
 	dynamicObjectArray->append(pair);
+}
+
+DynamicArray<KeyValuePair>* ObjectValue::getDynamicObjectArray() const
+{
+	return dynamicObjectArray;
 }
 
 string ObjectValue::serialize() const {

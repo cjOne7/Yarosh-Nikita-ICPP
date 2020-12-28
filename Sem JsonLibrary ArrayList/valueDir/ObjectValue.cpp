@@ -17,3 +17,7 @@ string ObjectValue::serialize() const {
 	ss << "}";
 	return ss.str();
 }
+
+DynamicArray<KeyValuePair> *ObjectValue::getDynamicObjectArray() const {
+	return dynamicObjectArray;
+}

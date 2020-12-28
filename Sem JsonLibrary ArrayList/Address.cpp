@@ -1,20 +1,41 @@
 #include "Address.h"
 
-const string &Address::getStreet() const {
-	return street;
+Address::Address(ObjectValue *address) {
+	if (address != nullptr) {
+		DynamicArray<KeyValuePair> *dynamicArray = address->getDynamicObjectArray();
+		if (StringValue *city = dynamic_cast<StringValue *>(dynamicArray->getElementAt(0).getValue())) {
+			this->city = city;
+		}
+		if (StringValue *street = dynamic_cast<StringValue *>(dynamicArray->getElementAt(1).getValue())) {
+			this->street = street;
+		}
+		if (NumberValue *postCode = dynamic_cast<NumberValue *>(dynamicArray->getElementAt(2).getValue())) {
+			this->postCode = postCode;
+		}
+	}
 }
 
-const string &Address::getCity() const {
+Address::~Address() {
+	delete city;
+	delete street;
+	delete postCode;
+}
+
+StringValue *Address::getCity() const {
 	return city;
 }
 
-int Address::getPostCode() const {
+StringValue *Address::getStreet() const {
+	return street;
+}
+
+NumberValue *Address::getPostCode() const {
 	return postCode;
 }
 
-Address::Address(const string &street, const string &city, int postCode)
-		: street(street), city(city), postCode(postCode) {
-	if (street.empty() || city.empty() || postCode <= 0) {
-		throw invalid_argument("Invalid address arguments");
-	}
+ostream &operator<<(ostream &os, const Address &address) {
+	os << "city: " << address.city->serialize()
+	   << " street: " << address.street->serialize()
+	   << " postCode: " << address.postCode->serialize();
+	return os;
 }
