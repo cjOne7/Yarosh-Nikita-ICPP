@@ -10,40 +10,31 @@ void replaceEscape() {
 
 }
 
-string buildOutputString(const DynamicArray<Student*>& dynamicStudentsArray) {
-	stringstream ss;
-	cout << endl;
-	ss << "{\"users\":[";
-	for (int i = 0; i < dynamicStudentsArray.getSize(); ++i) {
+void writeJson(DynamicArray<Student*>* dynamicStudentsArray) {
+	stringstream* ss = new stringstream();
+	*ss << "{\"users\":[";
+	for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
 		//			cout << *dynamicStudentsArray->getElementAt(i) << endl;
-		ss << *dynamicStudentsArray.getElementAt(i);
-		if (i != dynamicStudentsArray.getSize() - 1) {
-			ss << ',';
+		*ss << *dynamicStudentsArray->getElementAt(i);
+		if (i != dynamicStudentsArray->getSize() - 1) {
+			*ss << ',';
 		}
 	}
-	ss << "]}";
-	return ss.str();
-}
+	*ss << "]}";
 
-void writeJson(const DynamicArray<Student*>& dynamicStudentsArray) {
 	ofstream fileWriter{ "students.json" };
+	fileWriter.open("students.json");
 	if (fileWriter.is_open()) {
-		fileWriter << JSON::serialize(JSON::deserialize(buildOutputString(dynamicStudentsArray))) << endl;
+		Value* v = JSON::deserialize(ss->str());
+		fileWriter << JSON::serialize(v) << endl;
+		fileWriter.flush();
 		fileWriter.close();
+		delete v;
 	}
+	delete ss;
 }
 
-int main() {
-	//   Value* value = JSON::deserialize(
-	//       "{\"users\":[{\"id\":1,\"name\":\"Nikita\",\"surname\":\"Yarosh\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Pardubice\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]},{\"id\":2,\"name\":\"Vlad\",\"surname\":\"Ermolaev\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Kolin\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]},{\"id\":3,\"name\":\"Andrii\",\"surname\":\"Andrusenko\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Prelouc\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]},{\"id\":4,\"name\":\"Dmytro\",\"surname\":\"Hrychanok\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Pardubice\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[]}]}");
-	   //ofstream fileWriter{};
-	   //fileWriter.open("students.json");
-	   //if (fileWriter.is_open()) {
-	   //	fileWriter << JSON::serialize(value);
-	   //}
-	   //fileWriter.close();
-	   //cout << JSON::serialize(value) << endl;
-
+string* readJson() {
 	ifstream fileReader{};
 	fileReader.open("students.json");
 	string* strValue = new string("");
@@ -59,7 +50,37 @@ int main() {
 		}
 	}
 	fileReader.close();
+	return strValue;
+}
 
+int main() {
+	//   Value* value = JSON::deserialize(
+	//       "{\"users\":[{\"id\":1,\"name\":\"Nikita\",\"surname\":\"Yarosh\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Pardubice\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]},{\"id\":2,\"name\":\"Vlad\",\"surname\":\"Ermolaev\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Kolin\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]},{\"id\":3,\"name\":\"Andrii\",\"surname\":\"Andrusenko\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Prelouc\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]},{\"id\":4,\"name\":\"Dmytro\",\"surname\":\"Hrychanok\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Pardubice\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[]}]}");
+	   //ofstream fileWriter{};
+	   //fileWriter.open("students.json");
+	   //if (fileWriter.is_open()) {
+	   //	fileWriter << JSON::serialize(value);
+	   //}
+	   //fileWriter.close();
+	   //cout << JSON::serialize(value) << endl;
+
+	//ifstream fileReader{};
+	//fileReader.open("students.json");
+	//string* strValue = new string("");
+	//if (fileReader.is_open()) {
+	//	getline(fileReader, *strValue);
+	//	for (int i = 0; i < strValue->size(); ++i) {
+	//		if ((*strValue)[i] == '\\' && (*strValue)[i + 1] == '\"') {
+	//			*strValue = strValue->replace(i, 2, "\"");
+	//		}
+	//		else if ((*strValue)[i] == '\\' && (*strValue)[i + 1] == '\\') {
+	//			*strValue = strValue->replace(i, 2, "\\");
+	//		}
+	//	}
+	//}
+	//fileReader.close();
+
+	string* strValue = readJson();
 	Value* value = JSON::deserialize(*strValue);
 	delete strValue;
 
@@ -98,28 +119,45 @@ int main() {
 	}
 	delete value;
 
+	//for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
+	//	cout << *dynamicStudentsArray->getElementAt(i) << endl;
+	//}
 
-	stringstream* ss = new stringstream();
-	*ss << "{\"users\":[";
-	for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
-		//			cout << *dynamicStudentsArray->getElementAt(i) << endl;
-		*ss << *dynamicStudentsArray->getElementAt(i);
-		if (i != dynamicStudentsArray->getSize() - 1) {
-			*ss << ',';
-		}
-	}
-	*ss << "]}";
+	//int command = 0;
+	//cout << "Enter command number:" << endl;
+	//cin >> command;
+	//bool state = true;
+	//while (state) {
+	//	switch (command) {
+	//	case 0: cout << "Exiting..." << endl;
+	//		state = false;
+	//		break;
+	//	}
+	//}
 
-	ofstream fileWriter{ "students.json" };
-	fileWriter.open("students.json");
-	if (fileWriter.is_open()) {
-		Value* v = JSON::deserialize(ss->str());
-		fileWriter << JSON::serialize(v) << endl;
-		fileWriter.flush();
-		fileWriter.close();
-		delete v;
-	}
-	delete ss;
+	writeJson(dynamicStudentsArray);
+
+	//stringstream* ss = new stringstream();
+	//*ss << "{\"users\":[";
+	//for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
+	//	//			cout << *dynamicStudentsArray->getElementAt(i) << endl;
+	//	*ss << *dynamicStudentsArray->getElementAt(i);
+	//	if (i != dynamicStudentsArray->getSize() - 1) {
+	//		*ss << ',';
+	//	}
+	//}
+	//*ss << "]}";
+
+	//ofstream fileWriter{ "students.json" };
+	//fileWriter.open("students.json");
+	//if (fileWriter.is_open()) {
+	//	Value* v = JSON::deserialize(ss->str());
+	//	fileWriter << JSON::serialize(v) << endl;
+	//	fileWriter.flush();
+	//	fileWriter.close();
+	//	delete v;
+	//}
+	//delete ss;
 	
 
 	//ArrayValue* av = new ArrayValue();
@@ -129,13 +167,6 @@ int main() {
 	//delete av;
 	//delete st;
 
-	//ofstream fileWriter{};
-	//fileWriter.open("students.json");
-	//if (fileWriter.is_open()) {
-	//	fileWriter << JSON::serialize(JSON::deserialize(buildOutputString(*dynamicStudentsArray))) << endl;
-	//	fileWriter.close();
-	//}
-	//writeJson(*dynamicStudentsArray);
 
 	for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
 		delete dynamicStudentsArray->getElementAt(i);
