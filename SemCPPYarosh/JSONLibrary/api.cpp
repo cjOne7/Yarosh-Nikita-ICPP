@@ -5,6 +5,10 @@ BoolValue::BoolValue(bool value) {
 	boolValue = value;
 }
 
+BoolValue::BoolValue(const BoolValue& boolValue) {
+	this->boolValue = boolValue.boolValue;
+}
+
 bool BoolValue::get() const {
 	return boolValue;
 }
@@ -23,6 +27,10 @@ string NullValue::serialize() const {
 
 NumberValue::NumberValue(double value) {
 	this->value = value;
+}
+
+NumberValue::NumberValue(const NumberValue& numberValue) {
+	this->value = numberValue.value;
 }
 
 double NumberValue::get() const {
@@ -99,6 +107,10 @@ string replaceEscapesAndQuotes(const string& str) {
 
 StringValue::StringValue(string value) {
 	this->value = value;
+}
+
+StringValue::StringValue(const StringValue& stringValue) {
+	this->value = stringValue.value;
 }
 
 string StringValue::get() const {

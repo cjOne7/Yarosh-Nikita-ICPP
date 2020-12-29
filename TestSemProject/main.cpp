@@ -19,7 +19,7 @@ int main() {
 	StringValue *stringValue = new StringValue("123");
 	StringValue *stringValue1 = new StringValue(*stringValue);
 	stringValue->setValue("123456");
-	cout << stringValue->serialize() << endl;
-	cout << stringValue1->serialize() << endl;
+	cout << stringValue << endl;
+	cout << stringValue1 << endl;
 	return 0;
 }

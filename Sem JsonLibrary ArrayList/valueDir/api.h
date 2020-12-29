@@ -157,6 +157,8 @@ private:
 public:
 	BoolValue(bool value);
 
+	BoolValue(const BoolValue &boolValue);
+
 	// - vrac� bool hodnotu
 	bool get() const;
 
@@ -172,7 +174,9 @@ private:
 public:
 	NumberValue(double value);
 
-	// - vrac� ��selnou hodnotu 
+	NumberValue(const NumberValue &numberValue);
+
+	// - vrac� ��selnou hodnotu
 	double get() const;
 
 	std::string serialize() const override;
@@ -186,6 +190,8 @@ private:
 	std::string value;
 public:
 	StringValue(std::string value);
+
+	StringValue(const StringValue &stringValue);
 
 	// - vrac� �et�zcovou hodnotu
 	std::string get() const;
@@ -208,6 +214,8 @@ public:
 		}
 		delete dynamicArray;
 	}
+
+	ArrayValue(const ArrayValue &arrayValue);
 
 	// - p�id� element na konec pole
 	void append(Value *element);
@@ -237,6 +245,8 @@ public:
 		}
 		delete dynamicObjectArray;
 	}
+
+	ObjectValue(const ObjectValue &objectValue);
 
 	// - p�id� kl��-element do objektu
 	void append(const KeyValuePair &pair);

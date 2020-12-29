@@ -3,7 +3,6 @@
 #include <string>
 #include <iostream>
 #include <sstream>
-#include <regex>
 #include "platform.h"
 
 
@@ -125,7 +124,7 @@ public:
 
 
 // - definuje p�r kl�� (�et�zec) a hodnota (JSON hodnota) pro reprezentaci hodnot JSON objektu
-class DLL_SPEC KeyValuePair  {
+class DLL_SPEC KeyValuePair {
 private:
 	std::string key;
 	Value* value;
@@ -159,6 +158,8 @@ private:
 public:
 	BoolValue(bool value);
 
+	BoolValue(const BoolValue& boolValue);
+
 	// - vrac� bool hodnotu
 	bool get() const;
 
@@ -173,6 +174,8 @@ private:
 	double value;
 public:
 	NumberValue(double value);
+
+	NumberValue(const NumberValue& numberValue);
 
 	// - vrac� ��selnou hodnotu 
 	double get() const;
@@ -189,6 +192,8 @@ private:
 public:
 	StringValue(std::string value);
 
+	StringValue(const StringValue& stringValue);
+
 	// - vrac� �et�zcovou hodnotu
 	std::string get() const;
 
@@ -202,6 +207,15 @@ class DLL_SPEC ArrayValue : public Value {
 public:
 	ArrayValue() {
 		dynamicArray = new DynamicArray<Value*>();
+	}
+
+	ArrayValue(const ArrayValue& arrayValue) {
+		this->dynamicArray = new DynamicArray<Value*>;
+		for (int i = 0; i < arrayValue.dynamicArray->getSize(); ++i) {
+			if (StringValue* subject = dynamic_cast<StringValue*>(arrayValue.dynamicArray->getElementAt(i))) {
+				this->dynamicArray->append(new StringValue(*subject));
+			}
+		}
 	}
 
 	~ArrayValue() {
@@ -231,6 +245,10 @@ public:
 
 	ObjectValue() {
 		dynamicObjectArray = new DynamicArray<KeyValuePair>();
+	}
+
+	ObjectValue(const ObjectValue& objectValue) {
+		this->dynamicObjectArray = objectValue.dynamicObjectArray;
 	}
 
 	~ObjectValue() {

@@ -5,11 +5,11 @@ Student::Student(NumberValue *id, StringValue *name, StringValue *surname, Numbe
 		: id(id), name(name), surname(surname), year(year), credits(credits), address(address), subjects(subjects) {}
 
 Student::~Student() {
-//	delete id;
-//	delete name;
-//	delete surname;
-//	delete year;
-//	delete credits;
+	delete id;
+	delete name;
+	delete surname;
+	delete year;
+	delete credits;
 	delete address;
 	delete subjects;
 }
@@ -71,12 +71,12 @@ void Student::setSubjects(Subjects *subjects) {
 }
 
 ostream &operator<<(ostream &os, const Student &student) {
-	os << "{id: " << student.id->serialize()
-	   << ", name: " << student.name->serialize()
-	   << ", surname: " << student.surname->serialize()
-	   << ", year: " << student.year->serialize()
-	   << ", credits: " << student.credits->serialize()
-	   << ", address: " << *student.address
-	   << ", " << *student.subjects << "}";
+	os << "{\"id\":" << student.id->serialize()
+	   << ",\"name\":" << student.name->serialize()
+	   << ",\"surname\":" << student.surname->serialize()
+	   << ",\"year\":" << student.year->serialize()
+	   << ",\"credits\":" << student.credits->serialize()
+	   << ",\"address\":" << *student.address
+	   << "," << *student.subjects << "}";
 	return os;
 }

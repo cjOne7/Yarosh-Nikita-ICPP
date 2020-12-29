@@ -10,6 +10,8 @@ private:
 public:
 	Subjects() = default;
 
+	Subjects(const ArrayValue &subjects);
+
 	virtual ~Subjects();
 
 	Subjects(ArrayValue *subjectsList);

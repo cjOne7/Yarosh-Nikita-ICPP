@@ -18,6 +18,10 @@ string ObjectValue::serialize() const {
 	return ss.str();
 }
 
+ObjectValue::ObjectValue(const ObjectValue &objectValue) {
+	this->dynamicObjectArray = objectValue.dynamicObjectArray;
+}
+
 DynamicArray<KeyValuePair> *ObjectValue::getDynamicObjectArray() const {
 	return dynamicObjectArray;
 }

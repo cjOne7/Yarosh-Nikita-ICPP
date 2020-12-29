@@ -7,13 +7,13 @@
 
 class Student {
 private:
-	NumberValue *id;
-	StringValue *name;
-	StringValue *surname;
-	NumberValue *year;
-	NumberValue *credits;
-	Address *address;
-	Subjects *subjects;
+	NumberValue *id = new NumberValue(0);
+	StringValue *name = new StringValue("");
+	StringValue *surname = new StringValue("");
+	NumberValue *year = new NumberValue(2000);
+	NumberValue *credits = new NumberValue(0);
+	Address *address = new Address();
+	Subjects *subjects = new Subjects();
 public:
 	Student() = default;
 

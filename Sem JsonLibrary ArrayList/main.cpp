@@ -58,6 +58,7 @@ int main() {
 		fileReader.close();
 
 		Value *value = JSON::deserialize(*strValue);
+//		cout << JSON::serialize(value) << endl;
 		delete strValue;
 
 		DynamicArray<Student *> *dynamicStudentsArray = new DynamicArray<Student *>();
@@ -67,55 +68,61 @@ int main() {
 				for (int i = 0; i < arrayValue->getDynamicArray()->getSize(); i++) {
 					if (ObjectValue *objectArrayValue = dynamic_cast<ObjectValue *>(arrayValue->getDynamicArray()->getElementAt(
 							i))) {
-//						cout << objectArrayValue->getDynamicObjectArray()->getElementAt(0).getValue()->serialize() << endl;//getID
 						DynamicArray<KeyValuePair> *students = objectArrayValue->getDynamicObjectArray();
 						Student *student = new Student();
 						if (NumberValue *id = dynamic_cast<NumberValue *>(students->getElementAt(0).getValue())) {
-							student->setId(id);
+							student->setId(new NumberValue(*id));
 						}
 						if (StringValue *name = dynamic_cast<StringValue *>(students->getElementAt(1).getValue())) {
-							student->setName(name);
+							student->setName(new StringValue(*name));
 						}
 						if (StringValue *surname = dynamic_cast<StringValue *>(students->getElementAt(2).getValue())) {
-							student->setSurname(surname);
+							student->setSurname(new StringValue(*surname));
 						}
 						if (NumberValue *year = dynamic_cast<NumberValue *>(students->getElementAt(3).getValue())) {
-							student->setYear(year);
+							student->setYear(new NumberValue(*year));
 						}
 						if (NumberValue *credits = dynamic_cast<NumberValue *>(students->getElementAt(4).getValue())) {
-							student->setCredits(credits);
+							student->setCredits(new NumberValue(*credits));
 						}
 						if (ObjectValue *addressObj = dynamic_cast<ObjectValue *>(students->getElementAt(
 								5).getValue())) {
-							student->setAddress(new Address(addressObj));
+							student->setAddress(new Address(*addressObj));
 						}
 						if (ArrayValue *subjectsArr = dynamic_cast<ArrayValue *>(students->getElementAt(
 								6).getValue())) {
-							student->setSubjects(new Subjects(subjectsArr));
+							student->setSubjects(new Subjects(new ArrayValue(*subjectsArr)));
 						}
 						dynamicStudentsArray->append(student);
 					}
 				}
 			}
 		}
-		cout << "Select user:" << endl;
+//		cout << "Select user:" << endl;
+		stringstream ss;
+		cout << endl;
+		ss << "{\"users\":[";
 		for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
-			cout << *dynamicStudentsArray->getElementAt(i) << endl;
-		}
-//			cout << JSON::serialize(value) << endl;
-
-		int command = 0;
-		cout << "Enter command number:" << endl;
-		cin >> command;
-		bool state = true;
-		while (state) {
-			switch (command) {
-				case 0:
-					cout << "Exiting..." << endl;
-					state = false;
-					break;
+//			cout << *dynamicStudentsArray->getElementAt(i) << endl;
+			ss << *dynamicStudentsArray->getElementAt(i);
+			if (i != dynamicStudentsArray->getSize() - 1) {
+				ss << ',';
 			}
 		}
+		ss << "]}";
+//		cout << ss.str() << endl;
+
+//		int command = 0;
+//		cout << "Enter command number:" << endl;
+//		cin >> command;
+//		bool state = true;
+//		while (state) {
+//			switch (command) {
+//				case 0: cout << "Exiting..." << endl;
+//					state = false;
+//					break;
+//			}
+//		}
 
 		delete value;
 		for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
@@ -124,11 +131,13 @@ int main() {
 		delete dynamicStudentsArray;
 
 
-//		fileWriter.open("students.json");
-//		if (fileWriter.is_open()) {
-//			fileWriter << JSON::serialize(value);
-//			fileWriter.close();
-//		}
+		Value *serValue = JSON::deserialize(ss.str());
+		ofstream fileWriter{};
+		fileWriter.open("students.json");
+		if (fileWriter.is_open()) {
+			fileWriter << JSON::serialize(serValue) << endl;
+			fileWriter.close();
+		}
 
 //		fileReader.open("students.json");
 //		strValue = "";

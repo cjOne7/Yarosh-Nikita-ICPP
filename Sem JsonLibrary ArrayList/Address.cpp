@@ -16,9 +16,9 @@ Address::Address(ObjectValue *address) {
 }
 
 Address::~Address() {
-//	delete city;
-//	delete street;
-//	delete postCode;
+	delete city;
+	delete street;
+	delete postCode;
 }
 
 StringValue *Address::getCity() const {
@@ -46,8 +46,21 @@ void Address::setPostCode(NumberValue *postCode) {
 }
 
 ostream &operator<<(ostream &os, const Address &address) {
-	os << "{city: " << address.city->serialize()
-	   << ", street: " << address.street->serialize()
-	   << ", post code: " << address.postCode->serialize() << "}";
+	os << "{\"city\":" << address.city->serialize()
+	   << ",\"street\":" << address.street->serialize()
+	   << ",\"post code\":" << address.postCode->serialize() << "}";
 	return os;
+}
+
+Address::Address(const ObjectValue &address) {
+	DynamicArray<KeyValuePair> *dynamicArray = address.getDynamicObjectArray();
+	if (StringValue *city = dynamic_cast<StringValue *>(dynamicArray->getElementAt(0).getValue())) {
+		this->city = new StringValue(*city);
+	}
+	if (StringValue *street = dynamic_cast<StringValue *>(dynamicArray->getElementAt(1).getValue())) {
+		this->street = new StringValue(*street);
+	}
+	if (NumberValue *postCode = dynamic_cast<NumberValue *>(dynamicArray->getElementAt(2).getValue())) {
+		this->postCode = new NumberValue(*postCode);
+	}
 }

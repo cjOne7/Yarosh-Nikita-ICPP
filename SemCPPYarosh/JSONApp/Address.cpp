@@ -1,5 +1,18 @@
 #include "../JSONApp/Address.h"
 
+Address::Address(const ObjectValue& address) {
+	DynamicArray<KeyValuePair>* dynamicArray = address.getDynamicObjectArray();//may cause memory leak
+	if (StringValue* city = dynamic_cast<StringValue*>(dynamicArray->getElementAt(0).getValue())) {
+		this->city = new StringValue(*city);
+	}
+	if (StringValue* street = dynamic_cast<StringValue*>(dynamicArray->getElementAt(1).getValue())) {
+		this->street = new StringValue(*street);
+	}
+	if (NumberValue* postCode = dynamic_cast<NumberValue*>(dynamicArray->getElementAt(2).getValue())) {
+		this->postCode = new NumberValue(*postCode);
+	}
+}
+
 Address::Address(ObjectValue* address) {
 	if (address != nullptr) {
 		DynamicArray<KeyValuePair>* dynamicArray = address->getDynamicObjectArray();
@@ -16,9 +29,9 @@ Address::Address(ObjectValue* address) {
 }
 
 Address::~Address() {
-	/*delete city;
+	delete city;
 	delete street;
-	delete postCode;*/
+	delete postCode;
 }
 
 StringValue* Address::getCity() const {

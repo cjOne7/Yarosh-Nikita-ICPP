@@ -8,6 +8,10 @@ double NumberValue::get() const {
 	return value;
 }
 
+NumberValue::NumberValue(const NumberValue &numberValue) {
+	this->value = numberValue.value;
+}
+
 string NumberValue::serialize() const {
 	stringstream ss;
 	ss << value;

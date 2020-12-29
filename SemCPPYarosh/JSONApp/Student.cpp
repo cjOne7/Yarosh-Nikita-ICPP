@@ -5,11 +5,11 @@ Student::Student(NumberValue* id, StringValue* name, StringValue* surname, Numbe
 	: id(id), name(name), surname(surname), year(year), credits(credits), address(address), subjects(subjects) {}
 
 Student::~Student() {
-	//delete id;
-	//delete name;
-	//delete surname;
-	//delete year;
-	//delete credits;
+	delete id;
+	delete name;
+	delete surname;
+	delete year;
+	delete credits;
 	delete address;
 	delete subjects;
 }

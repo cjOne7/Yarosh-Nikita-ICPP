@@ -11,6 +11,8 @@ private:
 public:
 	NumberValue(double value);
 
+	NumberValue(const NumberValue &numberValue);
+
 	double get() const;
 
 	string serialize() const override;

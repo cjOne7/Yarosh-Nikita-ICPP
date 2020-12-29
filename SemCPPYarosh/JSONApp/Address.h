@@ -15,6 +15,8 @@ private:
 public:
 	Address() = default;
 
+	Address(const ObjectValue& address);
+
 	Address(ObjectValue* address);
 
 	virtual ~Address();
@@ -33,3 +35,4 @@ public:
 
 	friend ostream& operator<<(ostream& os, const Address& address);
 };
+

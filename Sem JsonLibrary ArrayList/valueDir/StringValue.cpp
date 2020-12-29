@@ -8,6 +8,10 @@ string StringValue::get() const {
 	return value;
 }
 
+StringValue::StringValue(const StringValue &stringValue) {
+	this->value = stringValue.value;
+}
+
 string replaceEscapesAndQuotes(const string &str) {
 	string newStr;
 	newStr.push_back(str[0]);

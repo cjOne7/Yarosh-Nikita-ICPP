@@ -7,7 +7,11 @@ Subjects::Subjects(ArrayValue* subjectsList) {
 }
 
 Subjects::~Subjects() {
-	//delete subjectsList;
+	delete subjectsList;
+}
+
+Subjects::Subjects(const ArrayValue& subjects) {
+	this->subjectsList = new ArrayValue(subjects);
 }
 
 ArrayValue* Subjects::getSubjectsList() const {

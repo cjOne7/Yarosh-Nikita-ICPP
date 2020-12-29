@@ -10,13 +10,15 @@ using namespace std;
 
 class Address {
 private:
-	StringValue *city;
-	StringValue *street;
-	NumberValue *postCode;
+	StringValue *city = new StringValue("");
+	StringValue *street = new StringValue("");
+	NumberValue *postCode = new NumberValue(0);
 public:
 	Address() = default;
 
-	Address(ObjectValue* address);
+	Address(const ObjectValue &address);
+
+	Address(ObjectValue *address);
 
 	virtual ~Address();
 

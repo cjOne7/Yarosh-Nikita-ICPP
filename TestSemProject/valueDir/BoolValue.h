@@ -11,6 +11,8 @@ private:
 public:
 	BoolValue(bool value);
 
+	BoolValue(const BoolValue &boolValue);
+
 	bool get() const;
 
 	string serialize() const override;

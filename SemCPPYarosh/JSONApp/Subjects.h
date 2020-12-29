@@ -10,6 +10,8 @@ public:
 
 	virtual ~Subjects();
 
+	Subjects(const ArrayValue& subjects);
+
 	Subjects(ArrayValue* subjectsList);
 
 	ArrayValue* getSubjectsList() const;

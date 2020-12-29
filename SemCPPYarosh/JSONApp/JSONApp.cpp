@@ -48,40 +48,47 @@ int main() {
 					DynamicArray<KeyValuePair>* students = objectArrayValue->getDynamicObjectArray();
 					Student* student = new Student();
 					if (NumberValue* id = dynamic_cast<NumberValue*>(students->getElementAt(0).getValue())) {
-						student->setId(id);
+						student->setId(new NumberValue(*id));
 					}
 					if (StringValue* name = dynamic_cast<StringValue*>(students->getElementAt(1).getValue())) {
-						student->setName(name);
+						student->setName(new StringValue(*name));
 					}
 					if (StringValue* surname = dynamic_cast<StringValue*>(students->getElementAt(2).getValue())) {
-						student->setSurname(surname);
+						student->setSurname(new StringValue(*surname));
 					}
 					if (NumberValue* year = dynamic_cast<NumberValue*>(students->getElementAt(3).getValue())) {
-						student->setYear(year);
+						student->setYear(new NumberValue(*year));
 					}
 					if (NumberValue* credits = dynamic_cast<NumberValue*>(students->getElementAt(4).getValue())) {
-						student->setCredits(credits);
+						student->setCredits(new NumberValue(*credits));
 					}
 					if (ObjectValue* addressObj = dynamic_cast<ObjectValue*>(students->getElementAt(5).getValue())) {
-						student->setAddress(new Address(addressObj));
+						student->setAddress(new Address(*addressObj));
 					}
 					if (ArrayValue* subjectsArr = dynamic_cast<ArrayValue*>(students->getElementAt(6).getValue())) {
-						student->setSubjects(new Subjects(subjectsArr));
+						student->setSubjects(new Subjects(new ArrayValue(*subjectsArr)));
 					}
 					dynamicStudentsArray->append(student);
 				}
 			}
 		}
 	}
+	delete value;
 	//cout << *dynamicStudentsArray->getElementAt(0) << endl;
 	//			cout << JSON::serialize(value) << endl;
 
-	delete value;
+	
 	for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
 		delete dynamicStudentsArray->getElementAt(i);
 	}
 	delete dynamicStudentsArray;
 
+	ArrayValue* av = new ArrayValue();
+	av->append(new StringValue("123"));
+	Student* st = new Student(new NumberValue(5), new StringValue("Aaron"), new StringValue("Kirk"), new NumberValue(3)
+		, new NumberValue(30), new Address(), new Subjects(*av));
+	delete av;
+	delete st;
 	if (_CrtDumpMemoryLeaks() == 0) {
 		cout << "\nMemory leaks have not been found." << endl;
 	}

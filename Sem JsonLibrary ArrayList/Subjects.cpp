@@ -7,7 +7,7 @@ Subjects::Subjects(ArrayValue *subjectsList) {
 }
 
 Subjects::~Subjects() {
-//	delete subjectsList;
+	delete subjectsList;
 }
 
 ArrayValue *Subjects::getSubjectsList() const {
@@ -19,6 +19,10 @@ void Subjects::setSubjectsList(ArrayValue *subjectsList) {
 }
 
 ostream &operator<<(ostream &os, const Subjects &subject) {
-	os << "subjects' list: " << subject.subjectsList->serialize();
+	os << "\"subjects' list\":" << subject.subjectsList->serialize();
 	return os;
+}
+
+Subjects::Subjects(const ArrayValue &subjects) {
+	this->subjectsList = new ArrayValue(subjects);
 }

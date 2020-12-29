@@ -11,3 +11,7 @@ double NumberValue::get() const {
 string NumberValue::serialize() const {
 	return "";
 }
+
+NumberValue::NumberValue(const NumberValue &numberValue) {
+	this->value = numberValue.value;
+}
