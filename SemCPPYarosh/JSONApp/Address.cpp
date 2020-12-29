@@ -59,8 +59,8 @@ void Address::setPostCode(NumberValue* postCode) {
 }
 
 ostream& operator<<(ostream& os, const Address& address) {
-	os << "{city: " << address.city->serialize()
-		<< ", street: " << address.street->serialize()
-		<< ", post code: " << address.postCode->serialize() << "}";
+	os << "{\"city\":" << address.city->serialize()
+		<< ",\"street\":" << address.street->serialize()
+		<< ",\"post code\":" << address.postCode->serialize() << "}";
 	return os;
 }

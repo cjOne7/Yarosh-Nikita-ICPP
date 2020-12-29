@@ -131,11 +131,10 @@ int main() {
 		delete dynamicStudentsArray;
 
 
-		Value *serValue = JSON::deserialize(ss.str());
 		ofstream fileWriter{};
 		fileWriter.open("students.json");
 		if (fileWriter.is_open()) {
-			fileWriter << JSON::serialize(serValue) << endl;
+			fileWriter << JSON::serialize(JSON::deserialize(ss.str())) << endl;
 			fileWriter.close();
 		}
 

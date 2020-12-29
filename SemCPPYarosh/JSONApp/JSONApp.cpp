@@ -10,6 +10,8 @@ void replaceEscape() {
 
 }
 
+
+
 int main() {
 	//   Value* value = JSON::deserialize(
 	//       "{\"users\":[{\"id\":1,\"name\":\"Nikita\",\"surname\":\"Yarosh\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Pardubice\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]},{\"id\":2,\"name\":\"Vlad\",\"surname\":\"Ermolaev\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Kolin\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]},{\"id\":3,\"name\":\"Andrii\",\"surname\":\"Andrusenko\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Prelouc\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]},{\"id\":4,\"name\":\"Dmytro\",\"surname\":\"Hrychanok\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Pardubice\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[]}]}");
@@ -74,21 +76,36 @@ int main() {
 		}
 	}
 	delete value;
-	//cout << *dynamicStudentsArray->getElementAt(0) << endl;
-	//			cout << JSON::serialize(value) << endl;
 
+	//stringstream ss;
+	//cout << endl;
+	//ss << "{\"users\":[";
+	//for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
+	//	//			cout << *dynamicStudentsArray->getElementAt(i) << endl;
+	//	ss << *dynamicStudentsArray->getElementAt(i);
+	//	if (i != dynamicStudentsArray->getSize() - 1) {
+	//		ss << ',';
+	//	}
+	//}
+	//ss << "]}";
+	
 	
 	for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
 		delete dynamicStudentsArray->getElementAt(i);
 	}
 	delete dynamicStudentsArray;
 
-	ArrayValue* av = new ArrayValue();
-	av->append(new StringValue("123"));
-	Student* st = new Student(new NumberValue(5), new StringValue("Aaron"), new StringValue("Kirk"), new NumberValue(3)
-		, new NumberValue(30), new Address(), new Subjects(*av));
-	delete av;
-	delete st;
+	//ArrayValue* av = new ArrayValue();
+	//av->append(new StringValue("123"));
+	//Student* st = new Student(new NumberValue(5), new StringValue("Aaron"), new StringValue("Kirk"), new NumberValue(3)
+	//	, new NumberValue(30), new Address(), new Subjects(*av));
+	//delete av;
+	//delete st;
+	//ofstream fileWriter{ "students.json" };
+	//if (fileWriter.is_open()) {
+	//	fileWriter << JSON::serialize(JSON::deserialize(ss.str())) << endl;
+	//	fileWriter.close();
+	//}
 	if (_CrtDumpMemoryLeaks() == 0) {
 		cout << "\nMemory leaks have not been found." << endl;
 	}

@@ -71,12 +71,12 @@ void Student::setSubjects(Subjects* subjects) {
 }
 
 ostream& operator<<(ostream& os, const Student& student) {
-	os << "{id: " << student.id->serialize()
-		<< ", name: " << student.name->serialize()
-		<< ", surname: " << student.surname->serialize()
-		<< ", year: " << student.year->serialize()
-		<< ", credits: " << student.credits->serialize()
-		<< ", address: " << *student.address
-		<< ", " << *student.subjects << "}";
+	os << "{\"id\":" << student.id->serialize()
+		<< ",\"name\":" << student.name->serialize()
+		<< ",\"surname\":" << student.surname->serialize()
+		<< ",\"year\":" << student.year->serialize()
+		<< ",\"credits\":" << student.credits->serialize()
+		<< ",\"address\":" << *student.address
+		<< "," << *student.subjects << "}";
 	return os;
 }
