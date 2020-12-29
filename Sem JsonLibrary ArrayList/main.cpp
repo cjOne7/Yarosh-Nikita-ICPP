@@ -114,48 +114,45 @@ int main() {
 		}
 		delete value;
 
-		for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
-			cout << *dynamicStudentsArray->getElementAt(i) << endl;
-		}
-
-		int command = 0;
-		cout << "Choose user id: " << endl;
-		cout << "0 - save and exit" << endl;
-		cin >> command;
-		bool state = true;
-		while (state) {
-			if (command == 0) {
-				cout << "Saving..." << endl;
-				writeJson(dynamicStudentsArray);
-				cout << "Exiting..." << endl;
-				state = false;
-			} else {
-
-			}
-		}
-
-
-//		stringstream* ss = new stringstream();
-//		*ss << "{\"users\":[";
 //		for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
-//			//			cout << *dynamicStudentsArray->getElementAt(i) << endl;
-//			*ss << *dynamicStudentsArray->getElementAt(i);
-//			if (i != dynamicStudentsArray->getSize() - 1) {
-//				*ss << ',';
+//			cout << *dynamicStudentsArray->getElementAt(i) << endl;
+//		}
+//
+//		int command = 0;
+//		cout << "Choose user id: " << endl;
+//		cout << "0 - save and exit" << endl;
+//		cin >> command;
+//		bool state = true;
+//		while (state) {
+//			if (command == 0) {
+//				cout << "Saving..." << endl;
+//				writeJson(dynamicStudentsArray);
+//				cout << "Exiting..." << endl;
+//				state = false;
+//			} else {
+//
 //			}
 //		}
-//		*ss << "]}";
-//
-//		ofstream fileWriter{ "students.json" };
-//		fileWriter.open("students.json");
-//		if (fileWriter.is_open()) {
-//			Value* v = JSON::deserialize(ss->str());
-//			fileWriter << JSON::serialize(v) << endl;
-//			fileWriter.flush();
-//			fileWriter.close();
-//			delete v;
-//		}
-//		delete ss;
+
+
+		stringstream* ss = new stringstream();
+		*ss << "{\"users\":[";
+		for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
+			//			cout << *dynamicStudentsArray->getElementAt(i) << endl;
+			*ss << *dynamicStudentsArray->getElementAt(i);
+			if (i != dynamicStudentsArray->getSize() - 1) {
+				*ss << ',';
+			}
+		}
+		*ss << "]}";
+
+		ofstream fileWriter{ "students.json" };
+		if (fileWriter.is_open()) {
+			fileWriter << ss->str() << endl;
+			fileWriter.flush();
+			fileWriter.close();
+		}
+		delete ss;
 
 
 //		fileReader.open("students.json");

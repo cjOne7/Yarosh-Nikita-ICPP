@@ -22,14 +22,13 @@ void writeJson(DynamicArray<Student*>* dynamicStudentsArray) {
 	}
 	*ss << "]}";
 
+	//cout << ss->str() << endl;
+
 	ofstream fileWriter{ "students.json" };
-	fileWriter.open("students.json");
 	if (fileWriter.is_open()) {
-		Value* v = JSON::deserialize(ss->str());
-		fileWriter << JSON::serialize(v) << endl;
+		fileWriter << ss->str() << endl;
 		fileWriter.flush();
 		fileWriter.close();
-		delete v;
 	}
 	delete ss;
 }
