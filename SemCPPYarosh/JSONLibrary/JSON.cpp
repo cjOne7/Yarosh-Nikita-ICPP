@@ -197,6 +197,9 @@ ObjectValue* readObject(string& jsonString) {
 }
 
 Value* JSON::deserialize(const string& string) {
+	if (string.size() < 2) {
+		throw invalid_argument("Json is too small!");
+	}
 	std::string jsonString = string;
 	return readObject(jsonString);
 }

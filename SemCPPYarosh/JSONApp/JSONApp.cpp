@@ -98,6 +98,7 @@ int main() {
 	}
 	delete value;
 
+
 	stringstream* ss = new stringstream();
 	*ss << "{\"users\":[";
 	for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
@@ -109,17 +110,17 @@ int main() {
 	}
 	*ss << "]}";
 
-	ofstream* fileWriter = new ofstream();
-	fileWriter->open("students.json");
-	if (fileWriter->is_open()) {
-		Value* v = JSON::deserialize((*ss).str());
-		*fileWriter << JSON::serialize(v) << endl;
-		fileWriter->flush();
-		fileWriter->close();
+	ofstream fileWriter{ "students.json" };
+	fileWriter.open("students.json");
+	if (fileWriter.is_open()) {
+		Value* v = JSON::deserialize(ss->str());
+		fileWriter << JSON::serialize(v) << endl;
+		fileWriter.flush();
+		fileWriter.close();
 		delete v;
 	}
 	delete ss;
-	delete fileWriter;
+	
 
 	//ArrayValue* av = new ArrayValue();
 	//av->append(new StringValue("123"));
