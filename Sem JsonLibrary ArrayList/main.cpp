@@ -65,7 +65,8 @@ int main() {
 			if (ArrayValue *arrayValue = dynamic_cast<ArrayValue *>(objectValue->getDynamicObjectArray()->getElementAt(
 					0).getValue())) {
 				for (int i = 0; i < arrayValue->getDynamicArray()->getSize(); i++) {
-					if (ObjectValue *objectArrayValue = dynamic_cast<ObjectValue *>(arrayValue->getDynamicArray()->getElementAt(i))) {
+					if (ObjectValue *objectArrayValue = dynamic_cast<ObjectValue *>(arrayValue->getDynamicArray()->getElementAt(
+							i))) {
 //						cout << objectArrayValue->getDynamicObjectArray()->getElementAt(0).getValue()->serialize() << endl;//getID
 						DynamicArray<KeyValuePair> *students = objectArrayValue->getDynamicObjectArray();
 						Student *student = new Student();
@@ -84,22 +85,42 @@ int main() {
 						if (NumberValue *credits = dynamic_cast<NumberValue *>(students->getElementAt(4).getValue())) {
 							student->setCredits(credits);
 						}
-						if (ObjectValue *addressObj = dynamic_cast<ObjectValue *>(students->getElementAt(5).getValue())) {
-							Address *address = new Address(addressObj);
-							student->setAddress(address);
+						if (ObjectValue *addressObj = dynamic_cast<ObjectValue *>(students->getElementAt(
+								5).getValue())) {
+							student->setAddress(new Address(addressObj));
 						}
-						if (ArrayValue *subjectsArr = dynamic_cast<ArrayValue *>(students->getElementAt(6).getValue())) {
-							Subjects *subjects = new Subjects(subjectsArr);
-							student->setSubjects(subjects);
+						if (ArrayValue *subjectsArr = dynamic_cast<ArrayValue *>(students->getElementAt(
+								6).getValue())) {
+							student->setSubjects(new Subjects(subjectsArr));
 						}
 						dynamicStudentsArray->append(student);
 					}
 				}
 			}
 		}
-		cout << *dynamicStudentsArray->getElementAt(0) << endl;
+		cout << "Select user:" << endl;
+		for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
+			cout << *dynamicStudentsArray->getElementAt(i) << endl;
+		}
 //			cout << JSON::serialize(value) << endl;
+
+		int command = 0;
+		cout << "Enter command number:" << endl;
+		cin >> command;
+		bool state = true;
+		while (state) {
+			switch (command) {
+				case 0:
+					cout << "Exiting..." << endl;
+					state = false;
+					break;
+			}
+		}
+
 		delete value;
+		for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
+			delete dynamicStudentsArray->getElementAt(i);
+		}
 		delete dynamicStudentsArray;
 
 

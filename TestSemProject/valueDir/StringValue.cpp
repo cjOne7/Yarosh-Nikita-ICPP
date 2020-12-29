@@ -9,5 +9,13 @@ string StringValue::get() const {
 }
 
 string StringValue::serialize() const {
-	return "";
+	return value;
+}
+
+void StringValue::setValue(const string &value) {
+	StringValue::value = value;
+}
+
+StringValue::StringValue(const StringValue &stringValue) {
+	this->value = stringValue.value;
 }

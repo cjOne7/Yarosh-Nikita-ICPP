@@ -16,9 +16,9 @@ Address::Address(ObjectValue *address) {
 }
 
 Address::~Address() {
-	delete city;
-	delete street;
-	delete postCode;
+//	delete city;
+//	delete street;
+//	delete postCode;
 }
 
 StringValue *Address::getCity() const {

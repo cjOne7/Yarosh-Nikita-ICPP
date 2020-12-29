@@ -7,7 +7,7 @@ Subjects::Subjects(ArrayValue *subjectsList) {
 }
 
 Subjects::~Subjects() {
-	delete subjectsList;
+//	delete subjectsList;
 }
 
 ArrayValue *Subjects::getSubjectsList() const {

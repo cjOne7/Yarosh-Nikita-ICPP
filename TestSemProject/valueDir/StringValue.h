@@ -10,7 +10,11 @@ private:
 public:
 	StringValue(string value);
 
+	StringValue(const StringValue &stringValue);
+
 	string get() const;
+
+	void setValue(const string &value);
 
 	string serialize() const override;
 };

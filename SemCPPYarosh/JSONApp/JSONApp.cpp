@@ -1,12 +1,12 @@
 #include <iostream>
-#include <../JSONLibrary/api.h>
-#include <../JSONLibrary/JsonFormatException.h>
 #include <fstream>
 #include <crtdbg.h>
 #define _CRTDBG_MAP_ALLOC
-#include "../JSONApp/Address.h"
+#include <../JSONLibrary/api.h>
+#include <../JSONLibrary/JsonFormatException.h>
+#include "../JSONApp/Student.h"
 
-void perlaceEscape() {
+void replaceEscape() {
 
 }
 
@@ -21,7 +21,8 @@ int main() {
 	   //fileWriter.close();
 	   //cout << JSON::serialize(value) << endl;
 
-	ifstream fileReader{ "students.json" };
+	ifstream fileReader{};
+	fileReader.open("students.json");
 	string* strValue = new string("");
 	if (fileReader.is_open()) {
 		getline(fileReader, *strValue);
@@ -33,21 +34,53 @@ int main() {
 				*strValue = strValue->replace(i, 2, "\\");
 			}
 		}
-		Value* value = JSON::deserialize(*strValue);
-		if (ObjectValue* objectValue = dynamic_cast<ObjectValue*>(value)) {
-			if (ArrayValue* arrayValue = dynamic_cast<ArrayValue*>(objectValue->getDynamicObjectArray()->getElementAt(0).getValue())) {
-				for (int i = 0; i < arrayValue->getDynamicArray()->getSize(); ++i) {
-					if (ObjectValue* objectArrayValue = dynamic_cast<ObjectValue*>(arrayValue->getDynamicArray()->getElementAt(i))) {
-						cout << objectArrayValue->serialize() << endl;
+	}
+	fileReader.close();
+
+	Value* value = JSON::deserialize(*strValue);
+	delete strValue;
+
+	DynamicArray<Student*>* dynamicStudentsArray = new DynamicArray<Student*>();
+	if (ObjectValue* objectValue = dynamic_cast<ObjectValue*>(value)) {
+		if (ArrayValue* arrayValue = dynamic_cast<ArrayValue*>(objectValue->getDynamicObjectArray()->getElementAt(0).getValue())) {
+			for (int i = 0; i < arrayValue->getDynamicArray()->getSize(); i++) {
+				if (ObjectValue* objectArrayValue = dynamic_cast<ObjectValue*>(arrayValue->getDynamicArray()->getElementAt(i))) {
+					DynamicArray<KeyValuePair>* students = objectArrayValue->getDynamicObjectArray();
+					Student* student = new Student();
+					if (NumberValue* id = dynamic_cast<NumberValue*>(students->getElementAt(0).getValue())) {
+						student->setId(id);
 					}
+					if (StringValue* name = dynamic_cast<StringValue*>(students->getElementAt(1).getValue())) {
+						student->setName(name);
+					}
+					if (StringValue* surname = dynamic_cast<StringValue*>(students->getElementAt(2).getValue())) {
+						student->setSurname(surname);
+					}
+					if (NumberValue* year = dynamic_cast<NumberValue*>(students->getElementAt(3).getValue())) {
+						student->setYear(year);
+					}
+					if (NumberValue* credits = dynamic_cast<NumberValue*>(students->getElementAt(4).getValue())) {
+						student->setCredits(credits);
+					}
+					if (ObjectValue* addressObj = dynamic_cast<ObjectValue*>(students->getElementAt(5).getValue())) {
+						student->setAddress(new Address(addressObj));
+					}
+					if (ArrayValue* subjectsArr = dynamic_cast<ArrayValue*>(students->getElementAt(6).getValue())) {
+						student->setSubjects(new Subjects(subjectsArr));
+					}
+					dynamicStudentsArray->append(student);
 				}
 			}
 		}
-		//cout << JSON::serialize(value) << endl;
-		delete strValue;
-		delete value;
 	}
-	fileReader.close();
+	//cout << *dynamicStudentsArray->getElementAt(0) << endl;
+	//			cout << JSON::serialize(value) << endl;
+
+	delete value;
+	for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
+		delete dynamicStudentsArray->getElementAt(i);
+	}
+	delete dynamicStudentsArray;
 
 	if (_CrtDumpMemoryLeaks() == 0) {
 		cout << "\nMemory leaks have not been found." << endl;
