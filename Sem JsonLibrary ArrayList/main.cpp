@@ -4,19 +4,18 @@
 #include "Student.h"
 #include <fstream>
 
-string buildOutputString(DynamicArray<Student *> *dynamicStudentsArray) {
-	stringstream ss;
-	cout << endl;
-	ss << "{\"users\":[";
-	for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
+string buildOutputString(const DynamicArray<Student *> &dynamicStudentsArray) {
+	stringstream *ss = new stringstream();
+	*ss << "{\"users\":[";
+	for (int i = 0; i < dynamicStudentsArray.getSize(); ++i) {
 		//			cout << *dynamicStudentsArray->getElementAt(i) << endl;
-		ss << *dynamicStudentsArray->getElementAt(i);
-		if (i != dynamicStudentsArray->getSize() - 1) {
-			ss << ',';
+		*ss << *dynamicStudentsArray.getElementAt(i);
+		if (i != dynamicStudentsArray.getSize() - 1) {
+			*ss << ',';
 		}
 	}
-	ss << "]}";
-	return ss.str();
+	*ss << "]}";
+	return (*ss).str();
 }
 
 int main() {
@@ -84,6 +83,7 @@ int main() {
 				}
 			}
 		}
+		delete value;
 //		cout << "Select user:" << endl;
 //		stringstream ss;
 //		cout << endl;
@@ -110,19 +110,14 @@ int main() {
 //			}
 //		}
 
-		delete value;
-		for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
-			delete dynamicStudentsArray->getElementAt(i);
-		}
-		delete dynamicStudentsArray;
-
 
 		ofstream fileWriter{};
 		fileWriter.open("students.json");
 		if (fileWriter.is_open()) {
-			fileWriter << JSON::serialize(JSON::deserialize(buildOutputString(dynamicStudentsArray))) << endl;
+			fileWriter << JSON::serialize(JSON::deserialize(buildOutputString(*dynamicStudentsArray))) << endl;
 			fileWriter.close();
 		}
+//		writeJson(dynamicStudentsArray);
 
 //		fileReader.open("students.json");
 //		strValue = "";
@@ -141,7 +136,10 @@ int main() {
 //		fileReader.close();
 //		cout << JSON::serialize(value) << endl;
 
-//		delete value;
+		for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
+			delete dynamicStudentsArray->getElementAt(i);
+		}
+		delete dynamicStudentsArray;
 	} catch (const JsonFormatException &ex) {
 		cerr << ex.what() << endl;
 	}

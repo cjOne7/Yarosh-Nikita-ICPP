@@ -10,7 +10,28 @@ void replaceEscape() {
 
 }
 
+string buildOutputString(const DynamicArray<Student*>& dynamicStudentsArray) {
+	stringstream ss;
+	cout << endl;
+	ss << "{\"users\":[";
+	for (int i = 0; i < dynamicStudentsArray.getSize(); ++i) {
+		//			cout << *dynamicStudentsArray->getElementAt(i) << endl;
+		ss << *dynamicStudentsArray.getElementAt(i);
+		if (i != dynamicStudentsArray.getSize() - 1) {
+			ss << ',';
+		}
+	}
+	ss << "]}";
+	return ss.str();
+}
 
+void writeJson(const DynamicArray<Student*>& dynamicStudentsArray) {
+	ofstream fileWriter{ "students.json" };
+	if (fileWriter.is_open()) {
+		fileWriter << JSON::serialize(JSON::deserialize(buildOutputString(dynamicStudentsArray))) << endl;
+		fileWriter.close();
+	}
+}
 
 int main() {
 	//   Value* value = JSON::deserialize(
@@ -77,23 +98,28 @@ int main() {
 	}
 	delete value;
 
-	//stringstream ss;
-	//cout << endl;
-	//ss << "{\"users\":[";
-	//for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
-	//	//			cout << *dynamicStudentsArray->getElementAt(i) << endl;
-	//	ss << *dynamicStudentsArray->getElementAt(i);
-	//	if (i != dynamicStudentsArray->getSize() - 1) {
-	//		ss << ',';
-	//	}
-	//}
-	//ss << "]}";
-	
-	
+	stringstream* ss = new stringstream();
+	*ss << "{\"users\":[";
 	for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
-		delete dynamicStudentsArray->getElementAt(i);
+		//			cout << *dynamicStudentsArray->getElementAt(i) << endl;
+		*ss << *dynamicStudentsArray->getElementAt(i);
+		if (i != dynamicStudentsArray->getSize() - 1) {
+			*ss << ',';
+		}
 	}
-	delete dynamicStudentsArray;
+	*ss << "]}";
+
+	ofstream* fileWriter = new ofstream();
+	fileWriter->open("students.json");
+	if (fileWriter->is_open()) {
+		Value* v = JSON::deserialize((*ss).str());
+		*fileWriter << JSON::serialize(v) << endl;
+		fileWriter->flush();
+		fileWriter->close();
+		delete v;
+	}
+	delete ss;
+	delete fileWriter;
 
 	//ArrayValue* av = new ArrayValue();
 	//av->append(new StringValue("123"));
@@ -101,11 +127,21 @@ int main() {
 	//	, new NumberValue(30), new Address(), new Subjects(*av));
 	//delete av;
 	//delete st;
-	//ofstream fileWriter{ "students.json" };
+
+	//ofstream fileWriter{};
+	//fileWriter.open("students.json");
 	//if (fileWriter.is_open()) {
-	//	fileWriter << JSON::serialize(JSON::deserialize(ss.str())) << endl;
+	//	fileWriter << JSON::serialize(JSON::deserialize(buildOutputString(*dynamicStudentsArray))) << endl;
 	//	fileWriter.close();
 	//}
+	//writeJson(*dynamicStudentsArray);
+
+	for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
+		delete dynamicStudentsArray->getElementAt(i);
+	}
+	delete dynamicStudentsArray;
+
+
 	if (_CrtDumpMemoryLeaks() == 0) {
 		cout << "\nMemory leaks have not been found." << endl;
 	}
