@@ -33,9 +33,21 @@ NumberValue *Address::getPostCode() const {
 	return postCode;
 }
 
+void Address::setCity(StringValue *city) {
+	Address::city = city;
+}
+
+void Address::setStreet(StringValue *street) {
+	Address::street = street;
+}
+
+void Address::setPostCode(NumberValue *postCode) {
+	Address::postCode = postCode;
+}
+
 ostream &operator<<(ostream &os, const Address &address) {
-	os << "city: " << address.city->serialize()
-	   << " street: " << address.street->serialize()
-	   << " postCode: " << address.postCode->serialize();
+	os << "{city: " << address.city->serialize()
+	   << ", street: " << address.street->serialize()
+	   << ", post code: " << address.postCode->serialize() << "}";
 	return os;
 }

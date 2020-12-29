@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "api.h"
-#include "JsonFormatException.h"
+#include "../JSONLibrary/api.h"
+#include "../JSONLibrary/JsonFormatException.h"
 
 enum JsonBrackets {
 	START_OBJECT = '{',

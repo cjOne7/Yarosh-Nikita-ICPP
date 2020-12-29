@@ -26,6 +26,12 @@ public:
 
 	NumberValue *getPostCode() const;
 
+	void setCity(StringValue *city);
+
+	void setStreet(StringValue *street);
+
+	void setPostCode(NumberValue *postCode);
+
 	friend ostream &operator<<(ostream &os, const Address &address);
 };
 

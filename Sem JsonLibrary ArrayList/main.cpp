@@ -47,35 +47,60 @@ int main() {
 		string *strValue = new string("");
 		if (fileReader.is_open()) {
 			getline(fileReader, *strValue);
-			for (int i = 0; i < (*strValue).size(); ++i) {
+			for (int i = 0; i < strValue->size(); ++i) {
 				if ((*strValue)[i] == '\\' && (*strValue)[i + 1] == '\"') {
-					*strValue = (*strValue).replace(i, 2, "\"");
+					*strValue = strValue->replace(i, 2, "\"");
 				} else if ((*strValue)[i] == '\\' && (*strValue)[i + 1] == '\\') {
-					*strValue = (*strValue).replace(i, 2, "\\");
+					*strValue = strValue->replace(i, 2, "\\");
 				}
 			}
-			DynamicArray<Student> dynamicArray{};
-			fileReader.close();
-			Value *value = JSON::deserialize(*strValue);
-			if (ObjectValue *objectValue = dynamic_cast<ObjectValue *>(value)) {
-				if (ArrayValue *arrayValue = dynamic_cast<ArrayValue *>(objectValue->getDynamicObjectArray()->getElementAt(0).getValue())) {
-					for (int i = 0; i < arrayValue->getDynamicArray()->getSize(); i++) {
-						if (ObjectValue *objectArrayValue = dynamic_cast<ObjectValue *>(arrayValue->getDynamicArray()->getElementAt(i))) {
-//							cout << objectArrayValue->getDynamicObjectArray()->getSize() << endl;
-							DynamicArray<KeyValuePair> *students = objectArrayValue->getDynamicObjectArray();
-							for (int j = 0; j < students->getSize(); j++) {
-								cout << students->getElementAt(j).getKey() << ": ";
-								cout << students->getElementAt(j).getValue()->serialize() << endl;
-								Student student{};
-							}
+		}
+		fileReader.close();
+
+		Value *value = JSON::deserialize(*strValue);
+		delete strValue;
+
+		DynamicArray<Student *> *dynamicStudentsArray = new DynamicArray<Student *>();
+		if (ObjectValue *objectValue = dynamic_cast<ObjectValue *>(value)) {
+			if (ArrayValue *arrayValue = dynamic_cast<ArrayValue *>(objectValue->getDynamicObjectArray()->getElementAt(
+					0).getValue())) {
+				for (int i = 0; i < arrayValue->getDynamicArray()->getSize(); i++) {
+					if (ObjectValue *objectArrayValue = dynamic_cast<ObjectValue *>(arrayValue->getDynamicArray()->getElementAt(i))) {
+//						cout << objectArrayValue->getDynamicObjectArray()->getElementAt(0).getValue()->serialize() << endl;//getID
+						DynamicArray<KeyValuePair> *students = objectArrayValue->getDynamicObjectArray();
+						Student *student = new Student();
+						if (NumberValue *id = dynamic_cast<NumberValue *>(students->getElementAt(0).getValue())) {
+							student->setId(id);
 						}
+						if (StringValue *name = dynamic_cast<StringValue *>(students->getElementAt(1).getValue())) {
+							student->setName(name);
+						}
+						if (StringValue *surname = dynamic_cast<StringValue *>(students->getElementAt(2).getValue())) {
+							student->setSurname(surname);
+						}
+						if (NumberValue *year = dynamic_cast<NumberValue *>(students->getElementAt(3).getValue())) {
+							student->setYear(year);
+						}
+						if (NumberValue *credits = dynamic_cast<NumberValue *>(students->getElementAt(4).getValue())) {
+							student->setCredits(credits);
+						}
+						if (ObjectValue *addressObj = dynamic_cast<ObjectValue *>(students->getElementAt(5).getValue())) {
+							Address *address = new Address(addressObj);
+							student->setAddress(address);
+						}
+						if (ArrayValue *subjectsArr = dynamic_cast<ArrayValue *>(students->getElementAt(6).getValue())) {
+							Subjects *subjects = new Subjects(subjectsArr);
+							student->setSubjects(subjects);
+						}
+						dynamicStudentsArray->append(student);
 					}
 				}
 			}
-//			cout << JSON::serialize(value) << endl;
-			delete strValue;
-			delete value;
 		}
+		cout << *dynamicStudentsArray->getElementAt(0) << endl;
+//			cout << JSON::serialize(value) << endl;
+		delete value;
+		delete dynamicStudentsArray;
 
 
 //		fileWriter.open("students.json");
