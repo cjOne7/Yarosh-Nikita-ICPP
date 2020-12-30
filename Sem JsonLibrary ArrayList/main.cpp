@@ -4,8 +4,8 @@
 #include "Student.h"
 #include <fstream>
 
-void writeJson(DynamicArray<Student*>* dynamicStudentsArray) {
-	stringstream* ss = new stringstream();
+void writeJson(DynamicArray<Student *> *dynamicStudentsArray) {
+	stringstream *ss = new stringstream();
 	*ss << "{\"users\":[";
 	for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
 		//			cout << *dynamicStudentsArray->getElementAt(i) << endl;
@@ -16,10 +16,9 @@ void writeJson(DynamicArray<Student*>* dynamicStudentsArray) {
 	}
 	*ss << "]}";
 
-	ofstream fileWriter{ "students.json" };
-	fileWriter.open("students.json");
+	ofstream fileWriter{"students.json"};
 	if (fileWriter.is_open()) {
-		Value* v = JSON::deserialize(ss->str());
+		Value *v = JSON::deserialize(ss->str());
 		fileWriter << JSON::serialize(v) << endl;
 		fileWriter.flush();
 		fileWriter.close();
@@ -54,21 +53,6 @@ int main() {
 //			fileWriter << JSON::serialize(value) << endl;
 //			fileWriter.close();
 //		}
-
-//		ifstream fileReader{};
-//		fileReader.open("students.json");
-//		string *strValue = new string("");
-//		if (fileReader.is_open()) {
-//			getline(fileReader, *strValue);
-//			for (int i = 0; i < strValue->size(); ++i) {
-//				if ((*strValue)[i] == '\\' && (*strValue)[i + 1] == '\"') {
-//					*strValue = strValue->replace(i, 2, "\"");
-//				} else if ((*strValue)[i] == '\\' && (*strValue)[i + 1] == '\\') {
-//					*strValue = strValue->replace(i, 2, "\\");
-//				}
-//			}
-//		}
-//		fileReader.close();
 
 		string *strValue = readJson();
 		Value *value = JSON::deserialize(*strValue);
@@ -114,63 +98,101 @@ int main() {
 		}
 		delete value;
 
-//		for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
-//			cout << *dynamicStudentsArray->getElementAt(i) << endl;
-//		}
-//
-//		int command = 0;
-//		cout << "Choose user id: " << endl;
-//		cout << "0 - save and exit" << endl;
-//		cin >> command;
-//		bool state = true;
-//		while (state) {
-//			if (command == 0) {
-//				cout << "Saving..." << endl;
-//				writeJson(dynamicStudentsArray);
-//				cout << "Exiting..." << endl;
-//				state = false;
-//			} else {
-//
-//			}
-//		}
-
-
-		stringstream* ss = new stringstream();
-		*ss << "{\"users\":[";
 		for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
-			//			cout << *dynamicStudentsArray->getElementAt(i) << endl;
-			*ss << *dynamicStudentsArray->getElementAt(i);
-			if (i != dynamicStudentsArray->getSize() - 1) {
-				*ss << ',';
+			cout << *dynamicStudentsArray->getElementAt(i) << endl;
+		}
+
+		bool state = true;
+		while (state) {
+			string command;
+			cout << endl;
+			cout << "0 - save and exit" << endl;
+			cout << "1..n - choose user for editing or delete by id" << endl;
+			cout << "add - add new user" << endl;
+			cout << "print - print users' list" << endl;
+			cin >> command;
+			if (command[0] == '0') {
+				cout << "Saving..." << endl;
+				writeJson(dynamicStudentsArray);
+				cout << "Exiting..." << endl;
+				state = false;
+			} else if (command == "add") {
+				string name;
+				cout << "Enter name: ";
+				getline(cin >> ws, name);
+
+				string surname;
+				cout << "Enter surname: ";
+				getline(cin >> ws, surname);
+
+				int year;
+				cout << "Enter year: ";
+				cin >> year;
+
+				int credits;
+				cout << "Enter credits: ";
+				cin >> credits;
+
+				string city;
+				cout << "Enter city: ";
+				getline(cin >> ws, city);
+
+				string street;
+				cout << "Enter street: ";
+				getline(cin >> ws, street);
+
+				int postCode;
+				cout << "Enter post code: ";
+				cin >> postCode;
+
+				ObjectValue *ov = new ObjectValue();
+				ov->append(KeyValuePair{"city", new StringValue(city)});
+				ov->append(KeyValuePair{"street", new StringValue(city)});
+				ov->append(KeyValuePair{"post code", new StringValue(city)});
+				ArrayValue *av = new ArrayValue();
+				Student *newStudent = new Student(new NumberValue(5), new StringValue(name), new StringValue(surname)
+												  , new NumberValue(year), new NumberValue(credits), new Address(*ov)
+												  , new Subjects(*av));
+				delete ov;
+				delete av;
+				cout << newStudent << endl;
+				cout << *newStudent << endl;
+			} else if (command == "print") {
+				for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
+					cout << *dynamicStudentsArray->getElementAt(i) << endl;
+				}
+			} else if (command[0] >= 48 && command[0] <= 57) {
+				try {
+					cout << dynamicStudentsArray->getElementAt(stoi(command)) << endl;
+				} catch (const out_of_range &ex) {
+					cerr << "User with id " << command << " doesn't exist." << endl;
+					main();
+				}
+			} else {
+				cout << "Unknown command." << endl;
 			}
 		}
-		*ss << "]}";
-
-		ofstream fileWriter{ "students.json" };
-		if (fileWriter.is_open()) {
-			fileWriter << ss->str() << endl;
-			fileWriter.flush();
-			fileWriter.close();
-		}
-		delete ss;
 
 
-//		fileReader.open("students.json");
-//		strValue = "";
-//		if (fileReader.is_open()) {
-//			while (getline(fileReader, strValue)) {
-//				for (int i = 0; i < strValue.size(); ++i) {
-//					if (strValue[i] == '\\' && strValue[i + 1] == '\"') {
-//						strValue = strValue.replace(i, 2, "\"");
-//					} else if (strValue[i] == '\\' && strValue[i + 1] == '\\') {
-//						strValue = strValue.replace(i, 2, "\\");
-//					}
-//				}
-//				value = JSON::deserialize(strValue);
+//		stringstream* ss = new stringstream();
+//		*ss << "{\"users\":[";
+//		for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
+//			//			cout << *dynamicStudentsArray->getElementAt(i) << endl;
+//			*ss << *dynamicStudentsArray->getElementAt(i);
+//			if (i != dynamicStudentsArray->getSize() - 1) {
+//				*ss << ',';
 //			}
 //		}
-//		fileReader.close();
-//		cout << JSON::serialize(value) << endl;
+//		*ss << "]}";
+//
+//		ofstream fileWriter{ "students.json" };
+//		if (fileWriter.is_open()) {
+//			fileWriter << ss->str() << endl;
+//			fileWriter.flush();
+//			fileWriter.close();
+//		}
+//		delete ss;
+
 
 		for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
 			delete dynamicStudentsArray->getElementAt(i);
