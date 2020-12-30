@@ -1,4 +1,4 @@
-#include "../JSONApp/Student.h"
+#include "Student.h"
 
 Student::Student(NumberValue* id, StringValue* name, StringValue* surname, NumberValue* year, 
 	NumberValue* credits, Address* address, Subjects* subjects)

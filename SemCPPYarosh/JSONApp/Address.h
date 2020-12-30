@@ -3,7 +3,7 @@
 #include <string>
 #include <stdexcept>
 #include <ostream>
-#include <../JSONLibrary/api.h>
+#include <api.h>
 
 using namespace std;
 

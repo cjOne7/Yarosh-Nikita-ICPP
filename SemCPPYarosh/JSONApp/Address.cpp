@@ -1,4 +1,4 @@
-#include "../JSONApp/Address.h"
+#include "Address.h"
 
 Address::Address(const ObjectValue& address) {
 	DynamicArray<KeyValuePair>* dynamicArray = address.getDynamicObjectArray();//may cause memory leak

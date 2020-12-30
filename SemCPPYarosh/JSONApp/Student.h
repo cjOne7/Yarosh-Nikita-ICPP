@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../JSONApp/Address.h"
-#include "../JSONApp/Subjects.h"
+#include "Address.h"
+#include "Subjects.h"
 
 class Student {
 private:

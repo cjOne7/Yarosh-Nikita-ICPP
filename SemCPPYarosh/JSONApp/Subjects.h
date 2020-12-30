@@ -1,6 +1,6 @@
 #pragma once
 #include <ostream>
-#include "../JSONLibrary/api.h"
+#include <api.h>
 
 class Subjects {
 private:

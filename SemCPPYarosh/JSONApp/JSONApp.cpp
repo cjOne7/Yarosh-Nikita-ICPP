@@ -2,9 +2,9 @@
 #include <fstream>
 #include <crtdbg.h>
 #define _CRTDBG_MAP_ALLOC
-#include <../JSONLibrary/api.h>
-#include <../JSONLibrary/JsonFormatException.h>
-#include "../JSONApp/Student.h"
+#include <api.h>
+#include <JsonFormatException.h>
+#include "Student.h"
 
 void writeJson(DynamicArray<Student*>* dynamicStudentsArray) {
 	stringstream* ss = new stringstream();
@@ -101,7 +101,7 @@ DynamicArray<Student*>* parseToDynamicArray(Value* value) {
 	return dynamicStudentsArray;
 }
 
-string enterValue(const string &msg) {
+string enterValue(const string& msg) {
 	string str;
 	cout << msg;
 	getline(cin >> ws, str);
@@ -148,9 +148,7 @@ void startConsoleApp(DynamicArray<Student*>* dynamicStudentsArray) {
 				ArrayValue* av = new ArrayValue();
 				while (true) {
 					cout << "0 - exit" << endl;
-					string subject;
-					cout << "Enter subject: ";
-					getline(cin >> ws, subject);
+					string subject = enterValue("Enter subject: ");
 					if (subject[0] == '0') {
 						break;
 					}
@@ -174,6 +172,52 @@ void startConsoleApp(DynamicArray<Student*>* dynamicStudentsArray) {
 		else if (command[0] >= 48 && command[0] <= 57) {
 			try {
 				cout << dynamicStudentsArray->getElementAt(stoi(command)) << endl;
+				cout << endl;
+				string command = enterValue("Enter command number");
+				cout << "1 - edit name" << endl;
+				cout << "2 - edit surname" << endl;
+				cout << "3 - edit year" << endl;
+				cout << "4 - edit credits" << endl;
+				cout << "5 - edit city" << endl;
+				cout << "6 - edit street" << endl;
+				cout << "7 - edit post code" << endl;
+				cout << "8 - edit subjects" << endl;
+				cout << "9 - delete this user" << endl;
+				cout << "0 - save and exit" << endl;
+				bool state = true;
+				while (state) {
+					if (command[0] == '1') {
+						string  newName = enterValue("Enter name: ");
+					}
+					else if (command[0] == '2') {
+
+					}
+					else if (command[0] == '3') {
+
+					}
+					else if (command[0] == '4') {
+
+					}
+					else if (command[0] == '5') {
+
+					}
+					else if (command[0] == '6') {
+
+					}
+					else if (command[0] == '7') {
+
+					}
+					else if (command[0] == '8') {
+
+					}
+					else if (command[0] == '9') {
+
+					}
+					else if (command[0] == '0') {
+						cout << "Exitting..." << endl;
+						state = false;
+					}
+				}
 			}
 			catch (const out_of_range& ex) {
 				cerr << "User with id " << command << " doesn't exist." << endl;
@@ -190,7 +234,7 @@ int main() {
 	string* strValue = readJson();
 	Value* value = JSON::deserialize(*strValue);
 	delete strValue;
-	
+
 	DynamicArray<Student*>* dynamicStudentsArray = parseToDynamicArray(value);
 	print(dynamicStudentsArray);
 

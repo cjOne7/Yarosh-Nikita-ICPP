@@ -1,4 +1,4 @@
-#include "../JSONApp/Subjects.h"
+#include "Subjects.h"
 
 Subjects::Subjects(ArrayValue* subjectsList) {
 	if (subjectsList != nullptr) {

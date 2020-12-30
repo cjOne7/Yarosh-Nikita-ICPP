@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "../JSONLibrary/api.h"
+#include "api.h"
 
 BoolValue::BoolValue(bool value) {
 	boolValue = value;
