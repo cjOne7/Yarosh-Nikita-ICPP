@@ -52,6 +52,22 @@ string* readJson() {
 	return strValue;
 }
 
+void print(DynamicArray<Student*>* dynamicStudentsArray) {
+	for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
+		cout << *dynamicStudentsArray->getElementAt(i) << endl;
+	}
+}
+
+int getMaxId(DynamicArray<Student*>* dynamicStudentsArray) {
+	int max = dynamicStudentsArray->getElementAt(0)->getId()->get();
+	for (int i = 1; i < dynamicStudentsArray->getSize(); ++i) {
+		if (dynamicStudentsArray->getElementAt(i)->getId()->get() > max) {
+			 max = dynamicStudentsArray->getElementAt(i)->getId()->get();
+		}
+	}
+	return max;
+}
+
 int main() {
 	//   Value* value = JSON::deserialize(
 	//       "{\"users\":[{\"id\":1,\"name\":\"Nikita\",\"surname\":\"Yarosh\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Pardubice\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]},{\"id\":2,\"name\":\"Vlad\",\"surname\":\"Ermolaev\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Kolin\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]},{\"id\":3,\"name\":\"Andrii\",\"surname\":\"Andrusenko\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Prelouc\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]},{\"id\":4,\"name\":\"Dmytro\",\"surname\":\"Hrychanok\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Pardubice\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[]}]}");
@@ -62,22 +78,6 @@ int main() {
 	   //}
 	   //fileWriter.close();
 	   //cout << JSON::serialize(value) << endl;
-
-	//ifstream fileReader{};
-	//fileReader.open("students.json");
-	//string* strValue = new string("");
-	//if (fileReader.is_open()) {
-	//	getline(fileReader, *strValue);
-	//	for (int i = 0; i < strValue->size(); ++i) {
-	//		if ((*strValue)[i] == '\\' && (*strValue)[i + 1] == '\"') {
-	//			*strValue = strValue->replace(i, 2, "\"");
-	//		}
-	//		else if ((*strValue)[i] == '\\' && (*strValue)[i + 1] == '\\') {
-	//			*strValue = strValue->replace(i, 2, "\\");
-	//		}
-	//	}
-	//}
-	//fileReader.close();
 
 	string* strValue = readJson();
 	Value* value = JSON::deserialize(*strValue);
@@ -117,10 +117,8 @@ int main() {
 		}
 	}
 	delete value;
+	print(dynamicStudentsArray);
 
-	for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
-		cout << *dynamicStudentsArray->getElementAt(i) << endl;
-	}
 
 	bool state = true;
 	while (state) {
@@ -138,6 +136,8 @@ int main() {
 			state = false;
 		}
 		else if (command == "add") {
+			int id = getMaxId(dynamicStudentsArray) + 1;
+
 			string name;
 			cout << "Enter name: ";
 			getline(cin >> ws, name);
@@ -167,21 +167,31 @@ int main() {
 			cin >> postCode;
 
 			ObjectValue* ov = new ObjectValue();
-			ov->append(KeyValuePair{ "city", new StringValue(city) });
-			ov->append(KeyValuePair{ "street", new StringValue(street) });
+			ov->append(KeyValuePair{ "city", new StringValue('"' + city + '"') });
+			ov->append(KeyValuePair{ "street", new StringValue('"' + street + '"') });
 			ov->append(KeyValuePair{ "post code", new NumberValue(postCode) });
 			ArrayValue* av = new ArrayValue();
-			Student* newStudent = new Student(new NumberValue(5), new StringValue(name), new StringValue(surname)
+			while (true) {
+				cout << "0 - exit" << endl;
+				string subject;
+				cout << "Enter subject: ";
+				getline(cin >> ws, subject);
+				if (subject[0] == '0') {
+					break;
+				}
+				else {
+					StringValue* sv = new StringValue('"' + subject + '"');
+					av->append(sv);
+				}
+			}
+			Student* newStudent = new Student(new NumberValue(id), new StringValue('"' + name + '"'), new StringValue('"' + surname + '"')
 				, new NumberValue(year), new NumberValue(credits), new Address(*ov), new Subjects(*av));
 			delete ov;
 			delete av;
-			//cout << *newStudent << endl;
 			dynamicStudentsArray->append(newStudent);
 		}
 		else if (command == "print") {
-			for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
-				cout << *dynamicStudentsArray->getElementAt(i) << endl;
-			}
+			print(dynamicStudentsArray);
 		}
 		else if (command[0] >= 48 && command[0] <= 57) {
 			try {
@@ -218,7 +228,7 @@ int main() {
 	//	delete v;
 	//}
 	//delete ss;
-	
+
 
 	//ArrayValue* av = new ArrayValue();
 	//av->append(new StringValue("123"));
