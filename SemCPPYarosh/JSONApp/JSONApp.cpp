@@ -6,10 +6,6 @@
 #include <../JSONLibrary/JsonFormatException.h>
 #include "../JSONApp/Student.h"
 
-void replaceEscape() {
-
-}
-
 void writeJson(DynamicArray<Student*>* dynamicStudentsArray) {
 	stringstream* ss = new stringstream();
 	*ss << "{\"users\":[";
@@ -21,8 +17,6 @@ void writeJson(DynamicArray<Student*>* dynamicStudentsArray) {
 		}
 	}
 	*ss << "]}";
-
-	//cout << ss->str() << endl;
 
 	ofstream fileWriter{ "students.json" };
 	if (fileWriter.is_open()) {
@@ -62,27 +56,13 @@ int getMaxId(DynamicArray<Student*>* dynamicStudentsArray) {
 	int max = dynamicStudentsArray->getElementAt(0)->getId()->get();
 	for (int i = 1; i < dynamicStudentsArray->getSize(); ++i) {
 		if (dynamicStudentsArray->getElementAt(i)->getId()->get() > max) {
-			 max = dynamicStudentsArray->getElementAt(i)->getId()->get();
+			max = dynamicStudentsArray->getElementAt(i)->getId()->get();
 		}
 	}
 	return max;
 }
 
-int main() {
-	//   Value* value = JSON::deserialize(
-	//       "{\"users\":[{\"id\":1,\"name\":\"Nikita\",\"surname\":\"Yarosh\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Pardubice\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]},{\"id\":2,\"name\":\"Vlad\",\"surname\":\"Ermolaev\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Kolin\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]},{\"id\":3,\"name\":\"Andrii\",\"surname\":\"Andrusenko\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Prelouc\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[\"IMOSI\",\"IWWW\",\"ICPP\",\"IDAS2\"]},{\"id\":4,\"name\":\"Dmytro\",\"surname\":\"Hrychanok\",\"year\":3,\"credits\":30,\"address\":{\"city\":\"Pardubice\",\"street\":\"Studentska 199\",\"post code\":53009},\"subjects' list\":[]}]}");
-	   //ofstream fileWriter{};
-	   //fileWriter.open("students.json");
-	   //if (fileWriter.is_open()) {
-	   //	fileWriter << JSON::serialize(value);
-	   //}
-	   //fileWriter.close();
-	   //cout << JSON::serialize(value) << endl;
-
-	string* strValue = readJson();
-	Value* value = JSON::deserialize(*strValue);
-	delete strValue;
-
+DynamicArray<Student*>* parseToDynamicArray(Value* value) {
 	DynamicArray<Student*>* dynamicStudentsArray = new DynamicArray<Student*>();
 	if (ObjectValue* objectValue = dynamic_cast<ObjectValue*>(value)) {
 		if (ArrayValue* arrayValue = dynamic_cast<ArrayValue*>(objectValue->getDynamicObjectArray()->getElementAt(0).getValue())) {
@@ -117,9 +97,18 @@ int main() {
 		}
 	}
 	delete value;
-	print(dynamicStudentsArray);
 
+	return dynamicStudentsArray;
+}
 
+string enterValue(const string &msg) {
+	string str;
+	cout << msg;
+	getline(cin >> ws, str);
+	return str;
+}
+
+void startConsoleApp(DynamicArray<Student*>* dynamicStudentsArray) {
 	bool state = true;
 	while (state) {
 		string command;
@@ -137,58 +126,47 @@ int main() {
 		}
 		else if (command == "add") {
 			int id = getMaxId(dynamicStudentsArray) + 1;
+			string name = enterValue("Enter name: ");
+			string surname = enterValue("Enter surname: ");
+			try {
+				string yearStr = enterValue("Enter year: ");
+				int year = stoi(yearStr);
 
-			string name;
-			cout << "Enter name: ";
-			getline(cin >> ws, name);
+				string creditsStr = enterValue("Enter credits: ");
+				int credits = stoi(creditsStr);
 
-			string surname;
-			cout << "Enter surname: ";
-			getline(cin >> ws, surname);
+				string city = enterValue("Enter city: ");
+				string street = enterValue("Enter street: ");
 
-			int year;
-			cout << "Enter year: ";
-			cin >> year;
+				string postCodeStr = enterValue("Enter post code: ");
+				int postCode = stoi(postCodeStr);
 
-			int credits;
-			cout << "Enter credits: ";
-			cin >> credits;
-
-			string city;
-			cout << "Enter city: ";
-			getline(cin >> ws, city);
-
-			string street;
-			cout << "Enter street: ";
-			getline(cin >> ws, street);
-
-			int postCode;
-			cout << "Enter post code: ";
-			cin >> postCode;
-
-			ObjectValue* ov = new ObjectValue();
-			ov->append(KeyValuePair{ "city", new StringValue('"' + city + '"') });
-			ov->append(KeyValuePair{ "street", new StringValue('"' + street + '"') });
-			ov->append(KeyValuePair{ "post code", new NumberValue(postCode) });
-			ArrayValue* av = new ArrayValue();
-			while (true) {
-				cout << "0 - exit" << endl;
-				string subject;
-				cout << "Enter subject: ";
-				getline(cin >> ws, subject);
-				if (subject[0] == '0') {
-					break;
+				ObjectValue* ov = new ObjectValue();
+				ov->append(KeyValuePair{ "city", new StringValue('"' + city + '"') });
+				ov->append(KeyValuePair{ "street", new StringValue('"' + street + '"') });
+				ov->append(KeyValuePair{ "post code", new NumberValue(postCode) });
+				ArrayValue* av = new ArrayValue();
+				while (true) {
+					cout << "0 - exit" << endl;
+					string subject;
+					cout << "Enter subject: ";
+					getline(cin >> ws, subject);
+					if (subject[0] == '0') {
+						break;
+					}
+					else {
+						av->append(new StringValue('"' + subject + '"'));
+					}
 				}
-				else {
-					StringValue* sv = new StringValue('"' + subject + '"');
-					av->append(sv);
-				}
+				Student* newStudent = new Student(new NumberValue(id), new StringValue('"' + name + '"'), new StringValue('"' + surname + '"')
+					, new NumberValue(year), new NumberValue(credits), new Address(*ov), new Subjects(*av));
+				delete ov;
+				delete av;
+				dynamicStudentsArray->append(newStudent);
 			}
-			Student* newStudent = new Student(new NumberValue(id), new StringValue('"' + name + '"'), new StringValue('"' + surname + '"')
-				, new NumberValue(year), new NumberValue(credits), new Address(*ov), new Subjects(*av));
-			delete ov;
-			delete av;
-			dynamicStudentsArray->append(newStudent);
+			catch (const invalid_argument& ex) {
+				cerr << "Conversion could not be performed" << endl;
+			}
 		}
 		else if (command == "print") {
 			print(dynamicStudentsArray);
@@ -199,44 +177,24 @@ int main() {
 			}
 			catch (const out_of_range& ex) {
 				cerr << "User with id " << command << " doesn't exist." << endl;
-				main();
+				startConsoleApp(dynamicStudentsArray);
 			}
 		}
 		else {
 			cout << "Unknown command." << endl;
 		}
 	}
+}
 
-	//stringstream* ss = new stringstream();
-	//*ss << "{\"users\":[";
-	//for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
-	//	//			cout << *dynamicStudentsArray->getElementAt(i) << endl;
-	//	*ss << *dynamicStudentsArray->getElementAt(i);
-	//	if (i != dynamicStudentsArray->getSize() - 1) {
-	//		*ss << ',';
-	//	}
-	//}
-	//*ss << "]}";
+int main() {
+	string* strValue = readJson();
+	Value* value = JSON::deserialize(*strValue);
+	delete strValue;
+	
+	DynamicArray<Student*>* dynamicStudentsArray = parseToDynamicArray(value);
+	print(dynamicStudentsArray);
 
-	//ofstream fileWriter{ "students.json" };
-	//fileWriter.open("students.json");
-	//if (fileWriter.is_open()) {
-	//	Value* v = JSON::deserialize(ss->str());
-	//	fileWriter << JSON::serialize(v) << endl;
-	//	fileWriter.flush();
-	//	fileWriter.close();
-	//	delete v;
-	//}
-	//delete ss;
-
-
-	//ArrayValue* av = new ArrayValue();
-	//av->append(new StringValue("123"));
-	//Student* st = new Student(new NumberValue(5), new StringValue("Aaron"), new StringValue("Kirk"), new NumberValue(3)
-	//	, new NumberValue(30), new Address(), new Subjects(*av));
-	//delete av;
-	//delete st;
-
+	startConsoleApp(dynamicStudentsArray);
 
 	for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
 		delete dynamicStudentsArray->getElementAt(i);
