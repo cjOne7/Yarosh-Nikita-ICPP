@@ -108,13 +108,113 @@ string enterValue(const string& msg) {
 	return str;
 }
 
+bool isNumber(const string& str) {
+	try {
+		stoi(str);
+		return true;
+	}
+	catch (const invalid_argument& ex) {
+		return false;
+	}
+}
+
+void editStudent(Student* student, DynamicArray<Student*>* dynamicStudentsArray, int index) {
+	try {
+		bool state = true;
+		while (state) {
+			cout << *student << endl;
+			cout << endl;
+			cout << "1 - edit name" << endl;
+			cout << "2 - edit surname" << endl;
+			cout << "3 - edit year" << endl;
+			cout << "4 - edit credits" << endl;
+			cout << "5 - edit city" << endl;
+			cout << "6 - edit street" << endl;
+			cout << "7 - edit post code" << endl;
+			cout << "8 - edit subjects" << endl;
+			cout << "9 - delete this user" << endl;
+			cout << "0 - back" << endl;
+			string command = enterValue("Start editing. Enter command number: ");
+			if (command[0] == '1') {
+				delete student->getName();
+				string  newName = enterValue("Enter new name: ");
+				student->setName(new StringValue('"' + newName + '"'));
+			}
+			else if (command[0] == '2') {
+				delete student->getSurname();
+				string  newSurname = enterValue("Enter new surname: ");
+				student->setSurname(new StringValue('"' + newSurname + '"'));
+			}
+			else if (command[0] == '3') {
+				delete student->getYear();
+				string  newYearStr = enterValue("Enter new year: ");
+				int newYear = stoi(newYearStr);
+				student->setYear(new NumberValue(newYear));
+			}
+			else if (command[0] == '4') {
+				delete student->getCredits();
+				string  newCreditsStr = enterValue("Enter new credits' value: ");
+				int newCredits = stoi(newCreditsStr);
+				student->setCredits(new NumberValue(newCredits));
+			}
+			else if (command[0] == '5') {
+				delete student->getAddress()->getCity();
+				string  newCity = enterValue("Enter new city: ");
+				student->getAddress()->setCity(new StringValue('"' + newCity + '"'));
+			}
+			else if (command[0] == '6') {
+				delete student->getAddress()->getStreet();
+				string  newStreet = enterValue("Enter new street: ");
+				student->getAddress()->setStreet(new StringValue('"' + newStreet + '"'));
+			}
+			else if (command[0] == '7') {
+				delete student->getAddress()->getPostCode();
+				string  newPostCodeStr = enterValue("Enter new post code: ");
+				int newPostCode = stoi(newPostCodeStr);
+				student->getAddress()->setPostCode(new NumberValue(newPostCode));
+			}
+			else if (command[0] == '8') {
+				ArrayValue* av = new ArrayValue();
+				while (true) {
+					cout << "0 - exit" << endl;
+					string subject = enterValue("Enter new subject: ");
+					if (subject[0] == '0') {
+						break;
+					}
+					else {
+						av->append(new StringValue('"' + subject + '"'));
+					}
+				}
+				delete student->getSubjects();
+				student->setSubjects(new Subjects(*av));
+				delete av;
+			}
+			else if (command[0] == '9') {
+				cout << "Deleting..." << endl;
+				delete dynamicStudentsArray->remove(index);
+				cout << "Exiting..." << endl;
+				state = false;
+			}
+			else if (command[0] == '0') {
+				cout << "Exitting..." << endl;
+				state = false;
+			}
+		}
+	}
+	catch (const invalid_argument& ex) {
+		cerr << "Conversion could not be performed" << endl;
+		editStudent(student, dynamicStudentsArray, index);
+	}
+}
+
 void startConsoleApp(DynamicArray<Student*>* dynamicStudentsArray) {
+	print(dynamicStudentsArray);
 	bool state = true;
 	while (state) {
 		string command;
 		cout << endl;
 		cout << "0 - save and exit" << endl;
-		cout << "1..n - choose user for editing or delete by index" << endl;
+		cout << "0..n-1 - choose user for editing or delete by index, where n is max size of list" << endl;
 		cout << "add - add new user" << endl;
 		cout << "print - print users' list" << endl;
 		cin >> command;
@@ -169,58 +269,18 @@ void startConsoleApp(DynamicArray<Student*>* dynamicStudentsArray) {
 		else if (command == "print") {
 			print(dynamicStudentsArray);
 		}
-		else if (command[0] >= 48 && command[0] <= 57) {
+		else if (isNumber(command)) {
 			try {
-				cout << dynamicStudentsArray->getElementAt(stoi(command)) << endl;
-				cout << endl;
-				string command = enterValue("Enter command number");
-				cout << "1 - edit name" << endl;
-				cout << "2 - edit surname" << endl;
-				cout << "3 - edit year" << endl;
-				cout << "4 - edit credits" << endl;
-				cout << "5 - edit city" << endl;
-				cout << "6 - edit street" << endl;
-				cout << "7 - edit post code" << endl;
-				cout << "8 - edit subjects" << endl;
-				cout << "9 - delete this user" << endl;
-				cout << "0 - save and exit" << endl;
-				bool state = true;
-				while (state) {
-					if (command[0] == '1') {
-						string  newName = enterValue("Enter name: ");
-					}
-					else if (command[0] == '2') {
-
-					}
-					else if (command[0] == '3') {
-
-					}
-					else if (command[0] == '4') {
-
-					}
-					else if (command[0] == '5') {
-
-					}
-					else if (command[0] == '6') {
-
-					}
-					else if (command[0] == '7') {
-
-					}
-					else if (command[0] == '8') {
-
-					}
-					else if (command[0] == '9') {
-
-					}
-					else if (command[0] == '0') {
-						cout << "Exitting..." << endl;
-						state = false;
-					}
-				}
+				int index = stoi(command);
+				Student* curStudent = dynamicStudentsArray->getElementAt(index);
+				editStudent(curStudent, dynamicStudentsArray, index);
 			}
 			catch (const out_of_range& ex) {
 				cerr << "User with id " << command << " doesn't exist." << endl;
+				startConsoleApp(dynamicStudentsArray);
+			}
+			catch (const invalid_argument& ex) {
+				cerr << "Conversion could not be performed" << endl;
 				startConsoleApp(dynamicStudentsArray);
 			}
 		}
@@ -236,9 +296,22 @@ int main() {
 	delete strValue;
 
 	DynamicArray<Student*>* dynamicStudentsArray = parseToDynamicArray(value);
-	print(dynamicStudentsArray);
-
 	startConsoleApp(dynamicStudentsArray);
+
+	//ArrayValue* av = new ArrayValue();
+	//ObjectValue* ov = new ObjectValue();
+	//av->append(new StringValue("123"));
+	//Student* st = new Student(new NumberValue(5), new StringValue("Aaron"), new StringValue("Kirk"), new NumberValue(3)
+	//	, new NumberValue(30), new Address(*ov), new Subjects(*av));
+	//delete av;
+	//delete ov;
+
+	//delete st->getName();
+	//st->setName(new StringValue("new name"));
+
+	//cout << *st << endl;
+	//delete st;
+
 
 	for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
 		delete dynamicStudentsArray->getElementAt(i);

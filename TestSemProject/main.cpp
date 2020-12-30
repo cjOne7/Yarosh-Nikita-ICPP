@@ -5,6 +5,15 @@
 
 using namespace std;
 
+bool isNumber(const string &str) {
+	try {
+		stoi(str);
+		return true;
+	} catch (const invalid_argument &ex) {
+		return false;
+	}
+}
+
 int main() {
 //	string newStr = "{\"str\":\"Hello, !@#$%^&*()_/*-+=1234567890:;|,.<> ' \\\\ \\\" World?!\",\"str1\":\"Hello, ' \\\\ \\\"World?!\"}";
 //	cout << newStr << endl;
@@ -16,10 +25,6 @@ int main() {
 //		}
 //	}
 //	cout << newStr << endl;
-	StringValue *stringValue = new StringValue("123");
-	StringValue *stringValue1 = new StringValue(*stringValue);
-	stringValue->setValue("123456");
-	cout << stringValue << endl;
-	cout << stringValue1 << endl;
+	cout << isNumber("jj12wdaasd3");
 	return 0;
 }
