@@ -147,8 +147,8 @@ int main() {
 
 				ObjectValue *ov = new ObjectValue();
 				ov->append(KeyValuePair{"city", new StringValue(city)});
-				ov->append(KeyValuePair{"street", new StringValue(city)});
-				ov->append(KeyValuePair{"post code", new StringValue(city)});
+				ov->append(KeyValuePair{"street", new StringValue(street)});
+				ov->append(KeyValuePair{"post code", new NumberValue(postCode)});
 				ArrayValue *av = new ArrayValue();
 				Student *newStudent = new Student(new NumberValue(5), new StringValue(name), new StringValue(surname)
 												  , new NumberValue(year), new NumberValue(credits), new Address(*ov)
@@ -157,6 +157,7 @@ int main() {
 				delete av;
 				cout << newStudent << endl;
 				cout << *newStudent << endl;
+				delete newStudent;
 			} else if (command == "print") {
 				for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
 					cout << *dynamicStudentsArray->getElementAt(i) << endl;
@@ -192,7 +193,6 @@ int main() {
 //			fileWriter.close();
 //		}
 //		delete ss;
-
 
 		for (int i = 0; i < dynamicStudentsArray->getSize(); ++i) {
 			delete dynamicStudentsArray->getElementAt(i);
