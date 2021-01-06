@@ -13,7 +13,7 @@ using namespace std;
 // - realizace mus� vyu��vat dynamicky alokovan� pole, spojov� seznam nebo jinou vhodnou V�mi implementovanou ADS
 
 template<typename T>
-class DLL_SPEC DynamicArray {
+class DynamicArray {
 public:
 	DynamicArray();
 

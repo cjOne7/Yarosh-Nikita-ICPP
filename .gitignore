@@ -79,6 +79,16 @@ Sem JsonLibrary ArrayList/.idea/*
 Sem JsonLibrary ArrayList/.idea/workspace.xml
 Sem JsonLibrary ArrayList/CMakeLists.txt
 
+RWFile/cmake-build-debug/*
+RWFile/.idea/*
+RWFile/.idea/workspace.xml
+RWFile/CMakeLists.txt
+
+TestCPPFeatures/cmake-build-debug/*
+TestCPPFeatures/.idea/*
+TestCPPFeatures/.idea/workspace.xml
+TestCPPFeatures/CMakeLists.txt
+
 # gitignore for C++
 # Compiled Object files
 *.slo
