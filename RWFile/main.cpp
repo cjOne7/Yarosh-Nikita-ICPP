@@ -49,29 +49,28 @@ int main() {
 	if (fw.is_open()) {
 		for (int i = 0; i < measurements.size(); i++) {
 //			fw.write((const char *) &measurements.at(i), sizeof(Measurement));
-			fw << measurements.at(i);
+			fw << measurements.at(i) << "\n";
 		}
 	}
 	fw.close();
 
-//	measurements = parseCSVFile("newData.csv");
+	measurements = parseCSVFile("newData.csv");
 
-	ifstream fr{"newData.csv", ios::in};
-	if (fr.is_open()) {
-		string line;
-		getline(fr, line);
-		for (int i = 0; i < measurements.size(); i++) {
+//	ifstream fr{"newData.csv", ios::in};
+//	if (fr.is_open()) {
+//		string line;
+//		getline(fr, line);
+//		for (int i = 0; i < measurements.size(); i++) {
 //			Measurement measurement{};
 //			fr.read((char *) &measurement, sizeof(Measurement));
-			fr >> measurements.at(i);
-//			fr >> measurement;
-//			cout << measurement;
-		}
-	}
-	fr.close();
+//			cout << measurement << endl;
+////			fr >> measurements.at(i);
+//		}
+//	}
+//	fr.close();
 
 	for (int i = 0; i < measurements.size(); i++) {
-		cout << measurements.at(i);
+		cout << measurements.at(i) << endl;
 	}
 	if (_CrtDumpMemoryLeaks() == 0) {
 		cout << "\nMemory leaks have not been found." << endl;

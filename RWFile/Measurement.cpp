@@ -23,7 +23,7 @@ std::ostream &operator<<(std::ostream &os, const Measurement &measurement) {
 	os << measurement.id
 	   << ";" << measurement.sensorId
 	   << ";" << measurement.date
-	   << ";" << measurement.m3 << std::endl;
+	   << ";" << measurement.m3;
 	return os;
 }
 
