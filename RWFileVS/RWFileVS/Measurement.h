@@ -1,6 +1,7 @@
 #pragma once
 
-#include <string>x
+#include <string>
+#include <iostream>
 
 class Measurement {
 private:
@@ -22,4 +23,8 @@ public:
 	const std::string& getTime() const;
 
 	double getM3() const;
+
+	friend std::ostream& operator<<(std::ostream& os, const Measurement& measurement);
+
+	friend std::istream& operator>>(std::istream& is, Measurement& measurement);
 };

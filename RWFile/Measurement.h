@@ -2,6 +2,7 @@
 #define RWFILE_MEASUREMENT_H
 
 #include <string>
+#include <iostream>
 
 class Measurement {
 private:
@@ -10,11 +11,11 @@ private:
 	std::string date;
 	double m3;
 public:
-	Measurement();
+	Measurement() = default;
 
 	Measurement(int id, int sensorId, const std::string &time, double m3);
 
-	~Measurement();
+	~Measurement() = default;
 
 	int getId() const;
 
@@ -23,6 +24,10 @@ public:
 	const std::string &getTime() const;
 
 	double getM3() const;
+
+	friend std::ostream &operator<<(std::ostream &os, const Measurement &measurement);
+
+	friend std::istream &operator>>(std::istream &is, Measurement &measurement);
 };
 
 
