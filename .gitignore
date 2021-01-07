@@ -89,6 +89,11 @@ TestCPPFeatures/.idea/*
 TestCPPFeatures/.idea/workspace.xml
 TestCPPFeatures/CMakeLists.txt
 
+SinglyLinkedList/cmake-build-debug/*
+SinglyLinkedList/.idea/*
+SinglyLinkedList/.idea/workspace.xml
+SinglyLinkedList/CMakeLists.txt
+
 # gitignore for C++
 # Compiled Object files
 *.slo
