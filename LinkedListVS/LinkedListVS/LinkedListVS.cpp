@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <crtdbg.h>
+
 #define _CRTDBG_MAP_ALLOC
 
 using namespace std;
@@ -86,6 +87,7 @@ public:
 		if (root->getValue() == value) {
 			Element* element = root;
 			root = root->getNext();
+			size--;
 			return element;
 		}
 		Element* element = root;
@@ -93,11 +95,11 @@ public:
 			if (element->getNext() != nullptr && element->getNext()->getValue() == value) {
 				Element* deletedElement = element->getNext();
 				element->setNext(element->getNext()->getNext());
+				size--;
 				return deletedElement;
 			}
 			element = element->getNext();
 		}
-		size--;
 		return nullptr;
 	}
 
@@ -118,10 +120,15 @@ int main() {
 	linkedList->add("3");
 	linkedList->add("4");
 
-	Element* deletedElement = linkedList->remove("3");
-	deletedElement->setNext(nullptr);
-	cout << "Removed value: " << deletedElement->getValue() << endl;
-	delete deletedElement;
+	Element* deletedElement = linkedList->remove("5");
+	if (deletedElement == nullptr) {
+		cout << "Element is not found." << endl;
+	}
+	else {
+		deletedElement->setNext(nullptr);
+		cout << "Removed value: " << deletedElement->getValue() << endl;
+		delete deletedElement;
+	}
 
 	linkedList->type();
 	delete linkedList;
