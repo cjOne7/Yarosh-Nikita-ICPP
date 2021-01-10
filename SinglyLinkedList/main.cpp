@@ -71,6 +71,17 @@ public:
 		size++;
 	}
 
+	void addFirst(const string &value) {
+		if (root == nullptr) {
+			root = new Element(value);
+		} else {
+			auto *element = new Element(value);
+			element->setNext(root);
+			root = element;
+		}
+		size++;
+	}
+
 	Element *find(const string &value) {
 		Element *element = root;
 		while (element != nullptr) {
@@ -114,23 +125,23 @@ public:
 
 int main() {
 	auto *linkedList = new LinkedList();
-	linkedList->add("1");
-	linkedList->add("2");
+	linkedList->addFirst("1");
+	linkedList->addFirst("2");
 	linkedList->add("3");
-	linkedList->add("4");
+	linkedList->addFirst("4");
 
-	Element *deletedElement = linkedList->remove("3");
-	if (deletedElement == nullptr) {
-		cout << "Element is not found." << endl;
-	} else {
-		deletedElement->setNext(nullptr);
-		cout << "Removed value: " << deletedElement->getValue() << endl;
-		delete deletedElement;
-	}
+//	Element *deletedElement = linkedList->remove("3");
+//	if (deletedElement == nullptr) {
+//		cout << "Element is not found." << endl;
+//	} else {
+//		deletedElement->setNext(nullptr);
+//		cout << "Removed value: " << deletedElement->getValue() << endl;
+//		delete deletedElement;
+//	}
 
 	linkedList->type();
 	delete linkedList;
-	
+
 	if (_CrtDumpMemoryLeaks() == 0) {
 		cout << "\nMemory leaks have not been found." << endl;
 	} else {
