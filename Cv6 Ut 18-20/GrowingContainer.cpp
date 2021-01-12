@@ -20,8 +20,8 @@ void GrowingContainer<T>::boostArray() {
 	for (int i = 0; i < size; ++i) {
 		newArray[i] = array[i];
 	}
+	delete[] array;
 	array = newArray;
-	delete[] newArray;
 }
 
 template<typename T>

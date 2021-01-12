@@ -9,6 +9,9 @@ int main() {
 	growingContainer.add(2);
 	growingContainer.add(3);
 	growingContainer.add(4);
+	growingContainer.add(4);
+	growingContainer.add(4);
+	growingContainer.add(4);
 //	growingContainer.add(3, 500);
 
 	growingContainer.remove(growingContainer.getSize() - 1);
