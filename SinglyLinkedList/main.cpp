@@ -91,13 +91,14 @@ public:
 			element = element->getNext();
 			i++;
 		}
+
 		for (int j = 0; j < size - 1; j++) {//sort array
 			for (int k = 0; k < size - 1; k++) {
 				string a = elements[k]->getValue();
 				string b = elements[k + 1]->getValue();
 				if (a.compare(b) > 0) {
 					Element *temp = elements[k];
-					elements[k] =  elements[k + 1];
+					elements[k] = elements[k + 1];
 					elements[k + 1] = temp;
 				}
 			}
@@ -115,8 +116,9 @@ public:
 				elem->setNext(new Element(elements[j]->getValue()));
 			}
 		}
-
+		delete root;
 		root = newRoot;
+		delete[] elements;
 	}
 
 	void addSorted(const string &value) {
@@ -183,14 +185,14 @@ int main() {
 	linkedList->addSorted("0");
 	linkedList->addSorted("9");
 
-//	Element *deletedElement = linkedList->remove("3");
-//	if (deletedElement == nullptr) {
-//		cout << "Element is not found." << endl;
-//	} else {
-//		deletedElement->setNext(nullptr);
-//		cout << "Removed value: " << deletedElement->getValue() << endl;
-//		delete deletedElement;
-//	}
+	//	Element *deletedElement = linkedList->remove("3");
+	//	if (deletedElement == nullptr) {
+	//		cout << "Element is not found." << endl;
+	//	} else {
+	//		deletedElement->setNext(nullptr);
+	//		cout << "Removed value: " << deletedElement->getValue() << endl;
+	//		delete deletedElement;
+	//	}
 
 	linkedList->type();
 	delete linkedList;

@@ -72,6 +72,73 @@ public:
 		size++;
 	}
 
+	void addFirst(const string& value) {
+		if (root == nullptr) {
+			root = new Element(value);
+		}
+		else {
+			auto* element = new Element(value);
+			element->setNext(root);
+			root = element;
+		}
+		size++;
+	}
+
+	void sort() {
+		Element* element = root;
+		auto** elements = new Element * [size];
+		int i = 0;
+		while (element != nullptr) {//create array from linked list
+			elements[i] = element;
+			element = element->getNext();
+			i++;
+		}
+		
+		for (int j = 0; j < size - 1; j++) {//sort array
+			for (int k = 0; k < size - 1; k++) {
+				string a = elements[k]->getValue();
+				string b = elements[k + 1]->getValue();
+				if (a.compare(b) > 0) {
+					Element* temp = elements[k];
+					elements[k] = elements[k + 1];
+					elements[k + 1] = temp;
+				}
+			}
+		}
+
+		Element* newRoot = nullptr;
+		for (int j = 0; j < size; ++j) {//create linked list back
+			if (newRoot == nullptr) {
+				newRoot = new Element(elements[j]->getValue());
+			}
+			else {
+				Element* elem = newRoot;
+				while (elem->getNext() != nullptr) {
+					elem = elem->getNext();
+				}
+				elem->setNext(new Element(elements[j]->getValue()));
+			}
+		}
+		delete root;
+		delete[] elements;
+		root = newRoot;
+	}
+
+	void addSorted(const string& value) {
+		if (root == nullptr) {
+			root = new Element(value);
+		}
+		else {
+			Element* element = root;
+			while (element->getNext() != nullptr) {
+				element = element->getNext();
+			}
+			element->setNext(new Element(value));
+		}
+		size++;
+		sort();
+	}
+
 	Element* find(const string& value) {
 		Element* element = root;
 		while (element != nullptr) {
@@ -115,20 +182,21 @@ public:
 
 int main() {
 	auto* linkedList = new LinkedList();
-	linkedList->add("1");
-	linkedList->add("2");
-	linkedList->add("3");
-	linkedList->add("4");
+	linkedList->addSorted("1");
+	linkedList->addSorted("2");
+	linkedList->addSorted("4");
+	linkedList->addSorted("3");
+	linkedList->addSorted("0");
+	linkedList->addSorted("9");
 
-	Element* deletedElement = linkedList->remove("5");
-	if (deletedElement == nullptr) {
-		cout << "Element is not found." << endl;
-	}
-	else {
-		deletedElement->setNext(nullptr);
-		cout << "Removed value: " << deletedElement->getValue() << endl;
-		delete deletedElement;
-	}
+	//	Element *deletedElement = linkedList->remove("3");
+	//	if (deletedElement == nullptr) {
+	//		cout << "Element is not found." << endl;
+	//	} else {
+	//		deletedElement->setNext(nullptr);
+	//		cout << "Removed value: " << deletedElement->getValue() << endl;
+	//		delete deletedElement;
+	//	}
 
 	linkedList->type();
 	delete linkedList;
