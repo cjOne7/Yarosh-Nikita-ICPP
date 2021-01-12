@@ -175,23 +175,13 @@ public:
 };
 
 int main() {
-//	string a = "1";
-//	string b = "2";
-//	if (a.compare(b) > 0) {
-//		cout << "a > b" << endl;
-//	} else if (a.compare(b) < 0) {
-//		cout << "a < b" << endl;
-//	} else {
-//		cout << "a == b" << endl;
-//	}
-
 	auto *linkedList = new LinkedList();
 	linkedList->addSorted("1");
 	linkedList->addSorted("2");
 	linkedList->addSorted("4");
 	linkedList->addSorted("3");
-
-//	linkedList->sort();
+	linkedList->addSorted("0");
+	linkedList->addSorted("9");
 
 //	Element *deletedElement = linkedList->remove("3");
 //	if (deletedElement == nullptr) {
