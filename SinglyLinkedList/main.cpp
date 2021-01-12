@@ -82,6 +82,57 @@ public:
 		size++;
 	}
 
+	void sort() {
+		Element *element = root;
+		auto **elements = new Element *[size];
+		int i = 0;
+		while (element != nullptr) {//create array from linked list
+			elements[i] = element;
+			element = element->getNext();
+			i++;
+		}
+		for (int j = 0; j < size - 1; j++) {//sort array
+			for (int k = 0; k < size - 1; k++) {
+				string a = elements[k]->getValue();
+				string b = elements[k + 1]->getValue();
+				if (a.compare(b) > 0) {
+					Element *temp = elements[k];
+					elements[k] =  elements[k + 1];
+					elements[k + 1] = temp;
+				}
+			}
+		}
+
+		Element *newRoot = nullptr;
+		for (int j = 0; j < size; ++j) {//create linked list back
+			if (newRoot == nullptr) {
+				newRoot = new Element(elements[j]->getValue());
+			} else {
+				Element *elem = newRoot;
+				while (elem->getNext() != nullptr) {
+					elem = elem->getNext();
+				}
+				elem->setNext(new Element(elements[j]->getValue()));
+			}
+		}
+
+		root = newRoot;
+	}
+
+	void addSorted(const string &value) {
+		if (root == nullptr) {
+			root = new Element(value);
+		} else {
+			Element *element = root;
+			while (element->getNext() != nullptr) {
+				element = element->getNext();
+			}
+			element->setNext(new Element(value));
+		}
+		size++;
+		sort();
+	}
+
 	Element *find(const string &value) {
 		Element *element = root;
 		while (element != nullptr) {
@@ -124,11 +175,23 @@ public:
 };
 
 int main() {
+//	string a = "1";
+//	string b = "2";
+//	if (a.compare(b) > 0) {
+//		cout << "a > b" << endl;
+//	} else if (a.compare(b) < 0) {
+//		cout << "a < b" << endl;
+//	} else {
+//		cout << "a == b" << endl;
+//	}
+
 	auto *linkedList = new LinkedList();
-	linkedList->addFirst("1");
-	linkedList->addFirst("2");
-	linkedList->add("3");
-	linkedList->addFirst("4");
+	linkedList->addSorted("1");
+	linkedList->addSorted("2");
+	linkedList->addSorted("4");
+	linkedList->addSorted("3");
+
+//	linkedList->sort();
 
 //	Element *deletedElement = linkedList->remove("3");
 //	if (deletedElement == nullptr) {
