@@ -17,7 +17,6 @@ private:
 	void checkSize(int index) const;
 
 public:
-
 	GrowingContainer();
 
 	virtual ~GrowingContainer();
@@ -37,7 +36,6 @@ public:
 	void dumpData() const;
 
 	int getSize() const;
-
 };
 
 

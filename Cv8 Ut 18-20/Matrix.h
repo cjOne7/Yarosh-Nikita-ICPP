@@ -51,8 +51,6 @@ public:
 
 	template<typename R>
 	Matrix<R> changeType() const;
-
-
 };
 
 template<typename T>

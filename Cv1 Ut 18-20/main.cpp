@@ -81,9 +81,7 @@ void tasks() {
 	}
 
 	delete[] triangles;
-
 }
-
 
 int main() {
 	tasks();

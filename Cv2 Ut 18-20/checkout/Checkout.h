@@ -9,7 +9,6 @@ using namespace std;
 
 class Checkout {
 public:
-
 	Checkout();
 
 	explicit Checkout(int maxNumberOfGivenReceipts);
@@ -23,7 +22,6 @@ public:
 	double getAmountsSum() const;
 
 	double getAmountsSumWithDph() const;
-
 
 private:
 	int maxNumberOfGivenReceipts = INIT_DEFAULT_MAX_SIZE_OF_RECEIPTS;

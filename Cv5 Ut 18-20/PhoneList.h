@@ -7,12 +7,11 @@
 using namespace Entity;
 
 namespace Model {
-
 	class PhoneList {
 	private:
 		MyLinkedList<Person> *linkedList = new MyLinkedList<Person>();
 	public:
-		void addPerson(const Person& person);
+		void addPerson(const Person &person);
 
 		string findPhoneNumber(const string &name) const;
 
